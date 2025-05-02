@@ -93,7 +93,7 @@
 .header-mainnav {position: relative;width: calc(100% - 216px - 204px - 48px - 48px);}
 .header-mainnav__list {display: flex;margin: 0;padding: 0;list-style: none;}
 .header-mainnav__item--more {order: 2;}
-.header-mainnav__link {font-weight: 600;white-space: nowrap;text-transform: uppercase;padding-inline: 12px;}
+.header-mainnav__link {font-weight: 600;line-height: var(--text-height-medium);white-space: nowrap;text-transform: uppercase;padding-inline: 12px;}
 .header-mainnav__dropdown {
 	position: absolute;
 	right: 0;
@@ -201,4 +201,26 @@
 }
 @media all and (max-width: 639px) {
 	.addto__link:not(.cart) {display: none;}
+}
+
+
+/*
+** Шапка. Промо
+*/
+.header-promo__list {
+	display: flex;
+	gap: 24px;
+	justify-content: space-between;
+	width: 100%;
+	margin: 0;
+	padding: 0;
+	overflow-x: auto;
+	list-style: none;
+	scroll-snap-type: x mandatory;
+}
+.header-promo__item {display: flex;gap: 8px;align-items: center;white-space: nowrap;scroll-snap-align: start;}
+.header-promo__item svg {flex-shrink: 0;}
+@media all and (max-width: 1023px) {
+	.header-promo__item {font-size: var(--text-size-regular);}
+	.header-promo__item svg {width: 20px;height: 20px;}
 }

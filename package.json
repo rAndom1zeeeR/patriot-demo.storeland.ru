@@ -7,6 +7,7 @@
   "scripts": {
     "start": "gulp",
     "build": "gulp build",
+    "figmaMCP": "npx figma-developer-mcp --figma-api-key=MsqDDwN7SbAk0JzhnWxANR",
     "test": "echo \"Error: no test specified\" && exit 1",
     "gulp install": "npm install -g gulp-cli gulp",
     "npm install": "npm install",

@@ -359,26 +359,22 @@ function createSvgIcon(pathData, width = 12, height = 12) {
 }
 
 /**
- * Функция переноса пунктов меню.
+ * Функция переноса пунктов меню. Data
  * Используется в функциях: на всех страницах.
  * Использует функции: getClientWidth
  */
 function Mainnav(selector = document) {
-  const mainnav = selector.querySelector(".mainnav");
-  const mainnavList = mainnav.querySelector(".mainnav__list");
-  const mainnavDropdown = mainnav.querySelector(".mainnav__dropdown");
-  const mainnavItems = mainnav.querySelectorAll(".mainnav__item");
-  const mainnavMore = mainnav.querySelector(".mainnav__item--more");
+  const mainnav = selector.querySelector("[data-mainnav]");
+  const mainnavList = mainnav.querySelector("[data-mainnav-list]");
+  const mainnavDropdown = mainnav.querySelector("[data-mainnav-dropdown]");
+  const mainnavItems = mainnav.querySelectorAll("[data-mainnav-item]");
+  const mainnavMore = mainnav.querySelector("[data-mainnav-more]");
 
   function handleMainnavItems() {
     if (getClientWidth() < 1024) return;
-    let mainnavItemsWidth = 0;
-    // console.log("[DEBUG]: mainnavItemsWidth11", mainnavItemsWidth);
+    let mainnavItemsWidth = mainnavMore.clientWidth;
     mainnavItems.forEach((item) => {
       mainnavItemsWidth += item.clientWidth;
-      // console.log("[DEBUG]: mainnavItemsWidth", mainnavItemsWidth);
-      // console.log("[DEBUG]: mainnavList.clientWidth", mainnavList.clientWidth);
-      // console.log("[DEBUG]: item", item.classList.contains("mainnav__item--more"));
       if (mainnavItemsWidth > mainnavList.clientWidth) {
         mainnavDropdown.append(item);
       } else {
@@ -403,97 +399,7 @@ function Mainnav(selector = document) {
   });
 
   function handleOpened(event) {
-    OverlayCloser(event, ".mainnav", handleOpened);
-  }
-}
-
-/**
- * Функция переноса пунктов меню.
- * Используется в функциях: на всех страницах.
- * Использует функции: getClientWidth
- */
-function MainnavCatalog(selector = document) {
-  const mainnav = selector.querySelector(".mainnav");
-  const mainnavList = mainnav.querySelector(".mainnav__list");
-  const mainnavDropdown = mainnav.querySelector(".mainnav__dropdown");
-  const mainnavItems = mainnav.querySelectorAll(".mainnav__item");
-
-  // Добавляем кнопку "Еще"
-  const mainnavMoreLi = document.createElement("li");
-  mainnavMoreLi.classList.add("mainnav__item");
-  const mainnavMoreButton = document.createElement("button");
-  mainnavMoreButton.classList.add("mainnav__link", "mainnav__link--more", "button-link");
-  mainnavMoreButton.setAttribute("type", "button");
-  mainnavMoreButton.setAttribute("aria-label", "Еще");
-  const mainnavMoreButtonSpan = document.createElement("span");
-  mainnavMoreButtonSpan.innerHTML = "Еще";
-
-  // Создаем SVG для кнопки "Еще"
-  const mainnavMoreButtonSvgPath = "M129.1 183.3 237.3 75c4.7-4.8 4.7-12.5 0-17.2-4.8-4.8-12.5-4.8-17.2 0l-99.7 99.7-99.7-99.7C16 53 8.3 53 3.5 57.8c-4.7 4.8-4.7 12.5 0 17.2l108.4 108.3c4.7 4.7 12.5 4.7 17.2 0z";
-  const mainnavMoreButtonSvg = createSvgIcon(mainnavMoreButtonSvgPath);
-
-  // Добавляем кнопку "Sale"
-  const mainnavSaleLi = document.createElement("li");
-  mainnavSaleLi.classList.add("mainnav__item");
-  const mainnavSaleButton = document.createElement("a");
-  mainnavSaleButton.classList.add("mainnav__link", "mainnav__item--sale");
-  mainnavSaleButton.setAttribute("href", "/discount/");
-  mainnavSaleButton.setAttribute("aria-label", "Sale");
-  const mainnavSaleButtonSpan = document.createElement("span");
-  mainnavSaleButtonSpan.innerHTML = "Sale";
-
-  function handleMainnavItems() {
-    if (getClientWidth() < 1024) return;
-
-    // Сначала добавляем кнопки Sale и "Еще" для измерения их ширины
-    mainnavList.append(mainnavSaleLi);
-    mainnavSaleLi.append(mainnavSaleButton);
-    mainnavSaleButton.append(mainnavSaleButtonSpan);
-
-    mainnavList.append(mainnavMoreLi);
-    mainnavMoreLi.append(mainnavMoreButton);
-    mainnavMoreButton.append(mainnavMoreButtonSpan, mainnavMoreButtonSvg);
-
-    // Измеряем ширину кнопок
-    const saleButtonWidth = mainnavSaleLi.clientWidth;
-    const moreButtonWidth = mainnavMoreLi.clientWidth;
-
-    // Удаляем кнопки для корректного расчета
-    mainnavSaleLi.remove();
-    mainnavMoreLi.remove();
-
-    // Вычисляем доступную ширину с учетом кнопок
-    const availableWidth = mainnavList.clientWidth - saleButtonWidth - moreButtonWidth;
-    let currentWidth = 0;
-
-    // Распределяем пункты меню
-    mainnavItems.forEach((item) => {
-      if (currentWidth + item.clientWidth > availableWidth) {
-        mainnavDropdown.append(item);
-      } else {
-        mainnavList.append(item);
-        currentWidth += item.clientWidth;
-      }
-    });
-
-    // Добавляем кнопки в конце
-    mainnavList.append(mainnavSaleLi);
-    if (mainnavDropdown.hasChildNodes()) {
-      mainnavList.append(mainnavMoreLi);
-    }
-  }
-
-  handleMainnavItems();
-  window.addEventListener("resize", handleMainnavItems);
-
-  mainnavMoreButton.addEventListener("click", (event) => {
-    event.preventDefault();
-    event.currentTarget.classList.toggle("is-active");
-    OverlayOpener(mainnav, handleOpened);
-  });
-
-  function handleOpened(event) {
-    OverlayCloser(event, ".catalog__mainnav", handleOpened);
+    OverlayCloser(event, "[data-mainnav]", handleOpened);
   }
 }
 
@@ -2365,19 +2271,20 @@ function ValidateInput(item) {
 function Opener() {
   const search = document.querySelector(".search__icon");
   const reset = document.querySelector(".search__reset");
-  search.addEventListener("click", (event) => {
-    event.preventDefault();
-    const parent = event.currentTarget.parentElement;
-    if (parent.classList.contains("is-opened")) {
-      reset.click();
-    } else {
-      setTimeout(() => {
-        parent.querySelector(".search__input").focus();
-      }, 100);
-    }
-    parent.classList.toggle("is-opened");
-  });
-
+  if (search) {
+    search.addEventListener("click", (event) => {
+      event.preventDefault();
+      const parent = event.currentTarget.parentElement;
+      if (parent.classList.contains("is-opened")) {
+        reset.click();
+      } else {
+        setTimeout(() => {
+          parent.querySelector(".search__input").focus();
+        }, 100);
+      }
+      parent.classList.toggle("is-opened");
+    });
+  }
 
   // Открытие каталога
   const catalogButton = document.querySelector(".mainnav__link--catalog");
@@ -3617,7 +3524,6 @@ document.addEventListener("DOMContentLoaded", function () {
   Dialogs();
   Passwords();
   Mainnav(document.querySelector("#header"));
-  MainnavCatalog(document.querySelector("#catalog"));
   CartClear();
   CartRemove();
   Addto();

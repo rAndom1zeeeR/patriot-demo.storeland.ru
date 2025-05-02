@@ -65,7 +65,7 @@
 */
 .header__middle {color: white;background-color: var(--color-black);}
 .header__inner {display: flex;gap: 16px 48px;align-items: center;padding-block: 12px;}
-.header__inner--middle {gap: 12px;}
+.header__inner--middle {gap: 12px;padding-block: 8px;}
 .header-logo {flex-shrink: 0;}
 
 /* Шапка. Контакты */
@@ -113,7 +113,7 @@
 .search__form {position: relative;display: flex;align-items: center;text-align: left;}
 .search__form button {position: absolute;height: 100%;padding: 0;}
 .search__form button svg {flex-shrink: 0;}
-.search__input {padding-inline: 16px 96px;font-size: var(--text-size-regular);}
+.search__input {color: var(--color-black);font-size: var(--text-size-regular);padding-inline: 16px 96px;}
 .search__submit {right: 16px;pointer-events: none;padding-inline: 16px;}
 .search--success .search__submit {pointer-events: all;}
 .search__reset {right: 52px;width: 14px;opacity: 0;pointer-events: none;}
@@ -140,11 +140,11 @@
 }
 
 /* Шапка. Добавить в корзину, избранное, сравнение, лк */
-.header-addto {display: flex;gap: 16px;align-items: center;margin-left: 96px;}
+.header-addto {display: flex;gap: 16px;align-items: center;}
 .addto__link {position: relative;display: flex;gap: 8px;align-items: center;color: white;}
 .addto__link svg {flex-shrink: 0;}
 .addto__count {display: none;font-weight: 700;}
-.cart .addto__count {display: inline-block;}
+.cart .addto__count {display: inline-block;color: var(--color-primary);}
 .cart .addto__count::before {content: '(';}
 .cart .addto__count::after {content: ')';}
 :is(.favorites, .compare).addto__link:not(.is-empty)::before {
@@ -156,4 +156,10 @@
 	background-color: var(--color-primary);
 	border-radius: 100%;
 	content: '';
+}
+@media all and (min-width: 1024px) and (max-width: 1199px) {
+	.header-addto {margin-left: 24px;}
+}
+@media all and (min-width: 1200px) {
+	.header-addto {margin-left: 96px;}
 }

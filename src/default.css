@@ -15,7 +15,7 @@ body {
 	font-size: var(--text-size-medium);
 	font-family: var(--font-primary);
 	font-style: normal;
-	line-height: var(--text-height-medium);
+	line-height: 1;
 	background: white;
 	scrollbar-gutter: stable;
 }
@@ -117,7 +117,7 @@ button:active, .button:active, .paymentFormSubmitLink:active, .paymentFormTbodyS
 .button-secondary:active {color: white;background-color: var(--color-text-primary);border-color: var(--color-border-tertiary);}
 .button-tertiary {color: white;background-color: var(--color-tertiary);border-color: var(--color-tertiary);}
 .button-tertiary:active {color: white;background-color: var(--color-primary);border-color: var(--color-primary);}
-.button-icon {padding: 0;color: var(--color-border);background: none;border: none;}
+.button-icon {height: auto;padding: 0;color: var(--color-gray);background: none;border: none;}
 .button-icon:active {color: var(--color-text-primary);background: none;}
 .button-link {
 	justify-content: flex-start;

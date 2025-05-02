@@ -1,0 +1,652 @@
+<div class="page-orderfast">
+	<div class="orderfast__container">
+		{% IF FORM_NOTICE %}
+		<p class="notice notice--{% IF FORM_NOTICE_IS_GOOD %}success{% ELSE %}error{% ENDIF %}">{FORM_NOTICE | nl2br}</p>
+		{% ENDIF %}
+
+		{% IF cart_count_empty %}
+		<p class="notice notice--attention">Ваша корзина пуста, пожалуйста, выберите другой товар для оформления заказа</p>
+		{% ELSE %}
+		<form id="orderform" class="orderfast__form" action="{ORDER_STAGE_CONFIRM_WITHOUT_DOMAIN_URL}" method="post">
+			<input type="hidden" name="hash" value="{HASH}">
+			<input type="hidden" name="form[payment][id]" value="{ORDER_FORM_PAYMENT_ID}">
+			<!-- <input type="hidden" name="form[delivery][zone_id]" value="{ORDER_FORM_DELIVERY_ZONE_ID}"> -->
+			<!-- Корзина: Минимальная сумма заказа -->
+			{% IF SETTINGS_STORE_ORDER_MIN_ORDER_PRICE %}
+			<div class="orderfast__block cartTotal__min is-hide">
+				<div class="cartTotal__min-icon">
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="32" height="32" aria-hidden="true">
+						<path
+									d="M1012.081 831.996 589.505 102.667C573.377 74.437 544.347 58 512.087 58c-32.256 0-61.29 16.795-77.418 44.667L12.096 831.996c-16.129 27.875-16.129 61.107 0 89.337s45.161 44.668 77.418 44.668h844.79c32.256 0 61.29-16.797 77.418-44.668 16.128-27.875 16.486-61.462.358-89.337zM89.873 876.665l422.215-728.972 422.576 728.614-844.79.358zM557.25 374.96c11.469 13.221 16.486 30.376 14.336 47.528l-41.933 268.003a17.694 17.694 0 0 1-5.943 10.858 17.778 17.778 0 0 1-11.622 4.323 17.79 17.79 0 0 1-11.622-4.323 17.688 17.688 0 0 1-5.939-10.858l-41.574-267.648c-2.512-17.507 2.867-34.662 13.978-47.883 22.938-26.085 67.741-26.085 90.32 0zm7.885 423.091c0 26.8-23.654 48.955-53.047 48.955-29.389 0-53.043-21.797-53.043-48.955s23.654-48.955 53.043-48.955c29.392 0 53.047 21.797 53.047 48.955z" />
+					</svg>
+				</div>
+				<div class="cartTotal__min-title">
+					<span class="cartTotal__label">До минимальной суммы заказа осталось:</span>
+					<data class="cartTotal__price {CURRENCY_CHAR_CODE}" value="{SETTINGS_STORE_ORDER_MIN_ORDER_PRICE}" data-total="{CART_SUM_NOW_WITH_DISCOUNT}">{SETTINGS_STORE_ORDER_MIN_ORDER_PRICE | money_format}</data>
+				</div>
+			</div>
+			{% ENDIF %}
+
+			<!-- Данные покупателя -->
+			<div class="orderfast__block">
+				<h5 class="orderfast__title">Контактные данные</h5>
+				<div class="orderfast__content">
+					<fieldset class="form__fields form__fields--duo">
+						<div class="form__field form__field--custom">
+							<input id="order_contact_person"
+										 type="text"
+										 name="form[contact][person]"
+										 value="{ORDER_FORM_CONTACT_PERSON}"
+										 inputmode="text"
+										 maxlength="50"
+										 placeholder="ФИО"
+										 autocomplete="name"
+										 required>
+							<label for="order_contact_person" required>
+								<span>Ваше ФИО</span>
+								<small>(обязательно)</small>
+							</label>
+						</div>
+
+						<div class="form__field form__field--custom">
+							<input id="order_contact_phone"
+										 class="form__phone"
+										 type="tel"
+										 name="form[contact][phone]"
+										 value="{ORDER_FORM_CONTACT_PHONE}"
+										 inputmode="tel"
+										 maxlength="20"
+										 placeholder="Телефон"
+										 autocomplete="tel"
+										 required>
+							<label for="order_contact_phone" required>
+								<span>Телефон</span>
+								<small>(обязательно)</small>
+							</label>
+						</div>
+					</fieldset>
+
+					<fieldset class="form__fields">
+						<div class="form__field form__field--custom">
+							<input id="order_contact_email"
+										 class="form__email"
+										 type="email"
+										 name="form[contact][email]"
+										 value="{ORDER_FORM_CONTACT_EMAIL}"
+										 inputmode="email"
+										 maxlength="50"
+										 placeholder="Почта"
+										 autocomplete="email"
+										 {% IF ORDER_FORM_CONTACT_WANT_REGISTER %}required{% ENDIF %}>
+							<label for="order_contact_email" {% IF ORDER_FORM_CONTACT_WANT_REGISTER %}required{% ENDIF %}>
+								<span>Ваш E-mail</span>
+								<small>(обязательно)</small>
+							</label>
+						</div>
+					</fieldset>
+
+					<!-- Если в тарифном плане подключен раздел личного кабинета -->
+					{% IFNOT CLIENT_IS_LOGIN %}
+					<div class="form__registration">
+						<label for="want_register">Я хочу зарегистрироваться</label>
+						<input id="want_register" class="square" type="checkbox" name="form[contact][want_register]" value="1" {% IF ORDER_FORM_CONTACT_WANT_REGISTER %}checked{% ENDIF %}>
+					</div>
+
+					<div class="form__field form__field--custom password" {% IFNOT ORDER_FORM_CONTACT_WANT_REGISTER %}hidden{% ENDIF %}>
+						<input id="order_contact_pass"
+									 class="password__input"
+									 type="password"
+									 name="form[contact][pass]"
+									 value="{ORDER_FORM_CONTACT_PASS}"
+									 minlength="6"
+									 maxlength="50"
+									 autocomplete="new-password"
+									 placeholder="Придумайте пароль">
+						<label for="order_contact_pass">
+							<span>Пароль:</span>
+							<small>(обязательно)</small>
+						</label>
+						<button class="password__button button-icon" type="button" aria-pressed="false" aria-label="Показать пароль">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+								<path class="svg-lock"
+											d="M800 376h-72.076V211.54C727.924 94.896 631.026 0 511.925 0S295.926 94.896 295.926 211.54V376H224c-66.168 0-120 53.832-120 119.998v408.003C104 970.17 157.832 1024 224 1024h576c66.169 0 119.999-53.83 119.999-119.999V495.998C919.999 429.832 866.169 376 800 376zM375.926 211.54c0-72.532 61.01-131.54 135.999-131.54s136.001 59.008 136.001 131.54V376h-272V211.54zm464.075 692.461c0 22.053-17.943 39.997-40.001 39.997H224c-22.056 0-40-17.943-40-39.997V495.998c0-22.053 17.944-39.997 40-39.997h576c22.058 0 40.001 17.944 40.001 39.997v408.003z" />
+								<path class="svg-lock" d="M512 572.002c-40.872 0-74 33.126-74 73.998 0 26.098 13.52 49.022 33.924 62.194v87.808c0 22.09 17.911 39.997 40.001 39.997s40.001-17.906 40.001-39.997v-87.71c20.489-13.163 34.071-36.133 34.071-62.292 0-40.872-33.126-73.998-73.998-73.998z" />
+								<path class="svg-unlock"
+											d="M800 376H375.926V211.54c0-72.532 61.01-131.54 135.999-131.54s136.001 59.008 136.001 131.54V288h79.998v-76.46C727.924 94.896 631.026 0 511.925 0S295.926 94.896 295.926 211.54V376H224c-66.168 0-120 53.832-120 119.998v408.003C104 970.17 157.832 1024 224 1024h576c66.169 0 119.999-53.83 119.999-119.999V495.998C919.999 429.832 866.169 376 800 376zm40.001 528.001c0 22.053-17.943 39.997-40.001 39.997H224c-22.056 0-40-17.943-40-39.997V495.998c0-22.053 17.944-39.997 40-39.997h576c22.058 0 40.001 17.944 40.001 39.997v408.003z" />
+								<path class="svg-unlock" d="M512 572.002c-40.872 0-74 33.126-74 73.998 0 26.098 13.52 49.022 33.924 62.194v87.808c0 22.09 17.911 39.997 40.001 39.997s40.001-17.906 40.001-39.997v-87.71c20.489-13.163 34.071-36.133 34.071-62.292 0-40.872-33.126-73.998-73.998-73.998z" />
+							</svg>
+						</button>
+					</div>
+
+					<!-- Капслок предупреждение -->
+					<blockquote class="capslock" hidden>
+						<div class="capslock__icon">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+								<path
+											d="M1012.081 831.996 589.505 102.667C573.377 74.437 544.347 58 512.087 58c-32.256 0-61.29 16.795-77.418 44.667L12.096 831.996c-16.129 27.875-16.129 61.107 0 89.337s45.161 44.668 77.418 44.668h844.79c32.256 0 61.29-16.797 77.418-44.668 16.128-27.875 16.486-61.462.358-89.337zM89.873 876.665l422.215-728.972 422.576 728.614-844.79.358zM557.25 374.96c11.469 13.221 16.486 30.376 14.336 47.528l-41.933 268.003a17.694 17.694 0 0 1-5.943 10.858 17.778 17.778 0 0 1-11.622 4.323 17.79 17.79 0 0 1-11.622-4.323 17.688 17.688 0 0 1-5.939-10.858l-41.574-267.648c-2.512-17.507 2.867-34.662 13.978-47.883 22.938-26.085 67.741-26.085 90.32 0zm7.885 423.091c0 26.8-23.654 48.955-53.047 48.955-29.389 0-53.043-21.797-53.043-48.955s23.654-48.955 53.043-48.955c29.392 0 53.047 21.797 53.047 48.955z" />
+							</svg>
+							<b>Caps Lock включен.</b>
+						</div>
+						<p class="capslock__text">Пароль может быть введен неверно.</p>
+					</blockquote>
+					{% ENDIF %}
+					</fieldset>
+				</div>
+
+			</div>
+
+			<!-- Способ доставки-->
+			<div class="orderfast__block">
+				<h5 class="orderfast__title">Cпособ доставки</h5>
+				<div class="orderfast__content">
+					<!-- Cпособ доставки. Селекты -->
+					<!-- <div class="order-delivery__selects">
+						<div class="selects">
+							<select class="order-delivery__select" name="form[delivery][id]">
+								{% FOR order_delivery %}
+								<option value="{order_delivery.ID}" data-price="{order_delivery.END_PRICE}">{order_delivery.NAME}</option>
+								{% ENDFOR %}
+							</select>
+						</div>
+
+						{% FOR order_delivery %}
+						{% IFNOT order_delivery.zone_list_empty %}
+						<div class="order-delivery-zone__selects selects is-hide" data-id="{order_delivery.ID}">
+							<select class="order-delivery-zone__select">
+								{% FOR zone_list %}
+								<option value="{order_delivery.zone_list.ID}" data-price="{order_delivery.zone_list.END_PRICE}">{order_delivery.zone_list.NAME}</option>
+								{% ENDFOR %}
+							</select>
+						</div>
+						{% ENDIF %}
+						<div class="order-delivery__description" data-id="{order_delivery.ID}">
+							<p class="order-delivery__total">
+								<span>Стоимость доставки:</span>
+								<b class="order-delivery__price {CURRENCY_CHAR_CODE}">{order_delivery.END_PRICE | money_format}</b>
+							</p>
+							{% FOR zone_list %}
+							{% IFNOT order_delivery.zone_list.zone_rule_list_empty %}
+							<div class="order-delivery__rules" data-id="{order_delivery.zone_list.ID}">
+								{% FOR zone_rule_list %}
+								<p class="order-delivery__rule {CURRENCY_CHAR_CODE}">
+									<span>Для заказов больше</span>
+									<b class="order-delivery__price">{order_delivery.zone_list.zone_rule_list.SUM_MORE_PRICE | money_format}</b>
+									<span>доставка</span>
+									<b class="order-delivery__price">{order_delivery.zone_list.zone_rule_list.PRICE | money_format}</b>
+								</p>
+								{% ENDFOR %}
+							</div>
+							{% ENDIF %}
+							{% ENDFOR %}
+							<div class="order-delivery__desc">{order_delivery.DESC}</div>
+						</div>
+						{% ENDFOR %}
+					</div> -->
+
+					<!-- Cпособ доставки. Кнопки -->
+					<div class="order-delivery__items">
+						{% FOR order_delivery %}
+						<div class="order-delivery__item {% IF order_delivery.NAME = Самовывоз %}is-hide{% ENDIF %}" data-id="{order_delivery.ID}">
+							<div class="order-delivery__title">
+								<input class="order-delivery__radio square"
+											 type="radio"
+											 id="deliveryId{order_delivery.ID}"
+											 name="form[delivery][id]"
+											 value="{order_delivery.ID}"
+											 data-price="{order_delivery.END_PRICE}"
+											 pricewithoutzones="{order_delivery.END_PRICE}"
+											 pricewithzone="{order_delivery.ZONE_END_PRICE}"
+											 data-name="{order_delivery.NAME}"
+											 data-id="{order_delivery.ID}"
+											 {% IFNOT ORDER_FORM_DELIVERY_ID %}
+											 {% IF order_delivery.first %}checked="checked" {% ENDIF %}
+											 {% ELSEIF order_delivery.ID=ORDER_FORM_DELIVERY_ID %}
+											 checked="checked"
+											 {% ENDIF %} />
+								<label class="order-delivery__name" for="deliveryId{order_delivery.ID}">{order_delivery.NAME}</label>
+							</div>
+
+							<div class="order-delivery__desc">{order_delivery.DESC}</div>
+
+							<div class="order-delivery__price {CURRENCY_CHAR_CODE}">
+								<label>Стоимость доставки:</label>
+								<b>{% IF order_delivery.END_PRICE = 0 %}Бесплатно{% ELSE %}{order_delivery.END_PRICE | money_format}{% ENDIF %}</b>
+							</div>
+
+							{% IFNOT order_delivery.zone_list_empty %}
+							<div class="order-delivery-zone__list delivery__zones">
+								<div class="order-delivery-zone__title">Зоны доставки:</div>
+								{% FOR zone_list %}
+								<div class="order-delivery-zone__item" data-id="{order_delivery.ID}">
+									<input class="order-delivery-zone__radio square"
+												 type="radio"
+												 id="deliveryZoneId{order_delivery.zone_list.ID}"
+												 name="form[delivery][zone_id]"
+												 value="{order_delivery.zone_list.ID}"
+												 data-id="{order_delivery.ID}"
+												 data-price="{order_delivery.zone_list.END_PRICE}"
+												 {% IF order_delivery.zone_list.ID=ORDER_FORM_DELIVERY_ZONE_ID %}
+												 checked="checked"
+												 {% ENDIF %} />
+									<label class="order-delivery-zone__name" for="deliveryZoneId{order_delivery.zone_list.ID}">{order_delivery.zone_list.NAME}</label>
+									<span class="order-delivery-zone__price">{order_delivery.zone_list.END_PRICE | money_format}</span>
+								</div>
+								{% ENDFOR %}
+							</div>
+							{% ENDIF %}
+
+						</div>
+						{% ENDFOR %}
+					</div>
+				</div>
+			</div>
+
+			<!-- Способ оплаты -->
+			<div class="orderfast__block">
+				<h5 class="orderfast__title">Cпособ оплаты</h5>
+				<div class="orderfast__content">
+					<!-- Селекты способ оплаты -->
+					<!-- {% FOR order_delivery %}
+					{% IFNOT order_delivery.available_payment_list_empty %}
+					<div class="order-payments__selects" data-id="{order_delivery.ID}">
+						<div class="selects">
+							<select>
+								{% FOR available_payment_list %}
+								<option value="{order_delivery.available_payment_list.ID}">{order_delivery.available_payment_list.NAME}</option>
+								{% ENDFOR %}
+							</select>
+						</div>
+						{% FOR available_payment_list %}
+						<div class="order-payment__desc is-hide" data-id="{order_delivery.available_payment_list.ID}">{order_delivery.available_payment_list.MESSAGE}</div>
+						{% ENDFOR %}
+					</div>
+					{% ENDIF %}
+					{% ENDFOR %} -->
+
+					<!-- Селекты способ оплаты -->
+					<div class="order-payment__items">
+						{% FOR order_delivery %}
+						{% IFNOT order_delivery.available_payment_list_empty %}
+						<div class="order-payment__item is-hide" data-id="{order_delivery.ID}">
+							{% FOR available_payment_list %}
+							<div class="order-payment__option">
+								<div class="order-payment__title">
+									<input class="order-payment__radio square"
+												 type="radio"
+												 id="paymentId{order_delivery.ID}_{order_delivery.available_payment_list.ID}"
+												 name="form[payment][id]"
+												 value="{order_delivery.available_payment_list.ID}"
+												 {% IFNOT ORDER_FORM_PAYMENT_ID %}{% IF order_delivery.available_payment_list.first %}checked="checked" {% ENDIF %}
+												 {% ELSEIF order_delivery.available_payment_list.ID=ORDER_FORM_PAYMENT_ID %}checked="checked" {% ENDIF %}>
+									<label class="order-payment__name" for="paymentId{order_delivery.ID}_{order_delivery.available_payment_list.ID}">{order_delivery.available_payment_list.NAME}</label>
+								</div>
+								<!-- Сообщение для пользователя -->
+								{% IF order_delivery.available_payment_list.MESSAGE %}
+								<div class="order-payment__desc">{order_delivery.available_payment_list.MESSAGE}</div>
+								{% ENDIF %}
+							</div>
+							{% ENDFOR %}
+						</div>
+						{% ENDIF %}
+						{% ENDFOR %}
+					</div>
+				</div>
+			</div>
+
+			<!-- Адрес доставки-->
+			{% IF SETTINGS_ORDER_FIELDS_COUNTRY=1 || SETTINGS_ORDER_FIELDS_COUNTRY=2 || SETTINGS_ORDER_FIELDS_REGION=1 || SETTINGS_ORDER_FIELDS_REGION=2 || SETTINGS_ORDER_FIELDS_CITY=1 || SETTINGS_ORDER_FIELDS_CITY=2 || SETTINGS_ORDER_FIELDS_ADDRESS=1 || SETTINGS_ORDER_FIELDS_ADDRESS=2 || SETTINGS_ORDER_FIELDS_ZIP_CODE=1 || SETTINGS_ORDER_FIELDS_ZIP_CODE=2 %}
+			<div class="orderfast__block">
+				<h5 class="orderfast__title">Адрес доставки</h5>
+				<div class="orderfast__content">
+					<fieldset class="form__fields form__fields--duo">
+						<!-- Если поле страны доставки запрашивается -->
+						{% IFNOT country_list_empty && SETTINGS_ORDER_FIELDS_COUNTRY=1 || SETTINGS_ORDER_FIELDS_COUNTRY=2 %}
+						<div class="form__field form__field--country">
+							<label for="order_delivery_country" {% IF SETTINGS_ORDER_FIELDS_COUNTRY=1 %}required{% ENDIF %}>
+								<span>Страна</span>
+								<small>(обязательно)</small>
+							</label>
+							<div class="selects">
+								<select id="order_delivery_country" name="form[delivery][country_id]" {% IF SETTINGS_ORDER_FIELDS_COUNTRY=1 %}required{% ENDIF %}>
+									{% FOR country_list %}
+									<option value="{country_list.ID}" {% IF country_list.ID=ORDER_FORM_DELIVERY_COUNTRY_ID %}selected{% ENDIF %}>
+										{country_list.NAME}
+									</option>
+									{% ENDFOR %}
+								</select>
+							</div>
+						</div>
+						{% ENDIF %}
+
+						<!-- Если поле области запрашивается -->
+						{% IF SETTINGS_ORDER_FIELDS_REGION=1 || SETTINGS_ORDER_FIELDS_REGION=2 %}
+						<div class="form__field form__field--custom">
+							<input id="order_delivery_region"
+										 type="text"
+										 name="form[delivery][region]"
+										 value="{ORDER_FORM_DELIVERY_REGION}"
+										 placeholder="Область"
+										 autocomplete="address-level1"
+										 inputmode="text"
+										 {% IF SETTINGS_ORDER_FIELDS_REGION=1 %}required{% ENDIF %}>
+							<label for="order_delivery_region" {% IF SETTINGS_ORDER_FIELDS_REGION=1 %}required{% ENDIF %}>
+								<span>Область</span>
+								<small>(обязательно)</small>
+							</label>
+						</div>
+						{% ENDIF %}
+
+						<!-- Если поле города запрашивается -->
+						{% IF SETTINGS_ORDER_FIELDS_CITY=1 || SETTINGS_ORDER_FIELDS_CITY=2 %}
+						<div class="form__field form__field--custom">
+							<input id="order_delivery_city"
+										 type="text"
+										 name="form[delivery][city]"
+										 value="{ORDER_FORM_DELIVERY_CITY}"
+										 placeholder="Город"
+										 autocomplete="address-level2"
+										 inputmode="text"
+										 {% IF SETTINGS_ORDER_FIELDS_CITY=1 %}required{% ENDIF %}>
+							<label for="order_delivery_city" {% IF SETTINGS_ORDER_FIELDS_CITY=1 %}required{% ENDIF %}>
+								<span>Город</span>
+								<small>(обязательно)</small>
+							</label>
+						</div>
+						{% ENDIF %}
+
+						<!-- Если поле адреса доставки запрашивается -->
+						{% IF SETTINGS_ORDER_FIELDS_ADDRESS=1 || SETTINGS_ORDER_FIELDS_ADDRESS=2 %}
+						<div class="form__field form__field--custom">
+							<input id="order_delivery_address"
+										 type="text"
+										 name="form[delivery][address]"
+										 value="{ORDER_FORM_DELIVERY_ADDRESS}"
+										 placeholder="Улица"
+										 autocomplete="street-address"
+										 inputmode="text"
+										 {% IF SETTINGS_ORDER_FIELDS_ADDRESS=1 %}required{% ENDIF %}>
+							<label for="order_delivery_address" {% IF SETTINGS_ORDER_FIELDS_ADDRESS=1 %}required{% ENDIF %}>
+								<span>Адрес</span>
+								<small>(обязательно)</small>
+							</label>
+						</div>
+						{% ENDIF %}
+
+						<!-- Если поле почтового индекса запрашивается -->
+						{% IF SETTINGS_ORDER_FIELDS_ZIP_CODE=1 || SETTINGS_ORDER_FIELDS_ZIP_CODE=2 %}
+						<div class="form__field form__field--custom">
+							<input id="order_delivery_zip_code"
+										 type="number"
+										 name="form[delivery][zip_code]"
+										 value="{ORDER_FORM_DELIVERY_ZIP_CODE}"
+										 minlength="5"
+										 maxlength="6"
+										 placeholder="Индекс"
+										 autocomplete="postal-code"
+										 inputmode="numeric"
+										 {% IF SETTINGS_ORDER_FIELDS_ZIP_CODE=1 %}required{% ENDIF %}>
+							<label for="order_delivery_zip_code" {% IF SETTINGS_ORDER_FIELDS_ZIP_CODE=1 %}required{% ENDIF %}>
+								<span>Индекс</span>
+								<small>(обязательно)</small>
+							</label>
+						</div>
+						{% ENDIF %}
+					</fieldset>
+
+					<!-- Если поле даты доставки запрашивается -->
+					{% IF SETTINGS_ORDER_FIELDS_CONVENIENT_TIME=1 || SETTINGS_ORDER_FIELDS_CONVENIENT_TIME=2 %}
+					<fieldset class="form__fields form__fields--date">
+						<div class="form__field form__field--custom">
+							<input id="order_delivery_convenient_date"
+										 type="text"
+										 name="form[delivery][convenient_date]"
+										 value="{ORDER_FORM_DELIVERY_CONVENIENT_DATE}"
+										 maxlength="10"
+										 minlength="10"
+										 autocomplete="bday"
+										 placeholder="{CURRENT_TIME| date('d.m.Y')}"
+										 inputmode="decimal"
+										 {% IF SETTINGS_ORDER_FIELDS_CONVENIENT_TIME=1 %}required{% ENDIF %}>
+							<label for="order_delivery_convenient_date" {% IF SETTINGS_ORDER_FIELDS_CONVENIENT_TIME=1 %}required{% ENDIF %}>
+								<span>Дата доставки</span>
+								<small>(обязательно)</small>
+							</label>
+						</div>
+
+						<div class="form__field">
+							<label for="order_delivery_convenient_time_from" {% IF SETTINGS_ORDER_FIELDS_CONVENIENT_TIME=1 %}required{% ENDIF %}>
+								<span>Время от</span>
+								<small>(обязательно)</small>
+							</label>
+							<div class="selects">
+								<select id="order_delivery_convenient_time_from" name="form[delivery][convenient_time_from]" {% IF SETTINGS_ORDER_FIELDS_CONVENIENT_TIME=1 %}required{% ENDIF %}>
+									{% FOR convenient_time_from_list %}
+									{% IF convenient_time_from_list.HOUR_INT > 8 %}
+									<option value="{convenient_time_from_list.HOUR_INT}" {% IF convenient_time_from_list.SELECTED %}selected{% ENDIF %}>{convenient_time_from_list.HOUR}</option>
+									{% ENDIF %}
+									{% ENDFOR %}
+								</select>
+							</div>
+						</div>
+
+						<div class="form__field">
+							<label for="order_delivery_convenient_time_to" {% IF SETTINGS_ORDER_FIELDS_CONVENIENT_TIME=1 %}required{% ENDIF %}>
+								<span>Время до</span>
+								<small>(обязательно)</small>
+							</label>
+							<div class="selects">
+								<select id="order_delivery_convenient_time_to" name="form[delivery][convenient_time_to]" {% IF SETTINGS_ORDER_FIELDS_CONVENIENT_TIME=1 %}required{% ENDIF %}>
+									{% FOR convenient_time_to_list %}
+									{% IF convenient_time_to_list.HOUR_INT > 8 %}
+									<option value="{convenient_time_to_list.HOUR_INT}" {% IF convenient_time_to_list.SELECTED %}selected{% ENDIF %}>{convenient_time_to_list.HOUR}</option>
+									{% ENDIF %}
+									{% ENDFOR %}
+								</select>
+							</div>
+						</div>
+
+					</fieldset>
+					{% ENDIF %}
+
+				</div>
+			</div>
+			{% ENDIF SETTINGS %}
+
+			<!-- Если поле комментарии запрашивается -->
+			{% IF SETTINGS_ORDER_FIELDS_COMMENT=1 || SETTINGS_ORDER_FIELDS_COMMENT=2 %}
+			<div class="orderfast__block">
+				<h5 class="orderfast__title">Комментарий к заказу</h5>
+				<div class="orderfast__content">
+					<div class="form__field">
+						<label for="order_delivery_comment" {% IF SETTINGS_ORDER_FIELDS_COMMENT=1 %}required{% ENDIF %}>
+							<span>Пожелание к заказу</span>
+							<small>(обязательно)</small>
+						</label>
+						<textarea id="order_delivery_comment"
+											class="form__textarea"
+											cols="100"
+											rows="3"
+											name="form[delivery][comment]"
+											placeholder="Комментарий"
+											inputmode="text"
+											{% IF SETTINGS_ORDER_FIELDS_COMMENT=1 %}required{% ENDIF %}>{ORDER_FORM_DELIVERY_COMMENT}</textarea>
+					</div>
+				</div>
+			</div>
+			{% ENDIF %}
+
+			<!-- Корзина: Итоговый блок -->
+			{% IF ORDER_DISCOUNT_COUPON_IS_ENABLED %}
+			<div class="orderfast__block orderfast__block--coupon">
+				<h5 class="orderfast__title">Применить промокод</h5>
+				<div class="orderfast__content">
+					<!-- Если скидки по купонам активированы в панели управления магазином -->
+					<div class="coupon">
+						<input type="hidden" name="form[coupon]" value="{CART_SUM_NOW}">
+						<input class="coupon__input" type="text" name="form[coupon_code]" value="{ORDER_FORM_COUPON_CODE}" placeholder="Промокод" />
+						<button class="coupon__button" type="button" title="Применить" aria-label="Применить купон">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="16" height="16" aria-hidden="true">
+								<path d="M994.009 149.967c39.985 39.989 39.985 104.823 0 144.812L414.762 874.026c-39.989 39.989-104.823 39.989-144.812 0l-72.406-72.406 651.655-651.653c39.989-39.989 104.824-39.989 144.81 0z" />
+								<path d="M29.992 489.242c39.989-39.989 104.824-39.989 144.812 0L487.163 801.6l-72.407 72.406c-39.988 39.989-104.823 39.989-144.812 0L29.99 634.053c-39.987-39.987-39.987-104.822.002-144.811z" />
+							</svg>
+						</button>
+						<button class="coupon__reset button-icon" type="button" title="Сбросить" aria-label="Сбросить купон">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="14" height="14" aria-hidden="true">
+								<path
+											d="m568.571 512.003 443.715-443.715c15.622-15.622 15.622-40.95 0-56.57s-40.954-15.622-56.57 0L511.999 455.433 68.286 11.718c-15.622-15.622-40.95-15.622-56.57 0s-15.622 40.95 0 56.57l443.713 443.713L11.716 955.716c-15.622 15.622-15.622 40.949 0 56.57a39.925 39.925 0 0 0 12.974 8.681 39.939 39.939 0 0 0 15.312 3.032 39.939 39.939 0 0 0 15.312-3.032 39.94 39.94 0 0 0 12.974-8.681l443.711-443.713 443.711 443.713c7.811 7.811 18.051 11.713 28.285 11.713 10.24 0 20.474-3.903 28.291-11.713 15.622-15.622 15.622-40.949 0-56.57L568.571 512.003z" />
+							</svg>
+						</button>
+					</div>
+				</div>
+			</div>
+			{% ENDIF %}
+
+			<div class="orderfast__block orderfast__block--total">
+				<div class="cartTotal__items">
+					<div class="cartTotal__title">
+						<h5 class="cartTotal__title-label">Ваш заказ</h5>
+						<data class="cart-count" value="{CART_COUNT_TOTAL}">{CART_COUNT_TOTAL}</data>
+						<data class="cart-countend" value="{CART_COUNT_TOTAL}">товар{CART_COUNT_TOTAL | gen_word_end("","а","ов")}</data>
+					</div>
+					<!-- Корзина: Товары -->
+					<div class="cartTotal__item cartTotal__goods">
+						<span class="cartTotal__label">Стоимость товаров:</span>
+						<data class="cartTotal__price {CURRENCY_CHAR_CODE} cart-sum" value="{CART_SUM_NOW}">{CART_SUM_NOW | money_format}</data>
+					</div>
+
+					<!-- Скидки, действующие на заказ -->
+					{% FOR cart_discount %}
+					{% IF cart_discount.DISCOUNT_IS_ENABLED %}
+					<div class="cartTotal__item cartTotal__discount">
+						<span class="cartTotal__label">{cart_discount.DISCOUNT_NAME}:</span>
+						<data class="cartTotal__price {CURRENCY_CHAR_CODE} discountValue" value="{cart_discount.DISCOUNT_VALUE}">
+							{% IF cart_discount.IS_PERCENT %}
+							{cart_discount.DISCOUNT_VALUE}<span class="percent">%</span>
+							{% ELSE %}
+							{cart_discount.DISCOUNT_VALUE | money_format}
+							{% ENDIF %}
+						</data>
+					</div>
+					{% ENDIF %}
+					{% ENDFOR %}
+
+					<!-- Корзина: Купон -->
+					<div class="cartTotal__item cartTotal__coupons" style="display: none;">
+						<span class="cartTotal__label">Купон:</span>
+						<data class="cartTotal__price {CURRENCY_CHAR_CODE} cart-coupons" value></data>
+					</div>
+
+					<!-- Корзина: Доставка -->
+					<div class="cartTotal__item cartTotal__delivery">
+						<span class="cartTotal__label">Доставка:</span>
+						<data class="cartTotal__price {CURRENCY_CHAR_CODE} cart-delivery" value="{CART_SUM_DELIVERY}">{CART_SUM_DELIVERY | money_format}</data>
+					</div>
+
+					<!-- Корзина: Итого -->
+					<div class="cartTotal__item cartTotal__total">
+						<span class="cartTotal__label">Итого:</span>
+						<data class="cartTotal__price cart-total {CURRENCY_CHAR_CODE}" value="{CART_SUM_NOW_WITH_DELIVERY_AND_DISCOUNT}">{CART_SUM_NOW_WITH_DELIVERY_AND_DISCOUNT | money_format}</data>
+						<data style="display: none;" class="cartTotal__price cart-sum" value="{CART_SUM_NOW}">{CART_SUM_NOW | money_format}</data>
+						<data style="display: none;" class="cartTotal__price cart-sum-discount" value="{CART_SUM_NOW_WITH_DISCOUNT}">{CART_SUM_NOW_WITH_DISCOUNT | money_format}</data>
+					</div>
+				</div>
+
+				<!-- Корзина: Оформление -->
+				<div class="cartTotal__buttons form__buttons">
+					<button class="cartTotal__button button-disabled" data-action="startOrder" type="submit" title="Перейти к быстрому оформлению заказа" disabled>
+						Оформить заказ
+					</button>
+					<button class="cartTotal__button button-secondary" data-action="completeOrder" type="submit" title="Перейти к быстрому оформлению заказа" form="orderform">
+						Оформить заказ
+					</button>
+
+					<small class="form__pp">
+						Я принимаю условия
+						<a href="#dialogPolicy" data-dialog="#dialogPolicy">политики конфиденциальности</a>
+					</small>
+				</div>
+			</div>
+
+		</form>
+		{% ENDIF cart_count_empty %}
+
+	</div>
+</div>
+
+<!-- Блок для обновления данных корзины. Не виден пользователю -->
+<div style="display:none;" id="newCartCount">{CART_COUNT_TOTAL}</div>
+<div style="display:none;" id="newCartWord">товар{CART_COUNT_TOTAL | gen_word_end("","а","ов")}</div>
+<div style="display:none;" id="newCartSum">{CART_SUM_NOW}</div>
+<div style="display:none;" id="newCartSumFormated">{CART_SUM_NOW | money_format}</div>
+<div style="display:none;" id="newCartSumDiscount">{CART_SUM_NOW_WITH_DISCOUNT}</div>
+<div style="display:none;" id="newCartSumDiscountFormated">{CART_SUM_NOW_WITH_DISCOUNT | money_format}</div>
+<div style="display:none;" id="newCartSumTotal">{CART_SUM_NOW_WITH_DELIVERY_AND_DISCOUNT}</div>
+<div style="display:none;" id="newCartSumTotalFormated">{CART_SUM_NOW_WITH_DELIVERY_AND_DISCOUNT | money_format}</div>
+<div style="display:none;" id="newCartData">
+	<form class="addto__form" action="{CART_URL}" method="post">
+		<input type="hidden" name="fast_order" value="1">
+		<input type="hidden" name="hash" value="{HASH}">
+		{% FOR cart_items %}
+		<div class="addto__item" data-id="{cart_items.GOODS_ID}" data-mod-id="{cart_items.GOODS_MOD_ID}">
+			<div class="addto__image">
+				<img src="{% IF cart_items.GOODS_IMAGE_EMPTY %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ELSE %}{cart_items.GOODS_IMAGE_ICON}{% ENDIF %}" alt="{cart_items.GOODS_NAME}" loading="lazy">
+			</div>
+
+			<div class="addto__content">
+				<a class="addto__name" href="{cart_items.GOODS_URL}" title="Перейти на страницу товара">{cart_items.GOODS_NAME}</a>
+				<div class="addto__price {CURRENCY_CHAR_CODE}">
+					<span class="addto__price-count">{cart_items.ORDER_LINE_QUANTITY} x</span>
+					{% IF cart_items.GOODS_MOD_PRICE_OLD > cart_items.GOODS_MOD_PRICE_NOW %}
+					<s class="price__old" data-price="{cart_items.ORDER_LINE_PRICE_OLD}">{cart_items.ORDER_LINE_PRICE_OLD | money_format}</s>
+					{% ENDIF %}
+					<b class="price__now" data-price="{cart_items.ORDER_LINE_PRICE_NOW}">{cart_items.ORDER_LINE_PRICE_NOW | money_format}</b>
+				</div>
+				<small class="addto__mods">
+					{% FOR distinctive_properties %}
+					<span>{cart_items.distinctive_properties.NAME}:</span>
+					<b>{cart_items.distinctive_properties.VALUE};</b>
+					{% ENDFOR %}
+				</small>
+			</div>
+
+			<a class="addto__remove button-icon" href="{cart_items.ORDER_LINE_DELETE_URL}" data-qty="{cart_items.ORDER_LINE_QUANTITY}" title="Удалить позицию {cart_items.GOODS_NAME}">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+					<path d="M256 810.667c0 46.933 38.4 85.333 85.333 85.333h341.333c46.933 0 85.333-38.4 85.333-85.333v-512h-512v512zM341.333 384h341.333v426.667h-341.333v-426.667zM661.333 170.667l-42.667-42.667h-213.333l-42.667 42.667h-149.333v85.333h597.333v-85.333h-149.333z"></path>
+				</svg>
+			</a>
+		</div>
+		{% ENDFOR cart_items %}
+	</form>
+
+	<div class="addto__buttons">
+		<!-- Скидки, действующие на заказ -->
+		{% FOR cart_discount %}
+		{% IF cart_discount.DISCOUNT_IS_ENABLED %}
+		<div class="addto__discount {CURRENCY_CHAR_CODE}">
+			<span>{cart_discount.DISCOUNT_NAME}:</span>
+			<data class="cartTotal__price {CURRENCY_CHAR_CODE} discountValue" value="{cart_discount.DISCOUNT_VALUE}">
+				{% IF cart_discount.IS_PERCENT %}
+				{cart_discount.DISCOUNT_VALUE}
+				<span class="percent">%</span>
+				{% ELSE %}
+				{cart_discount.DISCOUNT_VALUE | money_format}
+				{% ENDIF %}
+			</data>
+		</div>
+		{% ELSE %}
+		<div class="addto__discount {CURRENCY_CHAR_CODE} is-hide"></div>
+		{% ENDIF %}
+		{% ENDFOR %}
+		<div class="addto__total {CURRENCY_CHAR_CODE}">
+			<span>Итого:</span>
+			<data class="price__now cart-sum-discount" value="{CART_SUM_NOW_WITH_DISCOUNT}">{CART_SUM_NOW_WITH_DISCOUNT | money_format}</data>
+		</div>
+		<a class="addto__button button" href="{CART_URL}" rel="nofollow">Оформить заказ</a>
+		<a class="addto__clear button button-underline" href="{CART_TRUNCATE_URL}" title="Очистить корзину" rel="nofollow">
+			<span>Очистить корзину</span>
+		</a>
+	</div>
+
+	<!-- Пустая корзина -->
+	<div class="addto__empty">В корзине пока ничего нет</div>
+</div>

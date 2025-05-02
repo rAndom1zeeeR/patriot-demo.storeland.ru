@@ -1,0 +1,836 @@
+<!-- В корне каталога товаров отобразим все корневые категории если они есть на сайте -->
+<div class="products">
+	<!-- Вывод категорий -->
+	{% IFNOT nested_categories_list_empty %}
+	{% IFNOT IS_FULL_CATALOG && goods_empty=0 %}
+	<div id="categories" class="products__categories">
+		<div class="swiper">
+			<div class="categories__grid swiper-wrapper">
+				{% FOR nested_categories_list %}
+				<div class="categories__item swiper-slide" data-id="{nested_categories_list.ID}">
+					<a class="categories__images" href="{nested_categories_list.URL}" title="Перейти к категории &laquo;{nested_categories_list.NAME}&raquo;">
+						<img src="{% IF nested_categories_list.IMAGE_MEDIUM %}{nested_categories_list.IMAGE_MEDIUM}{% ELSE %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ENDIF %}" alt="{nested_categories_list.NAME}" loading="lazy">
+					</a>
+					<div class="categories__name">
+						<span>{nested_categories_list.NAME}</span>
+					</div>
+				</div>
+				{% ENDFOR %}
+			</div>
+		</div>
+	</div>
+	{% ELSE %}
+	<ul class="categories__grid">
+		{% FOR nested_categories_list %}
+		<li class="categories__item" data-id="{nested_categories_list.ID}">
+			<a class="categories__images" href="{nested_categories_list.URL}" title="Перейти к категории &laquo;{nested_categories_list.NAME}&raquo;">
+				<img src="{% IF nested_categories_list.IMAGE_MEDIUM %}{nested_categories_list.IMAGE_MEDIUM}{% ELSE %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ENDIF %}" alt="{nested_categories_list.NAME}" loading="lazy">
+			</a>
+			<div class="categories__name">
+				<span>{nested_categories_list.NAME}</span>
+			</div>
+		</li>
+		{% ENDFOR %}
+	</ul>
+	{% ENDIF %}
+	{% ENDIF %}
+
+	<!-- Если нет товаров, выводим сообщение пользователю -->
+	{% IF nested_categories_list_empty && goods_empty %}
+	{% IF goods_filters_empty %}
+	<p class="notice notice--attention">Нет товаров в выбранной категории</p>
+	<a class="button" href="{CATALOG_URL}" rel="nofollow">Вернуться в каталог</a>
+	{% ELSE %}
+	<p class="notice notice--attention">Нет товаров для выбранных условий</p>
+	<a class="button" href="{PAGE_CANONICAL}" rel="nofollow">Очистить фильтры</a>
+	{% ENDIF %}
+	{% ENDIF %}
+	<!-- /Если нет товаров, выводим сообщение пользователю -->
+
+	{% IFNOT IS_FULL_CATALOG && goods_empty=0 || goods_filters_empty=0 %}
+	<div class="products__container">
+		<!-- Если в тарифном плане подключен модуль фильтров по товарам -->
+		{% IF SHOW_GOODS_PRICE_FILTERS || SHOW_GOODS_FILTERS %}
+		<aside class="sidebar filters{% FOR filter_attr_list %}{% FOR values %}{% IF filter_attr_list.values.CHECKED %} has-filters{% ENDIF %}{% ENDFOR %}{% ENDFOR %}{% FOR filter_prop_list %}{% FOR values %}{% IF filter_prop_list.values.CHECKED %} has-filters{% ENDIF %}{% ENDFOR %}{% ENDFOR %}" hidden>
+			<div class="sidebar__block">
+				<div class="sidebar__header">
+					<span>Фильтр</span>
+					<button class="sidebar__header-close button-icon" type="button" aria-label="Закрыть фильтры">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="18" height="18" aria-hidden="true">
+							<path
+										d="m568.571 512.003 443.715-443.715c15.622-15.622 15.622-40.95 0-56.57s-40.954-15.622-56.57 0L511.999 455.433 68.286 11.718c-15.622-15.622-40.95-15.622-56.57 0s-15.622 40.95 0 56.57l443.713 443.713L11.716 955.716c-15.622 15.622-15.622 40.949 0 56.57a39.925 39.925 0 0 0 12.974 8.681 39.939 39.939 0 0 0 15.312 3.032 39.939 39.939 0 0 0 15.312-3.032 39.94 39.94 0 0 0 12.974-8.681l443.711-443.713 443.711 443.713c7.811 7.811 18.051 11.713 28.285 11.713 10.24 0 20.474-3.903 28.291-11.713 15.622-15.622 15.622-40.949 0-56.57L568.571 512.003z" />
+						</svg>
+					</button>
+				</div>
+				<div class="sidebar__content">
+					<form class="filters__form" action="#">
+						<!-- Если есть возможность фильтрации товаров по наличию -->
+						{% IF SHOW_GOODS_REST_FILTER %}
+						<fieldset class="filter__list filters-rest">
+							<div class="filter__item">
+								<input class="square"
+											 id="filter_only_with_rest"
+											 type="checkbox"
+											 name="form[filter_only_with_rest]"
+											 {% IF FORM_FILTER_ONLY_WITH_REST %}checked="checked" {% ENDIF %}
+											 value="1" />
+								<label class="filter__label" for="filter_only_with_rest">Только в наличии</label>
+							</div>
+						</fieldset>
+						{% ENDIF %}
+
+						<!-- Если есть возможность фильтрации товаров по ценам -->
+						{% IF SHOW_GOODS_PRICE_FILTERS %}
+						<fieldset class="filter__list filters-price">
+							<div class="filter__title"><span>Цена</span></div>
+
+							<div class="filter__content">
+								<input type="hidden" name="form[filter][available_price][min]" value="{GOODS_FILTER_MIN_AVAILABLE_PRICE}">
+								<input type="hidden" name="form[filter][available_price][max]" value="{GOODS_FILTER_MAX_AVAILABLE_PRICE}">
+								<!-- Ползунок фильтров по цене -->
+								<div id="goods-filter-price-slider" class="filters-price__slider"></div>
+								<!-- Фильтры по цене -->
+								<div class="filters-price__blocks">
+									<div class="filters-price__block">
+										<label for="filter-price-min">от</label>
+										<input id="filter-price-min"
+													 type="number"
+													 name="form[filter][price][min]"
+													 value="{% IF GOODS_FILTER_MIN_PRICE %}{GOODS_FILTER_MIN_PRICE}{% ELSE %}{GOODS_FILTER_MIN_AVAILABLE_PRICE}{% ENDIF %}"
+													 min="1"
+													 onkeypress="return keyPress(this, event);"
+													 onpaste="return false;">
+									</div>
+									<div class="filters-price__block">
+										<label for="filter-price-max">до</label>
+										<input id="filter-price-max"
+													 type="number"
+													 name="form[filter][price][max]"
+													 value="{% IF GOODS_FILTER_MAX_PRICE %}{GOODS_FILTER_MAX_PRICE}{% ELSE %}{GOODS_FILTER_MAX_AVAILABLE_PRICE}{% ENDIF %}"
+													 min="1"
+													 onkeypress="return keyPress(this, event);"
+													 onpaste="return false;">
+									</div>
+								</div>
+							</div>
+
+							<!-- Кнопки Фильтров -->
+							<div class="filters-price__buttons">
+								<button class="filters-price__button button-link" type="submit" title="Применить фильтры">Применить</button>
+								<a class="filters-price__button button button-link" href="{PAGE_CANONICAL}" title="Очистить фильтры" rel="nofollow">
+									<span>Сбросить</span>
+								</a>
+							</div>
+
+						</fieldset>
+						{% ENDIF %}
+
+						<!-- Фильтры по характеристикам товаров (Например: Производитель, разрешение экрана, заряд аккомулятора) {% FOR values %}{% IF filter_attr_list.values.CHECKED %}is-active {% ENDIF %}{% ENDFOR %} -->
+						{% FOR filter_attr_list %}
+						<fieldset class="filter__list{% FOR values %}{% IF filter_attr_list.values.CHECKED %} has-filters{% ENDIF %}{% ENDFOR %}">
+							<div class="filter__title">
+								<span>{filter_attr_list.NAME}</span>
+								<b>0</b>
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="16" height="16" aria-hidden="true">
+									<path d="M129.1 183.3 237.3 75c4.7-4.8 4.7-12.5 0-17.2-4.8-4.8-12.5-4.8-17.2 0l-99.7 99.7-99.7-99.7C16 53 8.3 53 3.5 57.8c-4.7 4.8-4.7 12.5 0 17.2l108.4 108.3c4.7 4.7 12.5 4.7 17.2 0z"></path>
+								</svg>
+							</div>
+
+							<div class="filter__content filter__items">
+								{% FOR values %}
+								<div class="filter__item{% IF filter_attr_list.values.CHECKED %} is-checked{% ELSEIF filter_attr_list.values.NB_GOODS_FILTERED=0 %} is-disabled{% ENDIF %}">
+									<input id="filter_attr_value_{filter_attr_list.values.ID}"
+												 class="square"
+												 type="checkbox"
+												 name="form[filter][attr][{filter_attr_list.ID}][{filter_attr_list.values.ID}]"
+												 {% IF filter_attr_list.values.CHECKED %}checked="checked"
+												 {% ELSEIF filter_attr_list.values.NB_GOODS_FILTERED=0 %}disabled="disabled" {% ENDIF %}
+												 value="1">
+									<label class="filter__label" for="filter_attr_value_{filter_attr_list.values.ID}">
+										<span class="filter__value">{filter_attr_list.values.VALUE}</span>
+										<span class="filter__count">{filter_attr_list.values.NB_GOODS_FILTERED}</span>
+									</label>
+								</div>
+								{% ENDFOR %}
+							</div>
+
+						</fieldset>
+						{% ENDFOR %}
+
+						<!-- Фильтры по свойствам товарных модификаций (Например: Цвет, размер, модификация) {% FOR values %}{% IF filter_prop_list.values.CHECKED %}is-active {% ENDIF %}{% ENDFOR %} -->
+						{% FOR filter_prop_list %}
+						<fieldset class="filter__list{% FOR values %}{% IF filter_prop_list.values.CHECKED %} has-filters {% ENDIF %}{% ENDFOR %}">
+							<div class="filter__title">
+								<span>{filter_prop_list.NAME}</span>
+								<b>0</b>
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="16" height="16" aria-hidden="true">
+									<path d="M129.1 183.3 237.3 75c4.7-4.8 4.7-12.5 0-17.2-4.8-4.8-12.5-4.8-17.2 0l-99.7 99.7-99.7-99.7C16 53 8.3 53 3.5 57.8c-4.7 4.8-4.7 12.5 0 17.2l108.4 108.3c4.7 4.7 12.5 4.7 17.2 0z"></path>
+								</svg>
+							</div>
+
+							<div class="filter__content filter__items">
+								{% FOR values %}
+								<div class="filter__item{% IF filter_prop_list.values.CHECKED %} is-checked{% ELSEIF filter_prop_list.values.NB_GOODS_FILTERED=0 %} is-disabled{% ENDIF %}">
+									<input id="filter_prop_value_{filter_prop_list.values.ID}"
+												 class="square"
+												 type="checkbox"
+												 name="form[filter][prop][{filter_prop_list.ID}][{filter_prop_list.values.ID}]"
+												 {% IF filter_prop_list.values.CHECKED %}checked="checked"
+												 {% ELSEIF filter_prop_list.values.NB_GOODS_FILTERED=0 %}disabled="disabled" {% ENDIF %}
+												 value="1">
+									<label class="filter__label" for="filter_prop_value_{filter_prop_list.values.ID}">
+										<span class="filter__value">{filter_prop_list.values.VALUE}</span>
+										<span class="filter__count">{filter_prop_list.values.NB_GOODS_FILTERED}</span>
+									</label>
+								</div>
+								{% ENDFOR %}
+							</div>
+
+						</fieldset>
+						{% ENDFOR %}
+
+						<fieldset class="filter__list filters__buttons">
+							<a class="filters__button button-underline" href="{PAGE_CANONICAL}" title="Очистить фильтры" rel="nofollow">
+								<span>Сбросить фильтры</span>
+							</a>
+						</fieldset>
+					</form>
+				</div>
+			</div>
+		</aside>
+		{% ENDIF filters %}
+
+		<!-- Верхний блок, изменяющий отображение данных выдачи товаров -->
+		<div class="products__content {% IF SHOW_GOODS_PRICE_FILTERS || SHOW_GOODS_FILTERS %}has-filters{% ENDIF %}">
+			<div class="toolbar {% FOR filter_attr_list %}{% FOR values %}{% IF filter_attr_list.values.CHECKED %}has-filters {% ENDIF %}{% ENDFOR %}{% ENDFOR %}{% FOR filter_prop_list %}{% FOR values %}{% IF filter_prop_list.values.CHECKED %}has-filters {% ENDIF %}{% ENDFOR %}{% ENDFOR %}">
+				<form class="toolbar__form" action="#">
+					<!-- Список фильтров, которые сейчас действуют на результаты поиска -->
+					{% FOR goods_filters %}
+					<input type="hidden" name="{goods_filters.NAME}" value="{goods_filters.VALUE}">
+					{% ENDFOR %}
+
+					<!-- Открыть Фильтры -->
+					{% IF SHOW_GOODS_PRICE_FILTERS || SHOW_GOODS_FILTERS %}
+					<div class="toolbar__filters">
+						<button class="filters__open" type="button" aria-label="Открыть мобильные Фильтры">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="20" height="20" aria-hidden="true">
+								<path
+											d="M694.748 78.682a86.63 86.63 0 0 0-61.266 25.38 86.559 86.559 0 0 0-18.78 28.113 86.613 86.613 0 0 0 0 66.322 86.57 86.57 0 0 0 18.78 28.112 86.653 86.653 0 0 0 61.266 25.38 86.632 86.632 0 0 0 61.266-25.38 86.654 86.654 0 0 0-61.266-147.927zm-162.416 55.196A165.462 165.462 0 0 1 694.748 0a165.44 165.44 0 0 1 105.236 37.783 165.493 165.493 0 0 1 57.185 96.095h127.447a39.387 39.387 0 0 1 0 78.775H853.334a165.46 165.46 0 0 1-257.495 85.443 165.508 165.508 0 0 1-59.679-85.443H39.397A39.386 39.386 0 0 1 .013 173.265a39.388 39.388 0 0 1 39.384-39.387H532.33zM253.647 425.296a86.639 86.639 0 0 0-80.049 53.493 86.669 86.669 0 0 0 0 66.322 86.717 86.717 0 0 0 18.782 28.114 86.632 86.632 0 0 0 28.109 18.78 86.598 86.598 0 0 0 33.158 6.6c22.98 0 45.018-9.129 61.267-25.38a86.661 86.661 0 0 0 0-122.549 86.64 86.64 0 0 0-61.267-25.38zM92.75 473.455c8.69-36.284 29.385-68.567 58.727-91.609s65.609-35.491 102.916-35.326a165.47 165.47 0 0 1 160.519 128.353h569.705A39.384 39.384 0 0 1 1024 514.264a39.369 39.369 0 0 1-11.535 27.848 39.378 39.378 0 0 1-27.848 11.535h-570.86a165.468 165.468 0 0 1-59.232 89.416 165.463 165.463 0 0 1-101.612 34.314A165.474 165.474 0 0 1 93.17 552.234l-52.722 1.413a39.362 39.362 0 0 1-28.156-10.793 39.398 39.398 0 0 1-1.485-55.701 39.393 39.393 0 0 1 27.541-12.279l54.403-1.418zm601.998 298.457a86.652 86.652 0 0 0-61.266 147.927 86.64 86.64 0 0 0 122.532 0 86.655 86.655 0 0 0-61.266-147.927zm-159.846 43.955c9.416-35.205 30.188-66.314 59.09-88.504s64.317-34.217 100.756-34.217c36.439 0 71.859 12.027 100.762 34.217s49.669 53.299 59.085 88.504h130.022a39.399 39.399 0 0 1 27.848 11.535c7.388 7.388 11.535 17.408 11.535 27.853s-4.147 20.465-11.535 27.853a39.378 39.378 0 0 1-27.848 11.535H856.223a165.47 165.47 0 0 1-58.03 93.03c-29.348 23.516-65.838 36.326-103.444 36.326s-74.092-12.81-103.444-36.326a165.496 165.496 0 0 1-58.03-93.03H39.399c-10.445 0-20.463-4.147-27.849-11.535a39.398 39.398 0 0 1 0-55.706 39.396 39.396 0 0 1 27.849-11.535h495.504z" />
+							</svg>
+							<span>Все фильтры</span>
+							<b>0</b>
+						</button>
+					</div>
+					{% ENDIF %}
+
+					<!-- Если есть возможность фильтрации товаров по наличию -->
+					{% IF SHOW_GOODS_REST_FILTER %}
+					<div class="toolbar__filters-rest">
+						<button class="filters-rest__open button-outline {% IF FORM_FILTER_ONLY_WITH_REST %}is-active{% ENDIF %}" type="button" aria-label="Показать товары в наличии">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+								<path
+											d="M725.333 256H298.666c-141.227 0-256 114.773-256 256s114.773 256 256 256h426.667c141.227 0 256-114.773 256-256s-114.773-256-256-256zm0 426.667H298.666c-94.293 0-170.667-76.373-170.667-170.667s76.373-170.667 170.667-170.667h426.667C819.626 341.333 896 417.706 896 512s-76.373 170.667-170.667 170.667zM298.667 384c-70.827 0-128 57.173-128 128s57.173 128 128 128 128-57.173 128-128-57.173-128-128-128z" />
+							</svg>
+							<span>В наличии</span>
+						</button>
+					</div>
+					{% ENDIF %}
+					<!-- END Если есть возможность фильтрации товаров по наличию -->
+
+					<!-- Вид Таблица/Список -->
+					<div class="toolbar__views">
+						{% IF GOODS_VIEW_TYPE=1 %}
+						<a class="views__icon is-active" title="Показать товары Таблицей" aria-label="Показать товары Таблицей" rel="nofollow">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+								<path d="M987.426 0H36.572C16.355 0-.001 16.356-.001 36.573v950.858c0 20.215 16.356 36.574 36.573 36.574H987.43c20.215 0 36.574-16.358 36.574-36.574V36.573C1024 16.356 1007.641 0 987.426 0zM73.143 73.143h402.288v402.288H73.143V73.143zm0 877.714V548.57h402.288v402.287H73.143zm877.714 0H548.57V548.57h402.287v402.287zm0-475.427H548.57V73.142h402.287V475.43z" />
+							</svg>
+						</a>
+						<a class="views__icon" href="?goods_view_type=2" title="Показать товары Списоком" aria-label="Показать товары Списоком" rel="nofollow">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+								<path d="M0 36.573v950.854c0 20.22 16.356 36.574 36.573 36.574h950.858c20.215 0 36.574-16.354 36.574-36.574V36.571c0-20.214-16.358-36.573-36.574-36.573H36.573C16.356.001 0 16.359 0 36.573zm73.143 914.284V548.57h877.714v402.287H73.143zM950.857 73.143v402.288H73.143V73.143h877.714z" />
+							</svg>
+						</a>
+						{% ELSE %}
+						<a class="views__icon" href="?goods_view_type=1" title="Показать товары Таблицей" aria-label="Показать товары Таблицей" rel="nofollow">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+								<path d="M987.426 0H36.572C16.355 0-.001 16.356-.001 36.573v950.858c0 20.215 16.356 36.574 36.573 36.574H987.43c20.215 0 36.574-16.358 36.574-36.574V36.573C1024 16.356 1007.641 0 987.426 0zM73.143 73.143h402.288v402.288H73.143V73.143zm0 877.714V548.57h402.288v402.287H73.143zm877.714 0H548.57V548.57h402.287v402.287zm0-475.427H548.57V73.142h402.287V475.43z" />
+							</svg>
+						</a>
+						<a class="views__icon is-active" title="Показать товары Списоком" aria-label="Показать товары Списоком" rel="nofollow">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+								<path d="M0 36.573v950.854c0 20.22 16.356 36.574 36.573 36.574h950.858c20.215 0 36.574-16.354 36.574-36.574V36.571c0-20.214-16.358-36.573-36.574-36.573H36.573C16.356.001 0 16.359 0 36.573zm73.143 914.284V548.57h877.714v402.287H73.143zM950.857 73.143v402.288H73.143V73.143h877.714z" />
+							</svg>
+						</a>
+						{% ENDIF %}
+					</div>
+
+					<div class="toolbar__sorts">
+						<!-- Сортировать по: (Поле сортировки товаров по умолчанию) -->
+						<div class="toolbar__sort">
+							<label class="toolbar__label" for="goods_order_fields_id">Сортировать по:</label>
+							<div class="toolbar__selects selects">
+								<select id="goods_order_fields_id" name="goods_search_field_id">
+									{% FOR goods_order_fields %}
+									{% IF goods_order_fields.ID = 1 || goods_order_fields.ID = 2 || goods_order_fields.ID = 5 || goods_order_fields.ID = 11 || goods_order_fields.ID = 13 %}
+									<option value="{goods_order_fields.ID}" {% IF goods_order_fields.SELECTED %}selected{% ENDIF %}>
+										{% IF goods_order_fields.ID = 1 %}
+										Цена ↓
+										{% ELSEIF goods_order_fields.ID = 2 %}
+										Цена ↑
+										{% ELSEIF goods_order_fields.ID = 5 %}
+										Наличие
+										{% ELSEIF goods_order_fields.ID = 11 %}
+										Рейтинг
+										{% ELSEIF goods_order_fields.ID = 13 %}
+										Отзывы
+										{% ENDIF %}
+									</option>
+									{% ENDIF %}
+									{% ENDFOR %}
+								</select>
+							</div>
+						</div>
+
+						<!-- Показывать по: (Шаг для выбора пользователем лимита выдачи товаров на страницу от 1 до 100) -->
+						<div class="toolbar__show">
+							<label class="toolbar__label" for="goods_per_page_id">Показать по:</label>
+							<div class="toolbar__selects selects">
+								<select id="goods_per_page_id" name="per_page">
+									{% FOR goods_per_page_list %}
+									<option value="{goods_per_page_list.LIMIT}" {% IF goods_per_page_list.SELECTED %}selected{% ENDIF %}>{goods_per_page_list.LIMIT}</option>
+									{% ENDFOR %}
+								</select>
+							</div>
+						</div>
+					</div>
+				</form>
+
+				<!-- Активные Фильтры -->
+				<div class="filters-active {% FOR filter_attr_list %}{% FOR values %}{% IF filter_attr_list.values.CHECKED %}has-filters {% ENDIF %}{% ENDFOR %}{% ENDFOR %} {% FOR filter_prop_list %}{% FOR values %}{% IF filter_prop_list.values.CHECKED %}has-filters {% ENDIF %}{% ENDFOR %}{% ENDFOR %}">
+					<!-- Фильтры по характеристикам товаров (Например: Производитель, разрешение экрана, заряд аккомулятора) -->
+					<div class="filters-active__items">
+						{% FOR filter_attr_list %}{% FOR values %}{% IF filter_attr_list.values.CHECKED %}
+						<label class="filters-active__item" for="filter_attr_value_{filter_attr_list.values.ID}" title="Удалить фильтр: {filter_attr_list.NAME}">
+							<span class="filters-active__name">{filter_attr_list.NAME}:</span>
+							<span class="filters-active__value">{filter_attr_list.values.VALUE}</span>
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="10" height="10" aria-hidden="true">
+								<path
+											d="m568.571 512.003 443.715-443.715c15.622-15.622 15.622-40.95 0-56.57s-40.954-15.622-56.57 0L511.999 455.433 68.286 11.718c-15.622-15.622-40.95-15.622-56.57 0s-15.622 40.95 0 56.57l443.713 443.713L11.716 955.716c-15.622 15.622-15.622 40.949 0 56.57a39.925 39.925 0 0 0 12.974 8.681 39.939 39.939 0 0 0 15.312 3.032 39.939 39.939 0 0 0 15.312-3.032 39.94 39.94 0 0 0 12.974-8.681l443.711-443.713 443.711 443.713c7.811 7.811 18.051 11.713 28.285 11.713 10.24 0 20.474-3.903 28.291-11.713 15.622-15.622 15.622-40.949 0-56.57L568.571 512.003z" />
+							</svg>
+						</label>
+						{% ENDIF %}{% ENDFOR %}{% ENDFOR %}
+
+						{% FOR filter_prop_list %}{% FOR values %}{% IF filter_prop_list.values.CHECKED %}
+						<label class="filters-active__item" for="filter_prop_value_{filter_prop_list.values.ID}" title="Удалить фильтр: {filter_prop_list.NAME}">
+							<span class="filters-active__name">{filter_prop_list.NAME}:</span>
+							<span class="filters-active__value">{filter_prop_list.values.VALUE}</span>
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="10" height="10" aria-hidden="true">
+								<path
+											d="m568.571 512.003 443.715-443.715c15.622-15.622 15.622-40.95 0-56.57s-40.954-15.622-56.57 0L511.999 455.433 68.286 11.718c-15.622-15.622-40.95-15.622-56.57 0s-15.622 40.95 0 56.57l443.713 443.713L11.716 955.716c-15.622 15.622-15.622 40.949 0 56.57a39.925 39.925 0 0 0 12.974 8.681 39.939 39.939 0 0 0 15.312 3.032 39.939 39.939 0 0 0 15.312-3.032 39.94 39.94 0 0 0 12.974-8.681l443.711-443.713 443.711 443.713c7.811 7.811 18.051 11.713 28.285 11.713 10.24 0 20.474-3.903 28.291-11.713 15.622-15.622 15.622-40.949 0-56.57L568.571 512.003z" />
+							</svg>
+						</label>
+						{% ENDIF %}{% ENDFOR %}{% ENDFOR %}
+
+						<a class="filters-active__clear button-rotate button-link" href="{PAGE_CANONICAL}" title="Очистить фильтры">
+							<i class="icon-reload"></i>
+							<span>Очистить фильтры</span>
+						</a>
+					</div>
+					<!-- Фильтры по свойствам товарных модификаций (Например: Цвет, размер, модификация) -->
+				</div>
+			</div>
+
+			<!-- Если нет товаров, либо у пользователя не сработало javascript ограничение на фильтре по товарам, отобразим блок изменяющий отображение данных выдачи товаров -->
+			{% IF GOODS_VIEW_TYPE=2 %}
+			<!-- Вывод товаров Маленьким СПИСКОМ -->
+			<div class="products__list">
+				{% FOR goods %}
+				<div class="product__item" data-id="{goods.ID}" itemscope itemtype="https://schema.org/Product">
+					<form class="product__form" action="{CART_ADD_GOODS_MODIFICATION_URL | url_amp}" method="post">
+						<input type="hidden" name="hash" value="{HASH}">
+						<input type="hidden" name="form[goods_id]" value="{goods.ID}">
+						<input type="hidden" name="form[goods_mod_id]" value="{goods.MIN_PRICE_NOW_ID}">
+						<input type="hidden" name="form[goods_name]" value="{goods.NAME}">
+						<input type="hidden" name="form[goods_desc]" value="{goods.DESCRIPTION_SHORT}" itemprop="description">
+						<input type="hidden" name="form[goods_sku]" value="{goods.ART_NUMBER}" itemprop="sku">
+
+						<!-- Изображение -->
+						<a class="product__image" href="{goods.URL_MIN_PRICE_NOW | url_amp}">
+							<img src="{% IF goods.IMAGE_EMPTY %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ELSE %}{goods.IMAGE_MEDIUM}{% ENDIF %}" alt="{goods.NAME}" loading="lazy" itemprop="image">
+						</a>
+
+						<!-- Информация товара -->
+						<div class="product__shop">
+							<div class="product__shop-inner">
+								<!-- Стикеры -->
+								{% IF goods.IS_NEW || goods.IS_TOP || goods.MIN_PRICE_NOW_WITHOUT_DISCOUNT > goods.MIN_PRICE_NOW || goods.MIN_PRICE_OLD > goods.MIN_PRICE_NOW %}
+								<div class="product__sticker">
+									{% IF goods.MIN_PRICE_NOW_WITHOUT_DISCOUNT > goods.MIN_PRICE_NOW %}
+									<span class="sticker sticker--sales">%</span>
+									{% ELSEIF goods.MIN_PRICE_OLD > goods.MIN_PRICE_NOW %}
+									<span class="sticker sticker--sales">%</span>
+									{% ENDIF %}
+									{% IF goods.IS_NEW %}
+									<span class="sticker sticker--new"></span>
+									{% ENDIF %}
+									{% IF goods.IS_TOP %}
+									<span class="sticker sticker--best"></span>
+									{% ENDIF %}
+								</div>
+								{% ENDIF %}
+
+								<!-- Название товара -->
+								<a class="product__name" href="{goods.URL_MIN_PRICE_NOW | url_amp}" title="{goods.NAME}" itemprop="url">
+									<span itemprop="name">{goods.NAME}</span>
+								</a>
+
+								<!-- Артикул товара -->
+								{% IF goods.ART_NUMBER %}
+								<div class="product__art" itemprop="sku">{goods.ART_NUMBER}</div>
+								{% ENDIF %}
+
+								<!-- Наличие -->
+								<div class="product__available {% IF goods.MAX_REST_VALUE = 0 %}available--zero{% ELSEIF goods.MAX_REST_VALUE > 9 %}available--alot{% ELSE %}available--few{% ENDIF %}">
+									<b>
+										{% IF goods.MAX_REST_VALUE = 0 %}
+										Нет
+										{% ELSE %}
+										{goods.MAX_REST_VALUE}
+										{% FOR mods %}
+										{goods.mods.MEASURE_NAME}{break}
+										{% ENDFOR %}
+										{% ENDIF %}
+									</b>
+									<span>в наличии</span>
+								</div>
+
+								<!-- Рейтинг -->
+								{% IFNOT SETTINGS_OPINION_DISABLE %}
+								<div class="product__ratings ratings">
+									{% IF goods.OPINION_RATING_VALUE %}
+									<span class="ratings__content" itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
+										<meta itemprop="worstRating" content="1">
+										<meta itemprop="bestRating" content="10">
+										<meta itemprop="ratingValue" content="{goods.OPINION_RATING_VALUE}">
+										<meta itemprop="reviewCount" content="{goods.OPINION_RATING_CNT_ALL}">
+										<span class="ratings__value" data-value="{goods.OPINION_RATING_VALUE}" style="width:{goods.OPINION_RATING_VALUE}0%"></span>
+									</span>
+									<span class="ratings__count">{goods.OPINION_RATING_CNT_ALL} отзыв{goods.OPINION_RATING_CNT_ALL | gen_word_end("","а","ов")}</span>
+									{% ELSE %}
+									<span class="ratings__value" style="width:0%"></span>
+									{% ENDIF %}
+								</div>
+								{% ENDIF %}
+
+								<!-- Краткое Описание -->
+								{% IF goods.DESCRIPTION_SHORT %}
+								<div class="product__desc" itemprop="description">{goods.DESCRIPTION_SHORT}</div>
+								{% ENDIF %}
+
+								<!-- Атрибуты -->
+								{% IFNOT goods.goods_attr_list_empty %}
+								<button class="product__attr-button button-link">
+									<span slot="Скрыть хар-ки">Xарактеристики</span>
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="14" height="14" aria-hidden="true">
+										<path d="M129.1 183.3 237.3 75c4.7-4.8 4.7-12.5 0-17.2-4.8-4.8-12.5-4.8-17.2 0l-99.7 99.7-99.7-99.7C16 53 8.3 53 3.5 57.8c-4.7 4.8-4.7 12.5 0 17.2l108.4 108.3c4.7 4.7 12.5 4.7 17.2 0z"></path>
+									</svg>
+								</button>
+								<dl class="product__attr">
+									{% FOR goods_attr_list %}
+									{% IF goods.goods_attr_list.index > 3 %}{break}{% ENDIF %}
+									<div class="product__attr-item">
+										<dt>{goods.goods_attr_list.NAME}:</dt>
+										<dd>{goods.goods_attr_list.VALUE}</dd>
+									</div>
+									{% ENDFOR goods_attr_list %}
+								</dl>
+								{% ENDIF %}
+							</div>
+
+							<div class="product__actions">
+								<div class="product__actions-inner">
+									<!-- Цена -->
+									<div class="product__price {CURRENCY_CHAR_CODE}" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+										<meta itemprop="price" content="{goods.MIN_PRICE_NOW}">
+										<meta itemprop="priceCurrency" content="{CURRENCY_CHAR_CODE}">
+										<meta itemprop="availability" content="{% IF goods.MAX_REST_VALUE>0 %}http://schema.org/InStock{% ELSE %}http://schema.org/OutOfStock{% ENDIF %}">
+										<meta itemprop="priceValidUntil" content="{goods.MAX_DISCOUNT_EXPIRED_AT | date('Y-m-d')}">
+										{% IF goods.MIN_PRICE_NOW_WITHOUT_DISCOUNT > goods.MIN_PRICE_NOW %}
+										<s class="price__old" data-price="{goods.MIN_PRICE_NOW_WITHOUT_DISCOUNT}">{goods.MIN_PRICE_NOW_WITHOUT_DISCOUNT | money_format}</s>
+										{% ELSEIF goods.MIN_PRICE_OLD > goods.MIN_PRICE_NOW %}
+										<s class="price__old" data-price="{goods.MIN_PRICE_OLD}">{goods.MIN_PRICE_OLD | money_format}</s>
+										{% ENDIF %}
+										<b class="price__now" data-price="{goods.MIN_PRICE_NOW}">{goods.MIN_PRICE_NOW | money_format}</b>
+									</div>
+
+									<!-- Количество -->
+									<div class="product__qty qty {% IF SETTINGS_GOODS_DONT_PUT_TO_CART_MORE_THAN_AVAILABLE %}has-max{% ENDIF %}">
+										<button class="qty__select qty__select--minus" type="button" title="Уменьшить количество">
+											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="12" height="12" aria-hidden="true">
+												<path d="M960 578H64c-38.4 0-64-21.6-64-54.001s25.6-54 64-54h896c38.4 0 64 21.6 64 54S998.4 578 960 578z" />
+											</svg>
+										</button>
+										<input class="qty__input"
+													 type="number"
+													 name="form[goods_mod_id][{GOODS_MOD_ID}]"
+													 {% IF SETTINGS_GOODS_DONT_PUT_TO_CART_MORE_THAN_AVAILABLE %}max="{GOODS_MOD_REST_VALUE}" {% ENDIF %}
+													 min="1"
+													 value="1"
+													 title="Количество, {GOODS_MOD_MEASURE_NAME}">
+										<button class="qty__select qty__select--plus" type="button" title="Увеличить количество">
+											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="12" height="12" aria-hidden="true">
+												<path d="M960 448H576V64c0-35.346-28.654-64-64-64s-64 28.654-64 64v384H64c-35.346 0-64 28.654-64 64s28.654 64 64 64h384v384c0 35.345 28.654 64 64 64s64-28.655 64-64V576h384c35.345 0 64-28.654 64-64s-28.655-64-64-64z" />
+											</svg>
+										</button>
+									</div>
+
+									<!-- Добавление товара в избранное и сравнение и в корзину -->
+									<div class="product__links">
+										<!-- Если есть возможность добавить товар в Избранное -->
+										{% IF goods.IS_HAS_IN_FAVORITES_LIST %}
+										<a class="product__link add-favorites is-added icon-hover"
+											 data-action-is-add="0"
+											 title="Убрать &laquo;{goods.NAME}&raquo; из Избранного"
+											 href="{FAVORITES_DELETE_URL}?id={goods.MIN_PRICE_NOW_ID}"
+											 rel="nofollow">
+											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+												<path class="icon-hover__inert"
+															d="M943.34 164.914C893.03 113.968 823.658 85.91 748 85.91c-105.882 0-187.48 50.97-236 147.422C463.48 136.88 381.882 85.91 276 85.91c-75.658 0-145.03 28.058-195.34 79.006C27.892 218.354 0 291.504 0 376.458 0 478.36 64.752 590.47 192.456 709.672 308.244 817.75 435.142 893.6 459.406 907.708c-62.541-33.54-51.89-27.293-41.231-21.057l73.843 39.911 19.988 11.528 19.986-11.534s22.484-12.974 32.588-18.85c24.264-14.11 151.168-89.966 266.954-198.036C959.244 590.47 1024 478.36 1024 376.458c0-84.954-27.892-158.104-80.66-211.544zM776.948 651.188C667.43 753.408 547.33 825.196 524.366 838.548c-3.234 1.88-7.744 4.492-12.372 7.17-30.539-16.722-34.583-19.099-38.624-21.481l26.248 14.311c-22.962-13.352-143.054-85.134-252.574-187.36C137.764 549.184 80 454.184 80 376.458 80 252.49 160.598 165.91 276 165.91c75.072 0 128.606 33.25 163.656 101.652 28.128 54.882 32.392 111.782 32.432 112.35l1.536-.104h78.292c.036-.548 4.304-56.238 31.438-110.298 34.502-68.744 89.898-103.6 164.646-103.6 115.402 0 196 86.58 196 210.548 0 77.726-57.766 172.726-167.052 274.73z" />
+												<path class="icon-hover__active"
+															d="M747.999 85.91c75.659 0 145.031 28.058 195.34 79.004 52.769 53.44 80.66 126.59 80.66 211.543 0 101.902-64.756 214.012-192.467 333.214-115.786 108.069-242.69 183.925-266.953 198.035-10.105 5.876-32.588 18.85-32.588 18.85l-19.986 11.534-19.988-11.528a15829.444 15829.444 0 0 1-32.612-18.854c-24.263-14.109-151.161-89.958-266.949-198.038C64.752 590.468 0 478.359 0 376.456c0-84.953 27.892-158.104 80.66-211.541 50.31-50.948 119.682-79.006 195.341-79.006 105.882 0 187.48 50.97 235.999 147.423 48.519-96.453 130.118-147.423 235.999-147.423z" />
+											</svg>
+											<span>В избранном</span>
+										</a>
+										{% ELSE %}
+										<a class="product__link add-favorites icon-hover"
+											 data-action-is-add="1"
+											 title="Добавить &laquo;{goods.NAME}&raquo; в Избранное"
+											 href="{FAVORITES_ADD_URL}?id={goods.MIN_PRICE_NOW_ID}"
+											 rel="nofollow">
+											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+												<path class="icon-hover__inert"
+															d="M943.34 164.914C893.03 113.968 823.658 85.91 748 85.91c-105.882 0-187.48 50.97-236 147.422C463.48 136.88 381.882 85.91 276 85.91c-75.658 0-145.03 28.058-195.34 79.006C27.892 218.354 0 291.504 0 376.458 0 478.36 64.752 590.47 192.456 709.672 308.244 817.75 435.142 893.6 459.406 907.708c-62.541-33.54-51.89-27.293-41.231-21.057l73.843 39.911 19.988 11.528 19.986-11.534s22.484-12.974 32.588-18.85c24.264-14.11 151.168-89.966 266.954-198.036C959.244 590.47 1024 478.36 1024 376.458c0-84.954-27.892-158.104-80.66-211.544zM776.948 651.188C667.43 753.408 547.33 825.196 524.366 838.548c-3.234 1.88-7.744 4.492-12.372 7.17-30.539-16.722-34.583-19.099-38.624-21.481l26.248 14.311c-22.962-13.352-143.054-85.134-252.574-187.36C137.764 549.184 80 454.184 80 376.458 80 252.49 160.598 165.91 276 165.91c75.072 0 128.606 33.25 163.656 101.652 28.128 54.882 32.392 111.782 32.432 112.35l1.536-.104h78.292c.036-.548 4.304-56.238 31.438-110.298 34.502-68.744 89.898-103.6 164.646-103.6 115.402 0 196 86.58 196 210.548 0 77.726-57.766 172.726-167.052 274.73z" />
+												<path class="icon-hover__active"
+															d="M747.999 85.91c75.659 0 145.031 28.058 195.34 79.004 52.769 53.44 80.66 126.59 80.66 211.543 0 101.902-64.756 214.012-192.467 333.214-115.786 108.069-242.69 183.925-266.953 198.035-10.105 5.876-32.588 18.85-32.588 18.85l-19.986 11.534-19.988-11.528a15829.444 15829.444 0 0 1-32.612-18.854c-24.263-14.109-151.161-89.958-266.949-198.038C64.752 590.468 0 478.359 0 376.456c0-84.953 27.892-158.104 80.66-211.541 50.31-50.948 119.682-79.006 195.341-79.006 105.882 0 187.48 50.97 235.999 147.423 48.519-96.453 130.118-147.423 235.999-147.423z" />
+											</svg>
+											<span>Избранное</span>
+										</a>
+										{% ENDIF %}
+										<!-- Если в тарифном плане подключен модуль сравнения товаров и он не выключен в настройках магазина -->
+										{% IFNOT SETTINGS_COMPARE_DISABLE && goods.IS_HAS_IN_COMPARE_LIST %}
+										<a class="product__link add-compare is-added icon-hover"
+											 data-action-is-add="0"
+											 title="Убрать &laquo;{goods.NAME}&raquo; из списка сравнения с другими товарами"
+											 href="{COMPARE_DELETE_URL}?id={goods.MIN_PRICE_NOW_ID}"
+											 rel="nofollow">
+											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+												<path class="icon-hover__inert" d="M362.666 640C209.5 640 85.333 515.836 85.333 362.666 85.333 209.5 209.5 85.333 362.666 85.333 515.836 85.333 640 209.5 640 362.666 640 515.836 515.836 640 362.666 640zm0 85.334c200.296 0 362.668-162.372 362.668-362.668C725.334 162.371 562.962 0 362.666 0S0 162.371 0 362.666c0 200.296 162.371 362.668 362.666 362.668z" />
+												<path class="icon-hover__inert"
+															d="M661.334 938.666C508.164 938.666 384 814.502 384 661.334 384 508.164 508.164 384 661.334 384c153.168 0 277.332 124.164 277.332 277.334 0 153.168-124.164 277.332-277.332 277.332zm0 85.334C861.628 1024 1024 861.628 1024 661.334c0-200.296-162.372-362.668-362.666-362.668S298.666 461.038 298.666 661.334C298.666 861.628 461.04 1024 661.334 1024z" />
+												<path class="icon-hover__active"
+															d="M303.487 720.511A362.668 362.668 0 1 1 473.61 17.41a362.668 362.668 0 0 1 246.944 286.036c65.769 10.895 127.263 39.709 177.723 83.274s87.937 100.196 108.313 163.67a362.663 362.663 0 0 1-88.869 367.288 362.676 362.676 0 0 1-367.288 88.869 362.676 362.676 0 0 1-246.946-286.036zm87.681 3.713a277.343 277.343 0 0 0 69.226 128.262 277.347 277.347 0 0 0 270.447 77.236 277.32 277.32 0 0 0 126.521-72.36 277.325 277.325 0 0 0 70.568-272.261 277.347 277.347 0 0 0-75.444-124.707 277.343 277.343 0 0 0-128.262-69.226 362.74 362.74 0 0 1-105.122 227.934 362.746 362.746 0 0 1-227.934 105.122zm247.978-339.329a277.376 277.376 0 0 0-254.292 254.208 277.421 277.421 0 0 0 173.906-80.329 277.423 277.423 0 0 0 80.386-173.879z" />
+											</svg>
+											<span>В Сравнении</span>
+										</a>
+										{% ELSEIF SETTINGS_COMPARE_DISABLE=0 %}
+										<a class="product__link add-compare icon-hover"
+											 data-action-is-add="1"
+											 title="Добавить &laquo;{goods.NAME}&raquo; в список сравнения с другими товарами"
+											 href="{COMPARE_ADD_URL}?id={goods.MIN_PRICE_NOW_ID}"
+											 rel="nofollow">
+											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+												<path class="icon-hover__inert" d="M362.666 640C209.5 640 85.333 515.836 85.333 362.666 85.333 209.5 209.5 85.333 362.666 85.333 515.836 85.333 640 209.5 640 362.666 640 515.836 515.836 640 362.666 640zm0 85.334c200.296 0 362.668-162.372 362.668-362.668C725.334 162.371 562.962 0 362.666 0S0 162.371 0 362.666c0 200.296 162.371 362.668 362.666 362.668z" />
+												<path class="icon-hover__inert"
+															d="M661.334 938.666C508.164 938.666 384 814.502 384 661.334 384 508.164 508.164 384 661.334 384c153.168 0 277.332 124.164 277.332 277.334 0 153.168-124.164 277.332-277.332 277.332zm0 85.334C861.628 1024 1024 861.628 1024 661.334c0-200.296-162.372-362.668-362.666-362.668S298.666 461.038 298.666 661.334C298.666 861.628 461.04 1024 661.334 1024z" />
+												<path class="icon-hover__active"
+															d="M303.487 720.511A362.668 362.668 0 1 1 473.61 17.41a362.668 362.668 0 0 1 246.944 286.036c65.769 10.895 127.263 39.709 177.723 83.274s87.937 100.196 108.313 163.67a362.663 362.663 0 0 1-88.869 367.288 362.676 362.676 0 0 1-367.288 88.869 362.676 362.676 0 0 1-246.946-286.036zm87.681 3.713a277.343 277.343 0 0 0 69.226 128.262 277.347 277.347 0 0 0 270.447 77.236 277.32 277.32 0 0 0 126.521-72.36 277.325 277.325 0 0 0 70.568-272.261 277.347 277.347 0 0 0-75.444-124.707 277.343 277.343 0 0 0-128.262-69.226 362.74 362.74 0 0 1-105.122 227.934 362.746 362.746 0 0 1-227.934 105.122zm247.978-339.329a277.376 277.376 0 0 0-254.292 254.208 277.421 277.421 0 0 0 173.906-80.329 277.423 277.423 0 0 0 80.386-173.879z" />
+											</svg>
+											<span>Сравнить</span>
+										</a>
+										{% ENDIF %}
+									</div>
+
+									<!-- Добавление товара в корзину -->
+									<div class="product__cart">
+										<!-- Добавление в корзину -->
+										{% IF SETTINGS_GOODS_DONT_PUT_TO_CART_MORE_THAN_AVAILABLE && goods.MAX_REST_VALUE=0 %}
+										<button class="product__add add-notify" type="button" title="Уведомить о поступлении" data-dialog="#dialogNotify">
+											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+												<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="93.091" d="M823.999 872.001H200c-88.366 0-160-71.633-160-160V312c0-88.366 71.634-160 160-160h623.999c88.367 0 160 71.634 160 160v400.001c0 88.367-71.633 160-160 160z" />
+												<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="93.091" d="m200 312 255.432 263.432c31.243 31.241 81.898 31.241 113.139 0L823.998 312M200 712.001 392 512m239.999 0 192 200.001" />
+											</svg>
+											<span>Уведомить</span>
+										</button>
+										{% ELSE %}
+										<a class="product__add button button-secondary icon-hover {% IF goods.COUNT_MODIFICATION > 1 %}add-mod{% ELSE %}add-cart{% ENDIF %}"
+											 href="{% IF goods.COUNT_MODIFICATION > 1 %}{goods.URL_MIN_PRICE_NOW}{% ELSE %}{CART_ADD_GOODS_MODIFICATION_URL | url_amp}?hash={HASH | url_amp}&amp;form%5Bgoods_from%5D={goods.GOODS_FROM}&amp;form%5Bgoods_mod_id%5D={goods.MIN_PRICE_NOW_ID}{% ENDIF %}"
+											 title="Добавить в корзину &laquo;{goods.NAME}&raquo;"
+											 rel="nofollow">
+											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+												<path class="icon-hover__inert"
+															d="M837.566 669.574c31.118-23.378 53.656-55.338 65.202-92.46L1024 218.204H244.674l-8.598-95.34c-3.117-34.73-19.057-65.236-42.986-87.164l-.1-.09C169.223 13.754 137.379.356 102.406.356H0V80.3h102.286c28.378 0 51.66 21.318 54.16 49.668l62.596 694.064c6.098 61.244 52.08 109.084 110.83 119.052 15.666 46.758 59.854 80.558 111.818 80.558 50.994 0 94.52-32.544 110.93-77.946h93.918c16.41 45.402 59.936 77.946 110.93 77.946 65.02 0 117.918-52.9 117.918-117.918s-52.898-117.918-117.918-117.918c-50.994 0-94.52 32.544-110.93 77.946H552.62c-16.41-45.402-59.936-77.946-110.93-77.946-49.288 0-91.584 30.406-109.18 73.436-18.318-7.272-31.772-24.21-33.9-44.968l-9.958-110.412h440.836c39.1.002 76.472-12.546 108.078-36.288zm-80.094 198.178c20.94 0 37.974 17.034 37.974 37.974S778.412 943.7 757.472 943.7c-20.94 0-37.974-17.034-37.974-37.974s17.034-37.974 37.974-37.974zm-315.78 0c20.94 0 37.974 17.034 37.974 37.974S462.632 943.7 441.692 943.7s-37.974-17.034-37.974-37.974 17.034-37.974 37.974-37.974zm-160.248-241.83v-.002l-29.562-327.772h660.732L826.53 553.05c-13.2 42.906-53.104 72.872-97.038 72.872H281.444z" />
+												<path class="icon-hover__active"
+															d="M837.566 669.574c31.118-23.378 53.656-55.338 65.202-92.46L1024 218.204H244.674l-8.598-95.34A134 134 0 0 0 192.99 35.61 134.006 134.006 0 0 0 102.286.356H0V80.3h102.286c28.378 0 51.66 21.318 54.16 49.668l62.596 694.064c6.098 61.244 52.08 109.084 110.83 119.052 15.666 46.758 59.854 80.558 111.818 80.558 50.994 0 94.52-32.544 110.93-77.946h93.918c16.41 45.402 59.936 77.946 110.93 77.946 65.02 0 117.918-52.9 117.918-117.918s-52.898-117.918-117.918-117.918c-50.994 0-94.52 32.544-110.93 77.946H552.62c-16.41-45.402-59.936-77.946-110.93-77.946-49.288 0-91.584 30.406-109.18 73.436-18.318-7.272-31.772-24.21-33.9-44.968l-9.958-110.412h440.836c39.1.002 76.472-12.546 108.078-36.288z" />
+											</svg>
+											<span>В корзину</span>
+										</a>
+										{% ENDIF %}
+									</div>
+
+									<!-- Подробнее -->
+									<a class="product__add product__add--link button button-link" href="{goods.URL_MIN_PRICE_NOW | url_amp}">
+										<span>Подробнее о товаре</span>
+									</a>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				{% ENDFOR %}
+			</div>
+			{% ELSE %}
+			<!-- Вывод товаров ТАБЛИЦЕЙ -->
+			<div class="products__grid">
+				{% FOR goods %}
+				<div class="product__item" data-id="{goods.ID}" itemscope itemtype="https://schema.org/Product">
+					<form class="product__form" action="{CART_ADD_GOODS_MODIFICATION_URL | url_amp}" method="post">
+						<input type="hidden" name="hash" value="{HASH}">
+						<input type="hidden" name="form[goods_id]" value="{goods.ID}">
+						<input type="hidden" name="form[goods_mod_id]" value="{goods.MIN_PRICE_NOW_ID}">
+						<input type="hidden" name="form[goods_name]" value="{goods.NAME}">
+						<input type="hidden" name="form[goods_desc]" value="{goods.DESCRIPTION_SHORT}" itemprop="description">
+						<input type="hidden" name="form[goods_sku]" value="{goods.ART_NUMBER}" itemprop="sku">
+
+						<!-- Изображение -->
+						<div class="product__images">
+							{% IF goods.IMAGE_EMPTY %}
+							<a class="product__image" href="{goods.URL_MIN_PRICE_NOW | url_amp}">
+								<img src="{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME" alt="{goods.NAME}" loading="lazy" itemprop="image">
+							</a>
+							{% ELSE %}
+							<div class="product__image">
+								{% FOR images %}
+								<a class="product__img" href="{goods.URL_MIN_PRICE_NOW | url_amp}" title="{goods.images.NAME}" data-id="{goods.images.ID}">
+									<img src="{goods.images.MEDIUM}" alt="{goods.images.NAME}" loading="lazy" itemprop="image">
+								</a>
+								{% ENDFOR %}
+							</div>
+							{% ENDIF %}
+							<!-- Стикеры -->
+							{% IF goods.IS_NEW || goods.IS_TOP || goods.MIN_PRICE_NOW_WITHOUT_DISCOUNT > goods.MIN_PRICE_NOW || goods.MIN_PRICE_OLD > goods.MIN_PRICE_NOW %}
+							<div class="product__sticker">
+								{% IF goods.MIN_PRICE_NOW_WITHOUT_DISCOUNT > goods.MIN_PRICE_NOW %}
+								<span class="sticker sticker--sales">%</span>
+								{% ELSEIF goods.MIN_PRICE_OLD > goods.MIN_PRICE_NOW %}
+								<span class="sticker sticker--sales">%</span>
+								{% ENDIF %}
+								{% IF goods.IS_NEW %}
+								<span class="sticker sticker--new"></span>
+								{% ENDIF %}
+								{% IF goods.IS_TOP %}
+								<span class="sticker sticker--best"></span>
+								{% ENDIF %}
+							</div>
+							{% ENDIF %}
+							<!-- Добавление товара в избранное и сравнение и в корзину -->
+							<div class="product__links">
+								<!-- Если есть возможность добавить товар в Избранное -->
+								{% IF goods.IS_HAS_IN_FAVORITES_LIST %}
+								<a class="product__link add-favorites is-added icon-hover"
+									 data-action-is-add="0"
+									 title="Убрать &laquo;{goods.NAME}&raquo; из Избранного"
+									 href="{FAVORITES_DELETE_URL}?id={goods.MIN_PRICE_NOW_ID}"
+									 rel="nofollow">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+										<path class="icon-hover__inert"
+													d="M943.34 164.914C893.03 113.968 823.658 85.91 748 85.91c-105.882 0-187.48 50.97-236 147.422C463.48 136.88 381.882 85.91 276 85.91c-75.658 0-145.03 28.058-195.34 79.006C27.892 218.354 0 291.504 0 376.458 0 478.36 64.752 590.47 192.456 709.672 308.244 817.75 435.142 893.6 459.406 907.708c-62.541-33.54-51.89-27.293-41.231-21.057l73.843 39.911 19.988 11.528 19.986-11.534s22.484-12.974 32.588-18.85c24.264-14.11 151.168-89.966 266.954-198.036C959.244 590.47 1024 478.36 1024 376.458c0-84.954-27.892-158.104-80.66-211.544zM776.948 651.188C667.43 753.408 547.33 825.196 524.366 838.548c-3.234 1.88-7.744 4.492-12.372 7.17-30.539-16.722-34.583-19.099-38.624-21.481l26.248 14.311c-22.962-13.352-143.054-85.134-252.574-187.36C137.764 549.184 80 454.184 80 376.458 80 252.49 160.598 165.91 276 165.91c75.072 0 128.606 33.25 163.656 101.652 28.128 54.882 32.392 111.782 32.432 112.35l1.536-.104h78.292c.036-.548 4.304-56.238 31.438-110.298 34.502-68.744 89.898-103.6 164.646-103.6 115.402 0 196 86.58 196 210.548 0 77.726-57.766 172.726-167.052 274.73z" />
+										<path class="icon-hover__active"
+													d="M747.999 85.91c75.659 0 145.031 28.058 195.34 79.004 52.769 53.44 80.66 126.59 80.66 211.543 0 101.902-64.756 214.012-192.467 333.214-115.786 108.069-242.69 183.925-266.953 198.035-10.105 5.876-32.588 18.85-32.588 18.85l-19.986 11.534-19.988-11.528a15829.444 15829.444 0 0 1-32.612-18.854c-24.263-14.109-151.161-89.958-266.949-198.038C64.752 590.468 0 478.359 0 376.456c0-84.953 27.892-158.104 80.66-211.541 50.31-50.948 119.682-79.006 195.341-79.006 105.882 0 187.48 50.97 235.999 147.423 48.519-96.453 130.118-147.423 235.999-147.423z" />
+									</svg>
+									<span>В избранном</span>
+								</a>
+								{% ELSE %}
+								<a class="product__link add-favorites icon-hover"
+									 data-action-is-add="1"
+									 title="Добавить &laquo;{goods.NAME}&raquo; в Избранное"
+									 href="{FAVORITES_ADD_URL}?id={goods.MIN_PRICE_NOW_ID}"
+									 rel="nofollow">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+										<path class="icon-hover__inert"
+													d="M943.34 164.914C893.03 113.968 823.658 85.91 748 85.91c-105.882 0-187.48 50.97-236 147.422C463.48 136.88 381.882 85.91 276 85.91c-75.658 0-145.03 28.058-195.34 79.006C27.892 218.354 0 291.504 0 376.458 0 478.36 64.752 590.47 192.456 709.672 308.244 817.75 435.142 893.6 459.406 907.708c-62.541-33.54-51.89-27.293-41.231-21.057l73.843 39.911 19.988 11.528 19.986-11.534s22.484-12.974 32.588-18.85c24.264-14.11 151.168-89.966 266.954-198.036C959.244 590.47 1024 478.36 1024 376.458c0-84.954-27.892-158.104-80.66-211.544zM776.948 651.188C667.43 753.408 547.33 825.196 524.366 838.548c-3.234 1.88-7.744 4.492-12.372 7.17-30.539-16.722-34.583-19.099-38.624-21.481l26.248 14.311c-22.962-13.352-143.054-85.134-252.574-187.36C137.764 549.184 80 454.184 80 376.458 80 252.49 160.598 165.91 276 165.91c75.072 0 128.606 33.25 163.656 101.652 28.128 54.882 32.392 111.782 32.432 112.35l1.536-.104h78.292c.036-.548 4.304-56.238 31.438-110.298 34.502-68.744 89.898-103.6 164.646-103.6 115.402 0 196 86.58 196 210.548 0 77.726-57.766 172.726-167.052 274.73z" />
+										<path class="icon-hover__active"
+													d="M747.999 85.91c75.659 0 145.031 28.058 195.34 79.004 52.769 53.44 80.66 126.59 80.66 211.543 0 101.902-64.756 214.012-192.467 333.214-115.786 108.069-242.69 183.925-266.953 198.035-10.105 5.876-32.588 18.85-32.588 18.85l-19.986 11.534-19.988-11.528a15829.444 15829.444 0 0 1-32.612-18.854c-24.263-14.109-151.161-89.958-266.949-198.038C64.752 590.468 0 478.359 0 376.456c0-84.953 27.892-158.104 80.66-211.541 50.31-50.948 119.682-79.006 195.341-79.006 105.882 0 187.48 50.97 235.999 147.423 48.519-96.453 130.118-147.423 235.999-147.423z" />
+									</svg>
+									<span>Избранное</span>
+								</a>
+								{% ENDIF %}
+
+								<!-- Если в тарифном плане подключен модуль сравнения товаров и он не выключен в настройках магазина -->
+								{% IFNOT SETTINGS_COMPARE_DISABLE && goods.IS_HAS_IN_COMPARE_LIST %}
+								<a class="product__link add-compare is-added icon-hover"
+									 title="Убрать &laquo;{goods.NAME}&raquo; из списка сравнения с другими товарами"
+									 href="{COMPARE_DELETE_URL}?id={goods.MIN_PRICE_NOW_ID}"
+									 rel="nofollow">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+										<path class="icon-hover__inert" d="M362.666 640C209.5 640 85.333 515.836 85.333 362.666 85.333 209.5 209.5 85.333 362.666 85.333 515.836 85.333 640 209.5 640 362.666 640 515.836 515.836 640 362.666 640zm0 85.334c200.296 0 362.668-162.372 362.668-362.668C725.334 162.371 562.962 0 362.666 0S0 162.371 0 362.666c0 200.296 162.371 362.668 362.666 362.668z" />
+										<path class="icon-hover__inert"
+													d="M661.334 938.666C508.164 938.666 384 814.502 384 661.334 384 508.164 508.164 384 661.334 384c153.168 0 277.332 124.164 277.332 277.334 0 153.168-124.164 277.332-277.332 277.332zm0 85.334C861.628 1024 1024 861.628 1024 661.334c0-200.296-162.372-362.668-362.666-362.668S298.666 461.038 298.666 661.334C298.666 861.628 461.04 1024 661.334 1024z" />
+										<path class="icon-hover__active"
+													d="M303.487 720.511A362.668 362.668 0 1 1 473.61 17.41a362.668 362.668 0 0 1 246.944 286.036c65.769 10.895 127.263 39.709 177.723 83.274s87.937 100.196 108.313 163.67a362.663 362.663 0 0 1-88.869 367.288 362.676 362.676 0 0 1-367.288 88.869 362.676 362.676 0 0 1-246.946-286.036zm87.681 3.713a277.343 277.343 0 0 0 69.226 128.262 277.347 277.347 0 0 0 270.447 77.236 277.32 277.32 0 0 0 126.521-72.36 277.325 277.325 0 0 0 70.568-272.261 277.347 277.347 0 0 0-75.444-124.707 277.343 277.343 0 0 0-128.262-69.226 362.74 362.74 0 0 1-105.122 227.934 362.746 362.746 0 0 1-227.934 105.122zm247.978-339.329a277.376 277.376 0 0 0-254.292 254.208 277.421 277.421 0 0 0 173.906-80.329 277.423 277.423 0 0 0 80.386-173.879z" />
+									</svg>
+									<span>В Сравнении</span>
+								</a>
+								{% ELSEIF SETTINGS_COMPARE_DISABLE=0 %}
+								<a class="product__link add-compare icon-hover"
+									 title="Добавить &laquo;{goods.NAME}&raquo; в список сравнения с другими товарами"
+									 href="{COMPARE_ADD_URL}?id={goods.MIN_PRICE_NOW_ID}"
+									 rel="nofollow">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+										<path class="icon-hover__inert" d="M362.666 640C209.5 640 85.333 515.836 85.333 362.666 85.333 209.5 209.5 85.333 362.666 85.333 515.836 85.333 640 209.5 640 362.666 640 515.836 515.836 640 362.666 640zm0 85.334c200.296 0 362.668-162.372 362.668-362.668C725.334 162.371 562.962 0 362.666 0S0 162.371 0 362.666c0 200.296 162.371 362.668 362.666 362.668z" />
+										<path class="icon-hover__inert"
+													d="M661.334 938.666C508.164 938.666 384 814.502 384 661.334 384 508.164 508.164 384 661.334 384c153.168 0 277.332 124.164 277.332 277.334 0 153.168-124.164 277.332-277.332 277.332zm0 85.334C861.628 1024 1024 861.628 1024 661.334c0-200.296-162.372-362.668-362.666-362.668S298.666 461.038 298.666 661.334C298.666 861.628 461.04 1024 661.334 1024z" />
+										<path class="icon-hover__active"
+													d="M303.487 720.511A362.668 362.668 0 1 1 473.61 17.41a362.668 362.668 0 0 1 246.944 286.036c65.769 10.895 127.263 39.709 177.723 83.274s87.937 100.196 108.313 163.67a362.663 362.663 0 0 1-88.869 367.288 362.676 362.676 0 0 1-367.288 88.869 362.676 362.676 0 0 1-246.946-286.036zm87.681 3.713a277.343 277.343 0 0 0 69.226 128.262 277.347 277.347 0 0 0 270.447 77.236 277.32 277.32 0 0 0 126.521-72.36 277.325 277.325 0 0 0 70.568-272.261 277.347 277.347 0 0 0-75.444-124.707 277.343 277.343 0 0 0-128.262-69.226 362.74 362.74 0 0 1-105.122 227.934 362.746 362.746 0 0 1-227.934 105.122zm247.978-339.329a277.376 277.376 0 0 0-254.292 254.208 277.421 277.421 0 0 0 173.906-80.329 277.423 277.423 0 0 0 80.386-173.879z" />
+									</svg>
+									<span>Сравнить</span>
+								</a>
+								{% ENDIF %}
+							</div>
+						</div>
+
+						<!-- Информация товара -->
+						<div class="product__shop">
+							<!-- Название товара -->
+							<a class="product__name" href="{goods.URL_MIN_PRICE_NOW | url_amp}" title="{goods.NAME}" itemprop="url">
+								<span itemprop="name">{goods.NAME}</span>
+							</a>
+							<!-- Цена -->
+							<div class="product__price {CURRENCY_CHAR_CODE}" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+								<meta itemprop="price" content="{goods.MIN_PRICE_NOW}">
+								<meta itemprop="priceCurrency" content="{CURRENCY_CHAR_CODE}">
+								<meta itemprop="availability" content="{% IF goods.MAX_REST_VALUE>0 %}http://schema.org/InStock{% ELSE %}http://schema.org/OutOfStock{% ENDIF %}">
+								<meta itemprop="priceValidUntil" content="{goods.MAX_DISCOUNT_EXPIRED_AT | date('Y-m-d')}">
+								{% IF goods.MIN_PRICE_NOW_WITHOUT_DISCOUNT > goods.MIN_PRICE_NOW %}
+								<s class="price__old" data-price="{goods.MIN_PRICE_NOW_WITHOUT_DISCOUNT}">{goods.MIN_PRICE_NOW_WITHOUT_DISCOUNT | money_format}</s>
+								{% ELSEIF goods.MIN_PRICE_OLD > goods.MIN_PRICE_NOW %}
+								<s class="price__old" data-price="{goods.MIN_PRICE_OLD}">{goods.MIN_PRICE_OLD | money_format}</s>
+								{% ENDIF %}
+								<b class="price__now" data-price="{goods.MIN_PRICE_NOW}">{goods.MIN_PRICE_NOW | money_format}</b>
+							</div>
+
+							<!-- Добавление товара в ... -->
+							<div class="product__addto">
+								<!-- Рейтинг -->
+								{% IFNOT SETTINGS_OPINION_DISABLE %}
+								<div class="product__ratings ratings">
+									{% IF goods.OPINION_RATING_VALUE %}
+									<span class="ratings__content" itemprop="aggregateRating" itemscope itemtype="https://schema.org/AggregateRating">
+										<meta itemprop="worstRating" content="1">
+										<meta itemprop="bestRating" content="10">
+										<meta itemprop="ratingValue" content="{goods.OPINION_RATING_VALUE}">
+										<meta itemprop="reviewCount" content="{goods.OPINION_RATING_CNT_ALL}">
+										<span class="ratings__value" data-value="{goods.OPINION_RATING_VALUE}" style="width:{goods.OPINION_RATING_VALUE}0%"></span>
+									</span>
+									<span class="ratings__count">{goods.OPINION_RATING_CNT_ALL} отзыв{goods.OPINION_RATING_CNT_ALL | gen_word_end("","а","ов")}</span>
+									{% ELSE %}
+									<span class="ratings__value" style="width:0%"></span>
+									{% ENDIF %}
+								</div>
+								{% ENDIF %}
+								<!-- Атрибуты -->
+								{% IFNOT goods.goods_attr_list_empty %}
+								<dl class="product__attr">
+									{% FOR goods_attr_list %}
+									{% IF goods.goods_attr_list.index > 3 %}{break}{% ENDIF %}
+									<div class="product__attr-item">
+										<dt>{goods.goods_attr_list.NAME}:</dt>
+										<dd>{goods.goods_attr_list.VALUE}</dd>
+									</div>
+									{% ENDFOR goods_attr_list %}
+								</dl>
+								{% ENDIF %}
+								<!-- Добавление товара в корзину -->
+								<div class="product__cart">
+									<!-- Добавление в корзину -->
+									{% IF SETTINGS_GOODS_DONT_PUT_TO_CART_MORE_THAN_AVAILABLE && goods.MAX_REST_VALUE=0 %}
+									<button class="product__add add-notify" type="button" title="Уведомить о поступлении" data-dialog="#dialogNotify">
+										<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+											<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="93.091" d="M823.999 872.001H200c-88.366 0-160-71.633-160-160V312c0-88.366 71.634-160 160-160h623.999c88.367 0 160 71.634 160 160v400.001c0 88.367-71.633 160-160 160z" />
+											<path fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-miterlimit="10" stroke-width="93.091" d="m200 312 255.432 263.432c31.243 31.241 81.898 31.241 113.139 0L823.998 312M200 712.001 392 512m239.999 0 192 200.001" />
+										</svg>
+										<span>Уведомить</span>
+									</button>
+									{% ELSE %}
+									<a class="product__add button icon-hover {% IF goods.COUNT_MODIFICATION > 1 %}add-mod{% ELSE %}add-cart{% ENDIF %}"
+										 href="{% IF goods.COUNT_MODIFICATION > 1 %}{goods.URL_MIN_PRICE_NOW}{% ELSE %}{CART_ADD_GOODS_MODIFICATION_URL | url_amp}?hash={HASH | url_amp}&amp;form%5Bgoods_from%5D={goods.GOODS_FROM}&amp;form%5Bgoods_mod_id%5D={goods.MIN_PRICE_NOW_ID}{% ENDIF %}"
+										 title="Добавить в корзину &laquo;{goods.NAME}&raquo;"
+										 rel="nofollow">
+										<span>В корзину</span>
+									</a>
+									{% ENDIF %}
+									<a class="product__more button button-link" href="{goods.URL_MIN_PRICE_NOW | url_amp}" title="Подробнее о товар &laquo;{goods.NAME}&raquo;">
+										<span>Подробнее о товаре</span>
+									</a>
+								</div>
+							</div>
+						</div>
+					</form>
+				</div>
+				{% ENDFOR %}
+			</div>
+			{% ENDIF %}
+
+			<!-- Страницы -->
+			{% IF show_pages %}
+			<ol class="pages">
+				{% IF GOODS_PAGES_SHOW_FIRST %}
+				<li class="pages__first">
+					<a class="pages__link" href="{GOODS_PAGINATE_URL | url_amp}&page=1" title="Первая страница" aria-label="Первая страница">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="16" height="16" aria-hidden="true">
+							<path
+										d="M977.454 557.928H158.899l246.364 246.125a46.522 46.522 0 0 1 10.435 15.094 46.45 46.45 0 0 1 3.773 17.949 46.462 46.462 0 0 1-13.629 33.284 46.582 46.582 0 0 1-33.316 13.618 46.585 46.585 0 0 1-17.966-3.773 46.469 46.469 0 0 1-15.109-10.421L13.63 544.304A46.463 46.463 0 0 1 .001 511.426c0-12.329 4.9-24.151 13.629-32.876l325.821-325.499A46.569 46.569 0 0 1 372.188 140a46.585 46.585 0 0 1 32.512 13.619c8.627 8.622 13.522 20.285 13.629 32.476s-4.588 23.936-13.066 32.707L158.899 464.926h818.555c12.345 0 24.184 4.9 32.913 13.619A46.49 46.49 0 0 1 1024 511.426c0 12.335-4.904 24.162-13.633 32.883s-20.568 13.619-32.913 13.619z" />
+						</svg>
+					</a>
+				</li>
+				<li class="pages__prev">
+					<a class="pages__link" href="{GOODS_PAGINATE_URL | url_amp}&page={GOODS_PAGES_PREVIOUS}" title="Предыдущая страница" aria-label="Предыдущая страница">{GOODS_PAGES_PREVIOUS}</a>
+				</li>
+				{% ENDIF %}
+				<li class="pages__current"><a class="pages__link is-active">{GOODS_PAGES_CURRENT}</a></li>
+				{% IF GOODS_PAGES_SHOW_LAST %}
+				<li class="pages__next">
+					<a class="pages__link" href="{GOODS_PAGINATE_URL | url_amp}&page={GOODS_PAGES_NEXT}" title="Следующая страница" aria-label="Следующая страница">{GOODS_PAGES_NEXT}</a>
+				</li>
+				<li class="pages__last">
+					<a class="pages__link" href="{GOODS_PAGINATE_URL | url_amp}&page={GOODS_PAGES_LAST}" title="Последняя страница" aria-label="Последняя страница">
+						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="16" height="16" aria-hidden="true">
+							<path
+										d="M46.546 466.072h818.555L618.737 219.947a46.522 46.522 0 0 1-10.435-15.094 46.45 46.45 0 0 1-3.773-17.949 46.462 46.462 0 0 1 13.629-33.284 46.582 46.582 0 0 1 33.316-13.618 46.585 46.585 0 0 1 17.966 3.773 46.469 46.469 0 0 1 15.109 10.421l325.821 325.5a46.463 46.463 0 0 1 13.629 32.878c0 12.329-4.9 24.151-13.629 32.876L684.549 870.949A46.569 46.569 0 0 1 651.812 884a46.585 46.585 0 0 1-32.512-13.619c-8.627-8.622-13.522-20.285-13.629-32.476s4.588-23.936 13.066-32.707l246.364-246.124H46.546a46.574 46.574 0 0 1-32.913-13.619A46.49 46.49 0 0 1 0 512.574c0-12.335 4.904-24.162 13.633-32.883s20.568-13.619 32.913-13.619z" />
+						</svg>
+					</a>
+				</li>
+				{% ENDIF %}
+			</ol>
+			{% ENDIF %}
+		</div>
+	</div>
+	{% ENDIF IS_FULL_CATALOG %}
+</div>
+
+<!-- Вывод всех видов описания категории -->
+{% IF CATEGORY_DESCRIPTION || CATEGORY_SEO_DESCRIPTION_SHORT || CATEGORY_SEO_DESCRIPTION_LARGE %}
+<div class="html-description">
+	<!-- Описание категории -->
+	{% IF CATEGORY_DESCRIPTION %}
+	<div>{CATEGORY_DESCRIPTION}</div>
+	{% ENDIF %}
+	<!-- Короткое SEO описание категории -->
+	{% IF CATEGORY_SEO_DESCRIPTION_SHORT %}
+	<div>{CATEGORY_SEO_DESCRIPTION_SHORT}</div>
+	{% ENDIF %}
+	<!-- Полное SEO описание категории -->
+	{% IF CATEGORY_SEO_DESCRIPTION_LARGE %}
+	<div>{CATEGORY_SEO_DESCRIPTION_LARGE}</div>
+	{% ENDIF %}
+</div>
+{% ENDIF %}

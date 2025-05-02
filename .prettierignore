@@ -1,0 +1,6 @@
+# Игнорировать форматирование определенных строк в HTML файлах
+src/htm/*.htm
+!src/htm/*.htm:{% IFNOT related_goods.last %}{related_goods.index | is_divided("3","</div><div class=swiper-slide>","")}{% ENDIF %}
+
+# Ignore all HTML files:
+src/htm/goods.htm

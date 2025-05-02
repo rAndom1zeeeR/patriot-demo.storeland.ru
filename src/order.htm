@@ -1,0 +1,677 @@
+<form id="order_form" class="form__client orderfast__form" method="post"
+      {% IF ORDER_STAGE_NUM=1 %}
+      action="{ORDER_STAGE_CONTACTS_URL}"
+      {% ELSEIF ORDER_STAGE_NUM=2 %}
+      action="{ORDER_STAGE_DELIVERY_URL}"
+      {% ELSEIF ORDER_STAGE_NUM=3 %}
+      action="{ORDER_STAGE_PAYMENT_URL}"
+      {% ELSEIF ORDER_STAGE_NUM=4 %}
+      action="{ORDER_STAGE_CONFIRM_URL}"
+      {% ENDIF %}>
+
+  <input type="hidden" name="hash" value="{HASH}">
+  {% IF FORM_NOTICE %}
+  <p class="notice notice--{% IF FORM_NOTICE_IS_GOOD %}success{% ELSE %}error{% ENDIF %}">{FORM_NOTICE | nl2br}</p>
+  {% ENDIF %}
+
+  <!-- Шаг 1. Контакты -->
+  {% IF ORDER_STAGE_NUM=1 %}
+  <!-- Навигация -->
+  <div class="stage__navigates">
+    <div class="stage__nav is-active"><span>Контакты</span></div>
+    <a class="stage__nav" href="{ORDER_STAGE_DELIVERY_URL}" title="Перейти на страницу выбора варианта доставки"><span>Доставка</span></a>
+    <a class="stage__nav" href="{ORDER_STAGE_PAYMENT_URL}" title="Перейти на страницу выбора варианта оплаты заказа"><span>Оплата</span></a>
+    <a class="stage__nav" href="{ORDER_STAGE_CONFIRM_URL}" title="Перейти на страницу выбора варианта оплаты заказа"><span>Подтверждение</span></a>
+  </div>
+
+  <!-- Контент -->
+  <div class="stages__contents">
+    <div class="stages__block">
+      <p class="stages__text">Оформить заказ в качестве гостя прямо сейчас{% IFNOT CLIENT_IS_LOGIN %}, или зарегистрироваться{% ENDIF %}</p>
+
+      <ul class="stages__list">
+        <li class="stages__item">
+          <a class="stages__link icon-hover" href="{FAVORITES_URL}" title="Перейти в Избранное">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+              <path class="icon-hover__inert"
+                    d="M943.34 164.914C893.03 113.968 823.658 85.91 748 85.91c-105.882 0-187.48 50.97-236 147.422C463.48 136.88 381.882 85.91 276 85.91c-75.658 0-145.03 28.058-195.34 79.006C27.892 218.354 0 291.504 0 376.458 0 478.36 64.752 590.47 192.456 709.672 308.244 817.75 435.142 893.6 459.406 907.708c-62.541-33.54-51.89-27.293-41.231-21.057l73.843 39.911 19.988 11.528 19.986-11.534s22.484-12.974 32.588-18.85c24.264-14.11 151.168-89.966 266.954-198.036C959.244 590.47 1024 478.36 1024 376.458c0-84.954-27.892-158.104-80.66-211.544zM776.948 651.188C667.43 753.408 547.33 825.196 524.366 838.548c-3.234 1.88-7.744 4.492-12.372 7.17-30.539-16.722-34.583-19.099-38.624-21.481l26.248 14.311c-22.962-13.352-143.054-85.134-252.574-187.36C137.764 549.184 80 454.184 80 376.458 80 252.49 160.598 165.91 276 165.91c75.072 0 128.606 33.25 163.656 101.652 28.128 54.882 32.392 111.782 32.432 112.35l1.536-.104h78.292c.036-.548 4.304-56.238 31.438-110.298 34.502-68.744 89.898-103.6 164.646-103.6 115.402 0 196 86.58 196 210.548 0 77.726-57.766 172.726-167.052 274.73z" />
+              <path class="icon-hover__active"
+                    d="M747.999 85.91c75.659 0 145.031 28.058 195.34 79.004 52.769 53.44 80.66 126.59 80.66 211.543 0 101.902-64.756 214.012-192.467 333.214-115.786 108.069-242.69 183.925-266.953 198.035-10.105 5.876-32.588 18.85-32.588 18.85l-19.986 11.534-19.988-11.528a15829.444 15829.444 0 0 1-32.612-18.854c-24.263-14.109-151.161-89.958-266.949-198.038C64.752 590.468 0 478.359 0 376.456c0-84.953 27.892-158.104 80.66-211.541 50.31-50.948 119.682-79.006 195.341-79.006 105.882 0 187.48 50.97 235.999 147.423 48.519-96.453 130.118-147.423 235.999-147.423z" />
+            </svg>
+            <span>Сохранение товаров</span>
+          </a>
+        </li>
+        <li class="stages__item">
+          <a class="stages__link" href="{USER_HISTORY_LIST_URL}" title="Перейти в Историю покупок">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="24" height="24" aria-hidden="true">
+              <path d="M4 6h24v2H4zM4 24h24v2H4zM4 12h24v2H4zM4 18h24v2H4z" />
+              <path fill="none" d="M0 0h32v32H0z" data-name="&lt;Transparent Rectangle&gt;" />
+            </svg>
+            <span>История покупок</span>
+          </a>
+        </li>
+        <li class="stages__item">
+          <a class="stages__link" href="{DISCOUNT_URL}" title="Перейти в Акции">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="24" height="24" aria-hidden="true">
+              <path
+                    d="M390.605 495.953c-8.156 0-16.316-2.488-23.48-7.48l-107.27-74.72a6.815 6.815 0 0 0-7.761 0l-107.266 74.72c-14.558 10.14-33.242 9.957-47.598-.465-14.37-10.434-20.335-28.16-15.195-45.164l37.902-125.414a6.806 6.806 0 0 0-2.347-7.325L16.03 231.727C1.898 220.82-3.496 202.805 2.29 185.836c5.773-16.922 21-27.86 38.8-27.86h126.763c3.011 0 5.53-1.695 6.425-4.316L217.09 27.848C222.855 10.926 238.117 0 255.977 0c17.859 0 33.117 10.926 38.882 27.84l42.817 125.82c.89 2.625 3.414 4.317 6.426 4.317h126.82c17.797 0 33.02 10.933 38.789 27.851 5.785 16.969.39 34.977-13.742 45.879l-101.606 78.398a6.81 6.81 0 0 0-2.347 7.325l3.328 11.02c3.195 10.57-2.785 21.73-13.36 24.925-10.566 3.191-21.73-2.785-24.925-13.355l-3.329-11.016c-5.578-18.461.93-38.781 16.2-50.563l101.61-78.398c.452-.352.448-.438.429-.77-.043-.636-.403-1.16-.547-1.246 0 0-.137-.054-.5-.054h-126.82c-20.094 0-37.891-12.63-44.29-31.426L257 40.73c-.18-.52-.254-.738-1.023-.738-.774 0-.848.219-1.028.746l-42.808 125.805c-6.399 18.8-24.196 31.43-44.29 31.43H41.09c-.367 0-.504.054-.504.054-.145.082-.504.602-.55 1.243-.024.347-.032.437.429.796l101.558 78.375c15.27 11.786 21.778 32.102 16.2 50.559l-37.907 125.414c-.156.524-.23.762.41 1.227.618.449.801.32 1.243.011l107.265-74.714c15.996-11.141 37.489-11.141 53.48 0l107.266 74.718c.442.305.625.438 1.243-.015.64-.465.566-.704.41-1.227l-5.567-18.41c-3.195-10.574 2.786-21.734 13.36-24.93 10.566-3.191 21.73 2.785 24.926 13.36l5.562 18.41c5.14 17.004-.824 34.73-15.195 45.164-7.29 5.293-15.7 7.945-24.114 7.945zm0 0" />
+            </svg>
+            <span>Индивидуальные скидки</span>
+          </a>
+        </li>
+      </ul>
+
+      <!-- Если пользователь не авторизован -->
+      {% IFNOT CLIENT_IS_LOGIN %}
+      <p class="stages__text">Зарегистрируйтесь для дальнейшего удобства</p>
+
+      <div class="form__registration">
+        <label for="want_register">Я хочу зарегистрироваться</label>
+        <input id="want_register" class="square" type="checkbox" name="form[contact][want_register]" value="1" {% IF ORDER_FORM_CONTACT_WANT_REGISTER %}checked{% ENDIF %}>
+      </div>
+      {% ENDIF %}
+    </div>
+
+    <!-- Форма входа -->
+    <div class="stages__block">
+      <div class="form__list">
+        <div class="form__field">
+          <label class="required" for="sites_client_person">Ваше Имя</label>
+          <input id="sites_client_person" class="form__input form__person" type="text" name="form[contact][person]" value="{ORDER_FORM_CONTACT_PERSON}" maxlength="50" placeholder="ФИО" required>
+        </div>
+
+        <div class="form__field">
+          <label class="required" for="sites_client_phone">Телефон для связи</label>
+          <input id="sites_client_phone" class="form__input form__phone" type="tel" name="form[contact][phone]" value="{ORDER_FORM_CONTACT_PHONE}" maxlength="20" placeholder="+7 (987) 654-3210" autocomplete="tel" required>
+        </div>
+
+        <div class="form__field">
+          <label for="sites_client_email" class="{% IF ORDER_FORM_CONTACT_WANT_REGISTER %}required{% ENDIF %}"><span>Ваш E-mail</span>{% IF ORDER_FORM_CONTACT_WANT_REGISTER %}<em>*</em>{% ENDIF %}</label>
+          <input id="sites_client_email" class="form__input form__email" type="email" name="form[contact][email]" value="{ORDER_FORM_CONTACT_EMAIL}" maxlength="50" placeholder="email@email.ru" {% IF ORDER_FORM_CONTACT_WANT_REGISTER %}required{% ENDIF %}>
+        </div>
+
+        <!-- Если в тарифном плане подключен раздел личного кабинета -->
+        {% IFNOT CLIENT_IS_LOGIN %}
+        <div class="form__field password" {% IFNOT ORDER_FORM_CONTACT_WANT_REGISTER %}hidden{% ENDIF %}>
+          <label for="sites_client_pass"><span>Пароль:</span><small>*</small></label>
+          <input id="sites_client_pass" class="password__input" type="password" name="form[contact][pass]" value="{ORDER_FORM_CONTACT_PASS}" maxlength="50" minlength="6" placeholder="Придумайте пароль *">
+
+          <button class="password__button button-icon" type="button" aria-pressed="false" aria-label="Показать пароль">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+              <path class="svg-lock"
+                    d="M800 376h-72.076V211.54C727.924 94.896 631.026 0 511.925 0S295.926 94.896 295.926 211.54V376H224c-66.168 0-120 53.832-120 119.998v408.003C104 970.17 157.832 1024 224 1024h576c66.169 0 119.999-53.83 119.999-119.999V495.998C919.999 429.832 866.169 376 800 376zM375.926 211.54c0-72.532 61.01-131.54 135.999-131.54s136.001 59.008 136.001 131.54V376h-272V211.54zm464.075 692.461c0 22.053-17.943 39.997-40.001 39.997H224c-22.056 0-40-17.943-40-39.997V495.998c0-22.053 17.944-39.997 40-39.997h576c22.058 0 40.001 17.944 40.001 39.997v408.003z" />
+              <path class="svg-lock" d="M512 572.002c-40.872 0-74 33.126-74 73.998 0 26.098 13.52 49.022 33.924 62.194v87.808c0 22.09 17.911 39.997 40.001 39.997s40.001-17.906 40.001-39.997v-87.71c20.489-13.163 34.071-36.133 34.071-62.292 0-40.872-33.126-73.998-73.998-73.998z" />
+              <path class="svg-unlock"
+                    d="M800 376H375.926V211.54c0-72.532 61.01-131.54 135.999-131.54s136.001 59.008 136.001 131.54V288h79.998v-76.46C727.924 94.896 631.026 0 511.925 0S295.926 94.896 295.926 211.54V376H224c-66.168 0-120 53.832-120 119.998v408.003C104 970.17 157.832 1024 224 1024h576c66.169 0 119.999-53.83 119.999-119.999V495.998C919.999 429.832 866.169 376 800 376zm40.001 528.001c0 22.053-17.943 39.997-40.001 39.997H224c-22.056 0-40-17.943-40-39.997V495.998c0-22.053 17.944-39.997 40-39.997h576c22.058 0 40.001 17.944 40.001 39.997v408.003z" />
+              <path class="svg-unlock" d="M512 572.002c-40.872 0-74 33.126-74 73.998 0 26.098 13.52 49.022 33.924 62.194v87.808c0 22.09 17.911 39.997 40.001 39.997s40.001-17.906 40.001-39.997v-87.71c20.489-13.163 34.071-36.133 34.071-62.292 0-40.872-33.126-73.998-73.998-73.998z" />
+            </svg>
+          </button>
+        </div>
+
+        <blockquote class="capslock" hidden>
+          <div class="capslock__icon">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+              <path
+                    d="M1012.081 831.996 589.505 102.667C573.377 74.437 544.347 58 512.087 58c-32.256 0-61.29 16.795-77.418 44.667L12.096 831.996c-16.129 27.875-16.129 61.107 0 89.337s45.161 44.668 77.418 44.668h844.79c32.256 0 61.29-16.797 77.418-44.668 16.128-27.875 16.486-61.462.358-89.337zM89.873 876.665l422.215-728.972 422.576 728.614-844.79.358zM557.25 374.96c11.469 13.221 16.486 30.376 14.336 47.528l-41.933 268.003a17.694 17.694 0 0 1-5.943 10.858 17.778 17.778 0 0 1-11.622 4.323 17.79 17.79 0 0 1-11.622-4.323 17.688 17.688 0 0 1-5.939-10.858l-41.574-267.648c-2.512-17.507 2.867-34.662 13.978-47.883 22.938-26.085 67.741-26.085 90.32 0zm7.885 423.091c0 26.8-23.654 48.955-53.047 48.955-29.389 0-53.043-21.797-53.043-48.955s23.654-48.955 53.043-48.955c29.392 0 53.047 21.797 53.047 48.955z" />
+            </svg>
+            <b>Caps Lock включен.</b>
+          </div>
+          <p class="capslock__text">Пароль может быть введен неверно.</p>
+        </blockquote>
+        {% ENDIF %}
+      </div>
+    </div>
+
+    <!-- Кнопки переходов -->
+    <div class="stages__buttons">
+      {% IF ORDER_STAGE_NUM=1 %}
+      <a class="button button-secondary" href="{CART_URL}" title="Вернуться назад в вашу корзину покупок"><span>Назад</span></a>
+      {% ELSEIF ORDER_STAGE_NUM=2 %}
+      <a class="button button-secondary" href="{ORDER_STAGE_CONTACTS_URL}" title="Вернуться назад на страницу контактных данных"><span>Назад</span></a>
+      {% ELSEIF ORDER_STAGE_NUM=3 %}
+      <a class="button button-secondary" href="{ORDER_STAGE_DELIVERY_URL}" title="Вернуться назад на страницу выбора варианта доставки"><span>Назад</span></a>
+      {% ELSEIF ORDER_STAGE_NUM=4 %}
+      <a class="button button-secondary" href="{ORDER_STAGE_PAYMENT_URL}" title="Вернуться назад на страницу выбора варианта оплаты заказа"><span>Назад</span></a>
+      {% ENDIF %}
+      <button class="button" type="submit" title="Перейти к следующему шагу"><span>{% IF ORDER_STAGE_NUM=4 %}Оформить заказ{% ELSE %}Далее{% ENDIF %}</span></button>
+    </div>
+  </div>
+
+  <!-- Шаг 2. Доставка -->
+  {% ELSEIF ORDER_STAGE_NUM=2%}
+  <!-- Навигация -->
+  <div class="stage__navigates">
+    <a class="stage__nav is-active" href="{ORDER_STAGE_CONTACTS_URL}" title="Вернуться назад на страницу контактных данных"><span>Контакты</span></a>
+    <div class="stage__nav is-active"><span>Доставка</span></div>
+    <a class="stage__nav" href="{ORDER_STAGE_PAYMENT_URL}" title="Перейти на страницу выбора варианта оплаты заказа"><span>Оплата</span></a>
+    <a class="stage__nav" href="{ORDER_STAGE_CONFIRM_URL}" title="Перейти на страницу выбора варианта оплаты заказа"><span>Подтверждение</span></a>
+  </div>
+  <!-- Контент -->
+  <div class="stages__contents">
+    <!-- Cпособ доставки -->
+    <div class="stages__block">
+      <h3 class="stages__title"><span>Cпособ доставки</span></h3>
+      <div class="order-delivery__items">
+        {% FOR order_delivery %}
+        <div class="order-delivery__item" data-id="{order_delivery.ID}">
+          <div class="order-delivery__title">
+            <input class="order-delivery__radio square"
+                   type="radio"
+                   id="deliveryId{order_delivery.ID}"
+                   name="form[delivery][id]"
+                   value="{order_delivery.ID}"
+                   data-price="{order_delivery.END_PRICE}"
+                   pricewithoutzones="{order_delivery.END_PRICE}"
+                   pricewithzone="{order_delivery.ZONE_END_PRICE}"
+                   data-name="{order_delivery.NAME}"
+                   data-id="{order_delivery.ID}"
+                   {% IFNOT ORDER_FORM_DELIVERY_ID %}
+                   {% IF order_delivery.first %}checked="checked" {% ENDIF %}
+                   {% ELSEIF order_delivery.ID=ORDER_FORM_DELIVERY_ID %}
+                   checked="checked"
+                   {% ENDIF %}>
+            <label class="order-delivery__name" for="deliveryId{order_delivery.ID}">{order_delivery.NAME}</label>
+          </div>
+
+          <!-- Описание -->
+          {% IF order_delivery.DESC %}
+          <div class="order-delivery__desc">{order_delivery.DESC}</div>
+          {% ENDIF %}
+
+          <!-- Стоимость -->
+          <div class="order-delivery__price {CURRENCY_CHAR_CODE}">
+            <span>Стоимость доставки:</span>
+            <b>{order_delivery.END_PRICE | money_format}</b>
+          </div>
+
+          <!-- Зоны доставки -->
+          {% IFNOT order_delivery.zone_list_empty %}
+          <div class="order-delivery-zone__list delivery__zones" data-id="{order_delivery.ID}">
+            <div class="order-delivery-zone__title">Зоны доставки:</div>
+            {% FOR zone_list %}
+            <div class="order-delivery-zone__item" data-id="{order_delivery.ID}">
+              <input class="order-delivery-zone__radio square"
+                     type="radio"
+                     id="deliveryZoneId{order_delivery.zone_list.ID}"
+                     name="form[delivery][zone_id]"
+                     value="{order_delivery.zone_list.ID}"
+                     data-id="{order_delivery.ID}"
+                     data-price="{order_delivery.zone_list.END_PRICE}"
+                     {% IF order_delivery.zone_list.ID=ORDER_FORM_DELIVERY_ZONE_ID %}
+                     checked="checked" rel="true"
+                     {% ENDIF %}>
+              <label class="order-delivery-zone__name" for="deliveryZoneId{order_delivery.zone_list.ID}">{order_delivery.zone_list.NAME}</label>
+              <b class="order-delivery-zone__price">{order_delivery.zone_list.END_PRICE | money_format}</b>
+            </div>
+            {% ENDFOR %}
+          </div>
+          {% ENDIF %}
+
+        </div>
+        {% ENDFOR %}
+      </div>
+    </div>
+
+    <!-- Адрес доставки -->
+    <div class="stages__block">
+      <h3 class="stages__title"><span>Адрес доставки заказа</span></h3>
+      <div class="orderfast__list form__list">
+        <fieldset class="form__fields form__fields--duo">
+          <!-- Если поле страны доставки запрашивается -->
+          {% IFNOT country_list_empty && SETTINGS_ORDER_FIELDS_COUNTRY=1 || SETTINGS_ORDER_FIELDS_COUNTRY=2 %}
+          <div class="form__field form__field--country">
+            <label for="order_delivery_country" {% IF SETTINGS_ORDER_FIELDS_COUNTRY=1 %}required{% ENDIF %}>
+              <span>Страна</span>
+              <small>(обязательно)</small>
+            </label>
+            <div class="selects">
+              <select id="order_delivery_country" name="form[delivery][country_id]" {% IF SETTINGS_ORDER_FIELDS_COUNTRY=1 %}required{% ENDIF %}>
+                {% FOR country_list %}
+                <option value="{country_list.ID}" {% IF country_list.ID=ORDER_FORM_DELIVERY_COUNTRY_ID %}selected{% ENDIF %}>
+                  {country_list.NAME}
+                </option>
+                {% ENDFOR %}
+              </select>
+            </div>
+          </div>
+          {% ENDIF %}
+
+          <!-- Если поле области запрашивается -->
+          {% IF SETTINGS_ORDER_FIELDS_REGION=1 || SETTINGS_ORDER_FIELDS_REGION=2 %}
+          <div class="form__field">
+            <label for="order_delivery_region" {% IF SETTINGS_ORDER_FIELDS_REGION=1 %}required{% ENDIF %}>
+              <span>Область</span>
+              <small>(обязательно)</small>
+            </label>
+            <input id="order_delivery_region"
+                   type="text"
+                   name="form[delivery][region]"
+                   value="{ORDER_FORM_DELIVERY_REGION}"
+                   placeholder="Область"
+                   autocomplete="address-level1"
+                   inputmode="text"
+                   {% IF SETTINGS_ORDER_FIELDS_REGION=1 %}required{% ENDIF %}>
+          </div>
+          {% ENDIF %}
+
+          <!-- Если поле города запрашивается -->
+          {% IF SETTINGS_ORDER_FIELDS_CITY=1 || SETTINGS_ORDER_FIELDS_CITY=2 %}
+          <div class="form__field">
+            <label for="order_delivery_city" {% IF SETTINGS_ORDER_FIELDS_CITY=1 %}required{% ENDIF %}>
+              <span>Город</span>
+              <small>(обязательно)</small>
+            </label>
+            <input id="order_delivery_city"
+                   type="text"
+                   name="form[delivery][city]"
+                   value="{ORDER_FORM_DELIVERY_CITY}"
+                   placeholder="Город"
+                   autocomplete="address-level2"
+                   inputmode="text"
+                   {% IF SETTINGS_ORDER_FIELDS_CITY=1 %}required{% ENDIF %}>
+          </div>
+          {% ENDIF %}
+
+          <!-- Если поле адреса доставки запрашивается -->
+          {% IF SETTINGS_ORDER_FIELDS_ADDRESS=1 || SETTINGS_ORDER_FIELDS_ADDRESS=2 %}
+          <div class="form__field">
+            <label for="order_delivery_address" {% IF SETTINGS_ORDER_FIELDS_ADDRESS=1 %}required{% ENDIF %}>
+              <span>Адрес</span>
+              <small>(обязательно)</small>
+            </label>
+            <input id="order_delivery_address"
+                   type="text"
+                   name="form[delivery][address]"
+                   value="{ORDER_FORM_DELIVERY_ADDRESS}"
+                   placeholder="Улица"
+                   autocomplete="street-address"
+                   inputmode="text"
+                   {% IF SETTINGS_ORDER_FIELDS_ADDRESS=1 %}required{% ENDIF %}>
+          </div>
+          {% ENDIF %}
+
+          <!-- Если поле почтового индекса запрашивается -->
+          {% IF SETTINGS_ORDER_FIELDS_ZIP_CODE=1 || SETTINGS_ORDER_FIELDS_ZIP_CODE=2 %}
+          <div class="form__field">
+            <label for="order_delivery_zip_code" {% IF SETTINGS_ORDER_FIELDS_ZIP_CODE=1 %}required{% ENDIF %}>
+              <span>Индекс</span>
+              <small>(обязательно)</small>
+            </label>
+            <input id="order_delivery_zip_code"
+                   type="number"
+                   name="form[delivery][zip_code]"
+                   value="{ORDER_FORM_DELIVERY_ZIP_CODE}"
+                   minlength="5"
+                   maxlength="6"
+                   placeholder="Индекс"
+                   autocomplete="postal-code"
+                   inputmode="numeric"
+                   {% IF SETTINGS_ORDER_FIELDS_ZIP_CODE=1 %}required{% ENDIF %}>
+          </div>
+          {% ENDIF %}
+        </fieldset>
+
+        <!-- Если поле даты доставки запрашивается -->
+        {% IF SETTINGS_ORDER_FIELDS_CONVENIENT_TIME=1 || SETTINGS_ORDER_FIELDS_CONVENIENT_TIME=2 %}
+        <fieldset class="form__fields form__fields--date">
+          <div class="form__field">
+            <label for="order_delivery_convenient_date" {% IF SETTINGS_ORDER_FIELDS_CONVENIENT_TIME=1 %}required{% ENDIF %}>
+              <span>Дата доставки</span>
+              <small>(обязательно)</small>
+            </label>
+            <input id="order_delivery_convenient_date"
+                   type="text"
+                   name="form[delivery][convenient_date]"
+                   value="{ORDER_FORM_DELIVERY_CONVENIENT_DATE}"
+                   maxlength="10"
+                   minlength="10"
+                   autocomplete="bday"
+                   placeholder="{CURRENT_TIME| date('d.m.Y')}"
+                   inputmode="decimal"
+                   {% IF SETTINGS_ORDER_FIELDS_CONVENIENT_TIME=1 %}required{% ENDIF %}>
+          </div>
+
+          <div class="form__field">
+            <label for="order_delivery_convenient_time_from" {% IF SETTINGS_ORDER_FIELDS_CONVENIENT_TIME=1 %}required{% ENDIF %}>
+              <span>Время от</span>
+              <small>(обязательно)</small>
+            </label>
+            <div class="selects">
+              <select id="order_delivery_convenient_time_from" name="form[delivery][convenient_time_from]" {% IF SETTINGS_ORDER_FIELDS_CONVENIENT_TIME=1 %}required{% ENDIF %}>
+                {% FOR convenient_time_from_list %}
+                {% IF convenient_time_from_list.HOUR_INT > 8 && convenient_time_from_list.HOUR_INT < 22 %}
+                  <option value="{convenient_time_from_list.HOUR_INT}" {% IF convenient_time_from_list.SELECTED %}selected{% ENDIF %}>{convenient_time_from_list.HOUR}</option>
+                  {% ENDIF %}
+                  {% ENDFOR %}
+              </select>
+            </div>
+          </div>
+
+          <div class="form__field">
+            <label for="order_delivery_convenient_time_to" {% IF SETTINGS_ORDER_FIELDS_CONVENIENT_TIME=1 %}required{% ENDIF %}>
+              <span>Время до</span>
+              <small>(обязательно)</small>
+            </label>
+            <div class="selects">
+              <select id="order_delivery_convenient_time_to" name="form[delivery][convenient_time_to]" {% IF SETTINGS_ORDER_FIELDS_CONVENIENT_TIME=1 %}required{% ENDIF %}>
+                {% FOR convenient_time_to_list %}
+                {% IF convenient_time_to_list.HOUR_INT > 8 && convenient_time_to_list.HOUR_INT < 22 %}
+                  <option value="{convenient_time_to_list.HOUR_INT}" {% IF convenient_time_to_list.SELECTED %}selected{% ENDIF %}>{convenient_time_to_list.HOUR}</option>
+                  {% ENDIF %}
+                  {% ENDFOR %}
+              </select>
+            </div>
+          </div>
+
+        </fieldset>
+        {% ENDIF %}
+
+        <!-- Если поле комментарии запрашивается -->
+        {% IF SETTINGS_ORDER_FIELDS_COMMENT=1 || SETTINGS_ORDER_FIELDS_COMMENT=2 %}
+        <fieldset class="form__fields">
+          <div class="form__field">
+            <label for="order_delivery_comment" {% IF SETTINGS_ORDER_FIELDS_COMMENT=1 %}required{% ENDIF %}>
+              <span>Пожелание к заказу</span>
+              <small>(обязательно)</small>
+            </label>
+            <textarea id="order_delivery_comment"
+                      class="form__textarea"
+                      cols="100"
+                      rows="3"
+                      name="form[delivery][comment]"
+                      placeholder="Комментарий"
+                      inputmode="text"
+                      {% IF SETTINGS_ORDER_FIELDS_COMMENT=1 %}required{% ENDIF %}>{ORDER_FORM_DELIVERY_COMMENT}</textarea>
+          </div>
+        </fieldset>
+        {% ENDIF %}
+
+      </div>
+    </div>
+
+    <!-- Кнопки переходов -->
+    <div class="stages__buttons">
+      {% IF ORDER_STAGE_NUM=1 %}
+      <a class="button button-secondary" href="{CART_URL}" title="Вернуться назад в вашу корзину покупок"><span>Назад</span></a>
+      {% ELSEIF ORDER_STAGE_NUM=2 %}
+      <a class="button button-secondary" href="{ORDER_STAGE_CONTACTS_URL}" title="Вернуться назад на страницу контактных данных"><span>Назад</span></a>
+      {% ELSEIF ORDER_STAGE_NUM=3 %}
+      <a class="button button-secondary" href="{ORDER_STAGE_DELIVERY_URL}" title="Вернуться назад на страницу выбора варианта доставки"><span>Назад</span></a>
+      {% ELSEIF ORDER_STAGE_NUM=4 %}
+      <a class="button button-secondary" href="{ORDER_STAGE_PAYMENT_URL}" title="Вернуться назад на страницу выбора варианта оплаты заказа"><span>Назад</span></a>
+      {% ENDIF %}
+      <button class="button" type="submit" title="Перейти к следующему шагу"><span>{% IF ORDER_STAGE_NUM=4 %}Оформить заказ{% ELSE %}Далее{% ENDIF %}</span></button>
+    </div>
+
+  </div>
+
+  <!-- Шаг 3. Оплата -->
+  {% ELSEIF ORDER_STAGE_NUM=3 %}
+  <!-- Навигация -->
+  <div class="stage__navigates">
+    <a class="stage__nav is-active" href="{ORDER_STAGE_CONTACTS_URL}" title="Вернуться назад на страницу контактных данных"><span>Контакты</span></a>
+    <a class="stage__nav is-active" href="{ORDER_STAGE_DELIVERY_URL}" title="Перейти на страницу выбора варианта доставки"><span>Доставка</span></a>
+    <div class="stage__nav is-active"><span>Оплата</span></div>
+    <a class="stage__nav" href="{ORDER_STAGE_CONFIRM_URL}" title="Перейти на страницу выбора варианта оплаты заказа"><span>Подтверждение</span></a>
+  </div>
+  <!-- Контент -->
+  <div class="stages__contents">
+    <!-- Cпособ оплаты -->
+    <div class="stages__block">
+      <h3 class="stages__title"><span>Cпособ оплаты</span></h3>
+      <div class="order-payment-column">
+        {% FOR order_payment %}
+        <div class="order-payment__item">
+          <input class="order-payment__radio square"
+                 type="radio"
+                 id="paymentId{order_payment.ID}"
+                 name="form[payment][id]"
+                 value="{order_payment.ID}"
+                 order-id="{ORDER_FORM_PAYMENT_ID}"
+                 {% IF order_payment.first %}checked="checked"
+                 {% ELSEIF order_payment.ID=ORDER_FORM_PAYMENT_ID %}checked="checked" {% ENDIF %}>
+          <label class="order-payment__name" for="paymentId{order_payment.ID}">{order_payment.NAME}</label>
+          <!-- Сообщение для пользователя -->
+          {% IF order_payment.MESSAGE %}
+          <div class="order-payment__desc is-hide">{order_payment.MESSAGE}</div>
+          {% ENDIF %}
+        </div>
+        {% ENDFOR %}
+      </div>
+    </div>
+    <!-- Если скидки по купонам активированы в панели управления магазином -->
+    {% IF ORDER_DISCOUNT_COUPON_IS_ENABLED %}
+    <div class="stages__block coupons">
+      <h3 class="stages__title"><span>Купон на скидку</span></h3>
+      <input id="coupon_code" class="form__input" type="text" name="form[coupon_code]" value="{ORDER_FORM_COUPON_CODE}" placeholder="Введите купон" />
+    </div>
+    {% ENDIF %}
+
+    <!-- Кнопки переходов -->
+    <div class="stages__buttons">
+      {% IF ORDER_STAGE_NUM=1 %}
+      <a class="button button-secondary" href="{CART_URL}" title="Вернуться назад в вашу корзину покупок"><span>Назад</span></a>
+      {% ELSEIF ORDER_STAGE_NUM=2 %}
+      <a class="button button-secondary" href="{ORDER_STAGE_CONTACTS_URL}" title="Вернуться назад на страницу контактных данных"><span>Назад</span></a>
+      {% ELSEIF ORDER_STAGE_NUM=3 %}
+      <a class="button button-secondary" href="{ORDER_STAGE_DELIVERY_URL}" title="Вернуться назад на страницу выбора варианта доставки"><span>Назад</span></a>
+      {% ELSEIF ORDER_STAGE_NUM=4 %}
+      <a class="button button-secondary" href="{ORDER_STAGE_PAYMENT_URL}" title="Вернуться назад на страницу выбора варианта оплаты заказа"><span>Назад</span></a>
+      {% ENDIF %}
+      <button class="button" type="submit" title="Перейти к следующему шагу"><span>{% IF ORDER_STAGE_NUM=4 %}Оформить заказ{% ELSE %}Далее{% ENDIF %}</span></button>
+    </div>
+
+  </div>
+
+  <!-- Шаг 4. Подтверждение заказа -->
+  {% ELSEIF ORDER_STAGE_NUM=4 %}
+  <!-- Навигация -->
+  <div class="stage__navigates">
+    <a class="stage__nav is-active" href="{ORDER_STAGE_CONTACTS_URL}" title="Вернуться назад на страницу контактных данных"><span>Контакты</span></a>
+    <a class="stage__nav is-active" href="{ORDER_STAGE_DELIVERY_URL}" title="Перейти на страницу выбора варианта доставки"><span>Доставка</span></a>
+    <a class="stage__nav is-active" href="{ORDER_STAGE_PAYMENT_URL}" title="Вернуться назад на страницу выбора варианта оплаты заказа"><span>Оплата</span></a>
+    <div class="stage__nav is-active"><span>Подтверждение</span></div>
+  </div>
+  <!-- Контент -->
+  <div class="stages__contents">
+    <div class="stages__block stages__block_full">
+      <h3 class="stages__title"><span>Подтверждение заказа</span></h3>
+      <div class="scroll">
+        <table class="table-box">
+          <thead>
+            <tr>
+              <td>Фото</td>
+              <td>Название товара</td>
+              <td>Кол-во</td>
+              <td>Общая сумма</td>
+            </tr>
+          </thead>
+
+          <tbody>
+            {% FOR cart_items %}
+            <tr class="order-items">
+              <td>
+                <a class="order-items__image" href="{cart_items.GOODS_URL}" title="{cart_items.GOODS_NAME}">
+                  <img src="{% IF cart_items.GOODS_IMAGE_EMPTY %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ELSE %}{cart_items.GOODS_IMAGE_ICON}{% ENDIF %}" alt="{cart_items.GOODS_NAME}" loading="lazy">
+                </a>
+              </td>
+              <td>
+                <a class="order-items__title" href="{cart_items.GOODS_URL}" title="{cart_items.GOODS_NAME}">
+                  <span class="order-items__name">{cart_items.GOODS_NAME}</span>
+                  <!-- Если у товара есть отличительные свойства для модификации товара, допишем их к названию товара -->
+                  {% IFNOT cart_items.distinctive_properties_empty %}
+                  <div class="order-items__prop">
+                    ({% FOR distinctive_properties %}
+                    <span class="order-items__prop_name">{cart_items.distinctive_properties.NAME}:</span>
+                    <span class="order-items__prop_value">{cart_items.distinctive_properties.VALUE}</span>
+                    {% IFNOT cart_items.distinctive_properties.last %}<span class="order-items__prop_sep">,</span>{% ENDIF %}
+                    {% ENDFOR %})
+                  </div>
+                  {% ENDIF %}
+                </a>
+              </td>
+              <td>
+                <span class="order-items__qty">{cart_items.ORDER_LINE_QUANTITY}</span>
+                <span class="order-items__measure">{cart_items.GOODS_MOD_MEASURE_NAME}</span>
+              </td>
+              <td>
+                <span class="order-items__price {CURRENCY_CHAR_CODE}">{cart_items.ORDER_LINE_PRICE_NOW | money_format}</span>
+              </td>
+            </tr>
+            {% ENDFOR %}
+          </tbody>
+
+
+          <tfoot>
+            <!-- Доставка -->
+            {% FOR cart_items_delivery %}
+            <tr class="order-delivery">
+              <td colspan="2">
+                <span class="order-delivery__name">{cart_items_delivery.NAME}</span>
+                <!-- Если указана зона доставки -->
+                {% IF cart_items_delivery.WITH_DELIVERY_ZONE %}
+                <span class="order-delivery__zone">({cart_items_delivery.DELIVERY_ZONE_DESC})</span>
+                {% ENDIF %}
+              </td>
+              <td>
+                <span>1 шт</span>
+              </td>
+              <td>
+                <span class="order-delivery__price {CURRENCY_CHAR_CODE}" data-price="{cart_items_delivery.END_PRICE}">{cart_items_delivery.END_PRICE | money_format}</span>
+              </td>
+            </tr>
+            {% ENDFOR %}
+
+            <!-- Скидки -->
+            {% FOR cart_discount %}
+            {% IF cart_discount.DISCOUNT_IS_ENABLED %}
+            <tr class="order-discount">
+              <td colspan="2" class="order-discount__label">{cart_discount.DISCOUNT_NAME}</td>
+              <td colspan="2" class="order-discount__value">
+                {% IF cart_discount.IS_PERCENT %}
+                {cart_discount.DISCOUNT_VALUE}%
+                {% ELSE %}
+                {cart_discount.DISCOUNT_VALUE | money_format}
+                {% ENDIF %}
+              </td>
+            </tr>
+            {% ENDIF %}
+            {% ENDFOR %}
+
+            <tr class="order-total">
+              <td colspan="2">
+                <span>Итого:</span>
+              </td>
+              <td colspan="2">
+                <b class="order-total__price {CURRENCY_CHAR_CODE}"
+                   data-price="{CART_SUM_NOW_WITH_DISCOUNT}"
+                   data-price-delivery="{CART_SUM_NOW_WITH_DELIVERY_AND_DISCOUNT}">{CART_SUM_NOW_WITH_DELIVERY_AND_DISCOUNT | money_format}</b>
+              </td>
+            </tr>
+
+          </tfoot>
+
+        </table>
+      </div>
+    </div>
+
+    <div class="stages__block stages__block_full">
+      <h3 class="stages__title"><span>Контактные данные</span></h3>
+      <div class="scroll">
+        <table class="table-box">
+          <tbody>
+            <tr>
+              <td class="cell1">Контактное лицо</span></td>
+              <td class="cell2">{ORDER_FORM_CONTACT_PERSON}</td>
+            </tr>
+            <tr>
+              <td class="cell1">Телефон для связи</span></td>
+              <td class="cell2">{ORDER_FORM_CONTACT_PHONE}</td>
+            </tr>
+
+            {% IF ORDER_FORM_CONTACT_EMAIL %}
+            <tr>
+              <td class="cell1">Электропочта</span></td>
+              <td class="cell2">{ORDER_FORM_CONTACT_EMAIL}</td>
+            </tr>
+            {% ENDIF %}
+
+            {% IF ORDER_FORM_DELIVERY_ZIP_CODE %}
+            <tr>
+              <td class="cell1">Почтовый индекс</span></td>
+              <td class="cell2">{ORDER_FORM_DELIVERY_ZIP_CODE}</td>
+            </tr>
+            {% ENDIF %}
+
+            {% IF ORDER_FORM_DELIVERY_COUNTRY_ID %}
+            <tr>
+              <td class="cell1">Страна</span></td>
+              <td class="cell2">{ORDER_FORM_DELIVERY_COUNTRY_NAME}</td>
+            </tr>
+            {% ENDIF %}
+
+            {% IF ORDER_FORM_DELIVERY_REGION %}
+            <tr>
+              <td class="cell1">Область</span></td>
+              <td class="cell2">{ORDER_FORM_DELIVERY_REGION}</td>
+            </tr>
+            {% ENDIF %}
+
+            {% IF ORDER_FORM_DELIVERY_CITY %}
+            <tr>
+              <td class="cell1">Город</span></td>
+              <td class="cell2">{ORDER_FORM_DELIVERY_CITY}</td>
+            </tr>
+            {% ENDIF %}
+
+            {% IF ORDER_FORM_DELIVERY_ADDRESS %}
+            <tr>
+              <td class="cell1">Адрес доставки</span></td>
+              <td class="cell2">{ORDER_FORM_DELIVERY_ADDRESS | nl2br}</td>
+            </tr>
+            {% ENDIF %}
+
+            {% IF ORDER_FORM_DELIVERY_CONVENIENT_DATE %}
+            <tr>
+              <td class="cell1">Удобное время доставки</span></td>
+              <td class="cell2">
+                {ORDER_FORM_DELIVERY_CONVENIENT_DATE}
+                {% IF ORDER_FORM_DELIVERY_CONVENIENT_TIME_FROM %}
+                c {ORDER_FORM_DELIVERY_CONVENIENT_TIME_FROM}:00
+                {% ENDIF %}
+                {% IF ORDER_FORM_DELIVERY_CONVENIENT_TIME_TO %}
+                до {ORDER_FORM_DELIVERY_CONVENIENT_TIME_TO}:00
+                {% ENDIF %}
+              </td>
+            </tr>
+            {% ENDIF %}
+
+            {% IF ORDER_FORM_DELIVERY_COMMENT %}
+            <tr>
+              <td class="cell1">Комментарий к заказу</span></td>
+              <td class="cell2">{ORDER_FORM_DELIVERY_COMMENT | nl2br}</td>
+            </tr>
+            {% ENDIF %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- Кнопки переходов -->
+    <div class="stages__buttons">
+      {% IF ORDER_STAGE_NUM=1 %}
+      <a class="button button-secondary" href="{CART_URL}" title="Вернуться назад в вашу корзину покупок"><span>Назад</span></a>
+      {% ELSEIF ORDER_STAGE_NUM=2 %}
+      <a class="button button-secondary" href="{ORDER_STAGE_CONTACTS_URL}" title="Вернуться назад на страницу контактных данных"><span>Назад</span></a>
+      {% ELSEIF ORDER_STAGE_NUM=3 %}
+      <a class="button button-secondary" href="{ORDER_STAGE_DELIVERY_URL}" title="Вернуться назад на страницу выбора варианта доставки"><span>Назад</span></a>
+      {% ELSEIF ORDER_STAGE_NUM=4 %}
+      <a class="button button-secondary" href="{ORDER_STAGE_PAYMENT_URL}" title="Вернуться назад на страницу выбора варианта оплаты заказа"><span>Назад</span></a>
+      {% ENDIF %}
+      <button class="button" type="submit" title="Перейти к следующему шагу"><span>{% IF ORDER_STAGE_NUM=4 %}Оформить заказ{% ELSE %}Далее{% ENDIF %}</span></button>
+    </div>
+
+  </div>
+  {% ENDIF %}
+
+</form>

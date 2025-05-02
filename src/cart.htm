@@ -1,0 +1,203 @@
+<div class="page-cart">
+	{% IF cart_items_empty %}
+	<p class="notice notice--attention">Корзина покупок пуста. Вы можете выбрать нужный товар из <a href="{CATALOG_URL}">каталога</a>.</p>
+	{% ELSE %}
+	<div class="cartInner">
+		<!-- Корзина: Элементы -->
+		<div class="cartTable">
+			<!-- Форма корзины -->
+			<form class="cartTable__form" action="{CART_URL}" method="post">
+				<input type="hidden" name="fast_order" value="1">
+				<input type="hidden" name="hash" value="{HASH}">
+
+				<div class="cartTable__items">
+					<h5 class="orderfast__title">Состав заказа</h5>
+					{% FOR cart_items %}
+					<div class="cartTable__item" data-id="{cart_items.GOODS_ID}" data-mod-id="{cart_items.GOODS_MOD_ID}">
+						<div class="cartTable__image">
+							<img src="{% IF cart_items.GOODS_IMAGE_EMPTY %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ELSE %}{cart_items.GOODS_IMAGE_MEDIUM}{% ENDIF %}" alt="{cart_items.GOODS_NAME}" loading="lazy">
+							<span class="cartTable__image-qty">{cart_items.ORDER_LINE_QUANTITY}</span>
+						</div>
+
+						<div class="cartTable__content">
+							<div class="cartTable__info">
+								<a class="cartTable__name" href="{cart_items.GOODS_URL}" title="{cart_items.GOODS_NAME}">{cart_items.GOODS_NAME}</a>
+								<!-- Если у товара есть отличительные свойства для модификации товара, допишем их к названию товара -->
+								{% IF cart_items.GOODS_MOD_ART_NUMBER %}
+								<dl class="cartTable__art">
+									<dt>Артикул:</dt>
+									<dd>{cart_items.GOODS_MOD_ART_NUMBER};</dd>
+								</dl>
+								{% ENDIF %}
+
+								{% IFNOT cart_items.DISTINCTIVE_PROPERTIES_EMPTY %}
+								<dl class="cartTable__props">
+									{% FOR distinctive_properties %}
+									<dt>{cart_items.distinctive_properties.NAME}:</dt>
+									<dd>{cart_items.distinctive_properties.VALUE};</dd>
+									{% ENDFOR %}
+								</dl>
+								{% ENDIF %}
+							</div>
+
+							<!-- Кол-во -->
+							<div class="cartTable__qty qty {% IF SETTINGS_GOODS_DONT_PUT_TO_CART_MORE_THAN_AVAILABLE %}has-max{% ENDIF %}">
+								<button class="qty__select qty__select--minus" type="button" title="Уменьшить">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="12" height="12" aria-hidden="true">
+										<path d="M960 578H64c-38.4 0-64-21.6-64-54.001s25.6-54 64-54h896c38.4 0 64 21.6 64 54S998.4 578 960 578z" />
+									</svg>
+								</button>
+								<input class="qty__input"
+											 type="number"
+											 name="form[quantity][{cart_items.GOODS_MOD_ID}]"
+											 {% IF SETTINGS_GOODS_DONT_PUT_TO_CART_MORE_THAN_AVAILABLE %}max="{cart_items.GOODS_MOD_REST_VALUE}" {% ENDIF %}
+											 min="1"
+											 value="{cart_items.ORDER_LINE_QUANTITY}"
+											 title="Количество, {cart_items.GOODS_MOD_MEASURE_NAME}">
+								<button class="qty__select qty__select--plus" type="button" title="Увеличить">
+									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="12" height="12" aria-hidden="true">
+										<path d="M960 448H576V64c0-35.346-28.654-64-64-64s-64 28.654-64 64v384H64c-35.346 0-64 28.654-64 64s28.654 64 64 64h384v384c0 35.345 28.654 64 64 64s64-28.655 64-64V576h384c35.345 0 64-28.654 64-64s-28.655-64-64-64z" />
+									</svg>
+								</button>
+							</div>
+
+							<!-- Цена -->
+							<div class="cartTable__price {CURRENCY_CHAR_CODE}">
+								{% IF cart_items.GOODS_MOD_PRICE_OLD > cart_items.GOODS_MOD_PRICE_NOW %}
+								<s class="price__old" data-price="{cart_items.ORDER_LINE_PRICE_OLD}">{cart_items.ORDER_LINE_PRICE_OLD | money_format}</s>
+								{% ENDIF %}
+								<b class="price__now" data-price="{cart_items.ORDER_LINE_PRICE_NOW}">{cart_items.ORDER_LINE_PRICE_NOW | money_format}</b>
+								<b class="price__one" data-price="{cart_items.GOODS_MOD_PRICE_NOW}">{cart_items.GOODS_MOD_PRICE_NOW | money_format}<span>/{cart_items.GOODS_MOD_MEASURE_NAME}</span></b>
+							</div>
+
+							<!-- Удалить -->
+							<a class="cartTable__remove" data-action="removeCartItem" href="{cart_items.ORDER_LINE_DELETE_URL}" title="Удалить позицию" aria-label="Удалить позицию из корзины">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+									<path d="M256 810.667c0 46.933 38.4 85.333 85.333 85.333h341.333c46.933 0 85.333-38.4 85.333-85.333v-512h-512v512zM341.333 384h341.333v426.667h-341.333v-426.667zM661.333 170.667l-42.667-42.667h-213.333l-42.667 42.667h-149.333v85.333h597.333v-85.333h-149.333z"></path>
+								</svg>
+							</a>
+						</div>
+					</div>
+					{% ENDFOR %}
+				</div>
+			</form>
+
+			<!-- Сюда грузится форма оформления быстрого заказа -->
+			<div class="cartTable__order">
+				<div class="cartTable__ajax"></div>
+			</div>
+		</div>
+
+		<!-- Корзина: Итоговый блок -->
+		<div class="cartTotal">
+			<div class="cartTotal__inner">
+				<div class="cartTotal__items">
+					<div class="cartTotal__title">
+						<h4>Общая стоимость</h4>
+						<data class="cart-count" value="{CART_COUNT_TOTAL}">{CART_COUNT_TOTAL}</data>
+						<data class="cart-countend" value="{CART_COUNT_TOTAL}">товар{CART_COUNT_TOTAL | gen_word_end("","а","ов")}</data>
+					</div>
+
+					<!-- Корзина: Минимальная сумма заказа -->
+					{% IF SETTINGS_STORE_ORDER_MIN_ORDER_PRICE %}
+					<div class="cartTotal__item cartTotal__min is-hide">
+						<span class="cartTotal__label">До мин. суммы заказа осталось:</span>
+						<data class="cartTotal__price cartTotal__min-price {CURRENCY_CHAR_CODE}" value="{SETTINGS_STORE_ORDER_MIN_ORDER_PRICE}" data-total="{CART_SUM_NOW_WITH_DISCOUNT}">{SETTINGS_STORE_ORDER_MIN_ORDER_PRICE | money_format}</data>
+					</div>
+					{% ENDIF %}
+					<!-- Корзина: Товары -->
+					<div class="cartTotal__item cartTotal__goods">
+						<span class="cartTotal__label">Стоимость товаров:</span>
+						<data class="cartTotal__price {CURRENCY_CHAR_CODE} cart-sum" value="{CART_SUM_NOW}">{CART_SUM_NOW | money_format}</data>
+					</div>
+
+					<!-- Скидки, действующие на заказ -->
+					{% FOR cart_discount %}
+					{% IF cart_discount.DISCOUNT_IS_ENABLED %}
+					<div class="cartTotal__item cartTotal__discount-info">
+						Доп. скидка
+						{% IF cart_discount.IS_PERCENT %}
+						{cart_discount.DISCOUNT_VALUE}<span class="percent">%</span>
+						{% ELSE %}
+						{cart_discount.DISCOUNT_VALUE | money_format}
+						{% ENDIF %}
+						при заказе от {cart_discount.END_PRICE | money_format}
+					</div>
+					<div class="cartTotal__item cartTotal__discount">
+						<span class="cartTotal__label">{cart_discount.DISCOUNT_NAME}:</span>
+						<data class="cartTotal__price {CURRENCY_CHAR_CODE} discountValue" value="{cart_discount.DISCOUNT_VALUE}">
+							{% IF cart_discount.IS_PERCENT %}
+							{cart_discount.DISCOUNT_VALUE}<span class="percent">%</span>
+							{% ELSE %}
+							{cart_discount.DISCOUNT_VALUE | money_format}
+							{% ENDIF %}
+						</data>
+					</div>
+					{% ENDIF %}
+					{% ENDFOR %}
+
+					<!-- Корзина: Купон -->
+					<div class="cartTotal__item cartTotal__coupons" style="display: none;">
+						<span class="cartTotal__label">Купон:</span>
+						<data class="cartTotal__price {CURRENCY_CHAR_CODE} cart-coupons" value></data>
+					</div>
+
+					<!-- Корзина: Доставка -->
+					<div class="cartTotal__item cartTotal__delivery">
+						<span class="cartTotal__label">Доставка:</span>
+						<data class="cartTotal__price {CURRENCY_CHAR_CODE} cart-delivery" value="{CART_SUM_DELIVERY}">{CART_SUM_DELIVERY | money_format}</data>
+					</div>
+
+					<!-- Корзина: Итого -->
+					<div class="cartTotal__item cartTotal__total">
+						<span class="cartTotal__label">Итого:</span>
+						<data class="cartTotal__price cart-total {CURRENCY_CHAR_CODE}" value="{CART_SUM_NOW_WITH_DELIVERY_AND_DISCOUNT}">{CART_SUM_NOW_WITH_DELIVERY_AND_DISCOUNT | money_format}</data>
+						<data hidden class="cartTotal__price cart-sum" value="{CART_SUM_NOW}">{CART_SUM_NOW | money_format}</data>
+						<data hidden class="cartTotal__price cart-sum-discount" value="{CART_SUM_NOW_WITH_DISCOUNT}">{CART_SUM_NOW_WITH_DISCOUNT | money_format}</data>
+					</div>
+				</div>
+
+				<!-- Корзина: Оформление -->
+				<div class="cartTotal__buttons form__buttons">
+					<!-- Корзина: Промокод -->
+					<div class="cartTotal__coupon coupon__order">
+						<input type="hidden" name="form[coupon]" value="{CART_SUM_NOW}">
+						<input class="coupon__input" type="text" name="form[coupon_code]" value="{ORDER_FORM_COUPON_CODE}" placeholder="Промокод" />
+						<button class="coupon__button" type="button" title="Применить" aria-label="Применить купон">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="16" height="16" aria-hidden="true">
+								<path d="M994.009 149.967c39.985 39.989 39.985 104.823 0 144.812L414.762 874.026c-39.989 39.989-104.823 39.989-144.812 0l-72.406-72.406 651.655-651.653c39.989-39.989 104.824-39.989 144.81 0z" />
+								<path d="M29.992 489.242c39.989-39.989 104.824-39.989 144.812 0L487.163 801.6l-72.407 72.406c-39.988 39.989-104.823 39.989-144.812 0L29.99 634.053c-39.987-39.987-39.987-104.822.002-144.811z" />
+							</svg>
+						</button>
+						<button class="coupon__reset button-icon" type="button" title="Сбросить" aria-label="Сбросить купон">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="18" height="18" aria-hidden="true">
+								<path
+											d="m568.571 512.003 443.715-443.715c15.622-15.622 15.622-40.95 0-56.57s-40.954-15.622-56.57 0L511.999 455.433 68.286 11.718c-15.622-15.622-40.95-15.622-56.57 0s-15.622 40.95 0 56.57l443.713 443.713L11.716 955.716c-15.622 15.622-15.622 40.949 0 56.57a39.925 39.925 0 0 0 12.974 8.681 39.939 39.939 0 0 0 15.312 3.032 39.939 39.939 0 0 0 15.312-3.032 39.94 39.94 0 0 0 12.974-8.681l443.711-443.713 443.711 443.713c7.811 7.811 18.051 11.713 28.285 11.713 10.24 0 20.474-3.903 28.291-11.713 15.622-15.622 15.622-40.949 0-56.57L568.571 512.003z" />
+							</svg>
+						</button>
+					</div>
+
+					<button class="cartTotal__button button-underline" data-action="closeOrder" type="submit" title="Перейти к быстрому оформлению заказа" form="orderform">
+						Изменить заказ
+					</button>
+					<button class="cartTotal__button button-disabled" data-action="startOrder" type="submit" title="Перейти к быстрому оформлению заказа" disabled>
+						Оформить заказ
+					</button>
+					<button class="cartTotal__button button-secondary" data-action="completeOrder" type="submit" title="Перейти к быстрому оформлению заказа" form="orderform">
+						Оформить заказ
+					</button>
+					<a class="cartTotal__button button button-underline" data-action="clearCart" href="{CART_TRUNCATE_URL}" title="Очистить корзину">
+						<span>Очистить корзину</span>
+					</a>
+				</div>
+			</div>
+
+			<small class="cartTotal__pp form__pp">
+				Нажимая на кнопку, я соглашаюсь с условиями
+				<a href="#dialogPolicy" data-dialog="#dialogPolicy">пользовательского соглашения</a>
+			</small>
+
+		</div>
+	</div>
+	{% ENDIF %}
+</div>

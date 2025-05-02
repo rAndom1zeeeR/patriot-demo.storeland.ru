@@ -1,0 +1,16 @@
+<div class="page-client">
+  <p class="notice notice--information">
+    Через <span id="time">10</span> секунд вы будете перенаправлены на страницу <a href="{USER_LOGIN_URL}" title="Вход в личный кабинет">входа в личный кабинет</a>
+  </p>
+</div>
+
+<script type="text/javascript">
+  var r_time = 10;
+  function set_time(time) {
+    if (time < 0) { return false; }
+    document.getElementById('time').innerHTML = time;
+    setTimeout(function () { set_time(time - 1); }, 1000);
+  }
+  set_time(r_time);
+  setTimeout(function () { window.location.href = '{USER_LOGIN_URL}'; }, r_time * 1000);
+</script>

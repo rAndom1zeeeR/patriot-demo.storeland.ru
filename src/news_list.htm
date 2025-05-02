@@ -1,0 +1,58 @@
+<div class="page-news">
+  {% IF news_list_empty %}
+  <p class="notice notice--attention">Пока нет, но обязательно будут</p>
+  {% ELSE %}
+  <!-- Список новостей -->
+  {% FOR news_list %}
+  <article class="news-list__item">
+    <h3>
+      <a href="{news_list.URL}" title="Перейти к странице новости">
+        {news_list.TITLE}
+      </a>
+    </h3>
+
+    {% IF news_list.TEXT_SHORT %}
+    <p>{news_list.TEXT_SHORT}</p>
+    {% ENDIF %}
+
+    {% IF news_list.SHOW_TIME %}
+    <time class="news-list__date" datetime="{news_list.TIME | date('Y-m-d')}">{news_list.TIME | date('d M Y')}</time>
+    {% ENDIF %}
+  </article>
+  {% ENDFOR news_list %}
+
+  <!-- Страницы -->
+  {% IF show_pages %}
+  <ol class="pages">
+    {% IF NEWS_PAGES_SHOW_FIRST %}
+    <li class="pages__first">
+      <a class="pages__link" href="?sid={NEWS_SECTION_ID}&page=1" title="Первая страница">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="16" height="16" aria-hidden="true">
+          <path
+                d="M977.454 557.928H158.899l246.364 246.125a46.522 46.522 0 0 1 10.435 15.094 46.45 46.45 0 0 1 3.773 17.949 46.462 46.462 0 0 1-13.629 33.284 46.582 46.582 0 0 1-33.316 13.618 46.585 46.585 0 0 1-17.966-3.773 46.469 46.469 0 0 1-15.109-10.421L13.63 544.304A46.463 46.463 0 0 1 .001 511.426c0-12.329 4.9-24.151 13.629-32.876l325.821-325.499A46.569 46.569 0 0 1 372.188 140a46.585 46.585 0 0 1 32.512 13.619c8.627 8.622 13.522 20.285 13.629 32.476s-4.588 23.936-13.066 32.707L158.899 464.926h818.555c12.345 0 24.184 4.9 32.913 13.619A46.49 46.49 0 0 1 1024 511.426c0 12.335-4.904 24.162-13.633 32.883s-20.568 13.619-32.913 13.619z" />
+        </svg>
+      </a>
+    </li>
+    <li class="pages__prev">
+      <a class="pages__link" href="?sid={NEWS_SECTION_ID}&page={NEWS_PAGES_PREVIOUS}" title="Предыдущая страница">{NEWS_PAGES_PREVIOUS}</a>
+    </li>
+    {% ENDIF %}
+    <li class="pages__current"><a class="pages__link is-active">{NEWS_PAGES_CURRENT}</a></li>
+    {% IF NEWS_PAGES_SHOW_LAST %}
+    <li class="pages__next">
+      <a class="pages__link" href="?sid={NEWS_SECTION_ID}&page={NEWS_PAGES_NEXT}" title="Следующая страница">{NEWS_PAGES_NEXT}</a>
+    </li>
+    <li class="pages__last">
+      <a class="pages__link" href="?sid={NEWS_SECTION_ID}&page={NEWS_PAGES_LAST}" title="Последняя страница">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="16" height="16" aria-hidden="true">
+          <path
+                d="M46.546 466.072h818.555L618.737 219.947a46.522 46.522 0 0 1-10.435-15.094 46.45 46.45 0 0 1-3.773-17.949 46.462 46.462 0 0 1 13.629-33.284 46.582 46.582 0 0 1 33.316-13.618 46.585 46.585 0 0 1 17.966 3.773 46.469 46.469 0 0 1 15.109 10.421l325.821 325.5a46.463 46.463 0 0 1 13.629 32.878c0 12.329-4.9 24.151-13.629 32.876L684.549 870.949A46.569 46.569 0 0 1 651.812 884a46.585 46.585 0 0 1-32.512-13.619c-8.627-8.622-13.522-20.285-13.629-32.476s4.588-23.936 13.066-32.707l246.364-246.124H46.546a46.574 46.574 0 0 1-32.913-13.619A46.49 46.49 0 0 1 0 512.574c0-12.335 4.904-24.162 13.633-32.883s20.568-13.619 32.913-13.619z" />
+        </svg>
+      </a>
+    </li>
+    {% ENDIF %}
+  </ol>
+  {% ENDIF %}
+
+  {% ENDIF %}
+</div>

@@ -1,0 +1,175 @@
+<div class="page-client">
+	<form class="form__client" action="{USER_SETTINGS_URL}" method="post">
+		<input type="hidden" name="hash" value="{HASH}">
+		<input type="hidden" name="from" value="{FROM}">
+		<!-- Набор полей которые не видит пользователь, но видят боты. Когда они их заполняют мы точно знаем, что их прислал нам бот и мы не сохраняем подобный отзыв о товаре, а боту отправившему отзыв сообщаем, что отзыв добавлен успешно, но будет отображён здесь после прохождения модерации -->
+		{ANTISPAM_CODE}
+		<div class="client">
+
+			<div class="client__block">
+				<h2 class="client__title">Персональные данные</h2>
+
+				<fieldset class="form__fields">
+					<div class="form__field">
+						<label for="sites_client_name">Представьтесь, пожалуйста <small>(обязательно)</small></label>
+						<input id="sites_client_name" type="text" name="form[sites_client_name]" value="{FORM_SITES_CLIENT_NAME}" maxlength="100" placeholder="Представьтесь, пожалуйста" required>
+					</div>
+
+					<div class="form__field">
+						<label for="sites_client_phone">Телефон для связи <small>(обязательно)</small></label>
+						<input id="sites_client_phone" class="form__phone" type="text" name="form[sites_client_phone]" value="{FORM_SITES_CLIENT_PHONE}" maxlength="120" placeholder="Телефон для связи" required>
+					</div>
+
+					<div class="form__field">
+						<label for="sites_client_mail">Электронная почта <small>(обязательно)</small></label>
+						<input id="sites_client_mail" type="text" name="form[sites_client_mail]" value="{FORM_SITES_CLIENT_MAIL}" maxlength="120" placeholder="Электронная почта" required>
+					</div>
+
+					<div class="form__field password">
+						<label for="sites_client_pass">Пароль <small>(обязательно)</small></label>
+						<input id="sites_client_pass" class="password__input" type="password" name="form[sites_client_pass]" value="{FORM_SITES_CLIENT_PASS}" maxlength="50" minlength="6" placeholder="Пароль" required>
+
+						<button class="password__button button-icon" type="button" aria-pressed="false" aria-label="Показать пароль">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+								<path class="svg-lock"
+											d="M800 376h-72.076V211.54C727.924 94.896 631.026 0 511.925 0S295.926 94.896 295.926 211.54V376H224c-66.168 0-120 53.832-120 119.998v408.003C104 970.17 157.832 1024 224 1024h576c66.169 0 119.999-53.83 119.999-119.999V495.998C919.999 429.832 866.169 376 800 376zM375.926 211.54c0-72.532 61.01-131.54 135.999-131.54s136.001 59.008 136.001 131.54V376h-272V211.54zm464.075 692.461c0 22.053-17.943 39.997-40.001 39.997H224c-22.056 0-40-17.943-40-39.997V495.998c0-22.053 17.944-39.997 40-39.997h576c22.058 0 40.001 17.944 40.001 39.997v408.003z" />
+								<path class="svg-lock" d="M512 572.002c-40.872 0-74 33.126-74 73.998 0 26.098 13.52 49.022 33.924 62.194v87.808c0 22.09 17.911 39.997 40.001 39.997s40.001-17.906 40.001-39.997v-87.71c20.489-13.163 34.071-36.133 34.071-62.292 0-40.872-33.126-73.998-73.998-73.998z" />
+								<path class="svg-unlock"
+											d="M800 376H375.926V211.54c0-72.532 61.01-131.54 135.999-131.54s136.001 59.008 136.001 131.54V288h79.998v-76.46C727.924 94.896 631.026 0 511.925 0S295.926 94.896 295.926 211.54V376H224c-66.168 0-120 53.832-120 119.998v408.003C104 970.17 157.832 1024 224 1024h576c66.169 0 119.999-53.83 119.999-119.999V495.998C919.999 429.832 866.169 376 800 376zm40.001 528.001c0 22.053-17.943 39.997-40.001 39.997H224c-22.056 0-40-17.943-40-39.997V495.998c0-22.053 17.944-39.997 40-39.997h576c22.058 0 40.001 17.944 40.001 39.997v408.003z" />
+								<path class="svg-unlock" d="M512 572.002c-40.872 0-74 33.126-74 73.998 0 26.098 13.52 49.022 33.924 62.194v87.808c0 22.09 17.911 39.997 40.001 39.997s40.001-17.906 40.001-39.997v-87.71c20.489-13.163 34.071-36.133 34.071-62.292 0-40.872-33.126-73.998-73.998-73.998z" />
+							</svg>
+						</button>
+					</div>
+
+					<blockquote class="capslock" hidden>
+						<div class="capslock__icon">
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+								<path
+											d="M1012.081 831.996 589.505 102.667C573.377 74.437 544.347 58 512.087 58c-32.256 0-61.29 16.795-77.418 44.667L12.096 831.996c-16.129 27.875-16.129 61.107 0 89.337s45.161 44.668 77.418 44.668h844.79c32.256 0 61.29-16.797 77.418-44.668 16.128-27.875 16.486-61.462.358-89.337zM89.873 876.665l422.215-728.972 422.576 728.614-844.79.358zM557.25 374.96c11.469 13.221 16.486 30.376 14.336 47.528l-41.933 268.003a17.694 17.694 0 0 1-5.943 10.858 17.778 17.778 0 0 1-11.622 4.323 17.79 17.79 0 0 1-11.622-4.323 17.688 17.688 0 0 1-5.939-10.858l-41.574-267.648c-2.512-17.507 2.867-34.662 13.978-47.883 22.938-26.085 67.741-26.085 90.32 0zm7.885 423.091c0 26.8-23.654 48.955-53.047 48.955-29.389 0-53.043-21.797-53.043-48.955s23.654-48.955 53.043-48.955c29.392 0 53.047 21.797 53.047 48.955z" />
+							</svg>
+							<b>Caps Lock включен.</b>
+						</div>
+						<p class="capslock__text">Пароль может быть введен неверно.</p>
+					</blockquote>
+				</fieldset>
+
+				<div class="client__buttons">
+					<button type="submit" title="Сохранить персональные настройки">Сохранить</button>
+				</div>
+			</div>
+
+			<div class="client__block">
+				<h2 class="client__title">Адрес доставки</h2>
+
+				<fieldset class="form__fields">
+					<div class="form__field">
+						<label for="sites_client_country">Страна</label>
+						<input id="sites_client_country" type="text" name="form[sites_client_country]" value="{FORM_SITES_CLIENT_COUNTRY}" maxlength="255" placeholder="Страна">
+					</div>
+
+					<div class="form__field">
+						<label for="sites_client_region">Область</label>
+						<input id="sites_client_region" type="text" name="form[sites_client_region]" value="{FORM_SITES_CLIENT_REGION}" maxlength="255" placeholder="Область">
+					</div>
+
+					<div class="form__field">
+						<label for="sites_client_city">Город</label>
+						<input id="sites_client_city" type="text" name="form[sites_client_city]" value="{FORM_SITES_CLIENT_CITY}" maxlength="255" placeholder="Город">
+					</div>
+
+					<div class="form__field">
+						<label for="sites_client_zip_code">Почтовый индекс</label>
+						<input id="sites_client_zip_code" type="text" name="form[sites_client_zip_code]" value="{FORM_SITES_CLIENT_ZIP_CODE}" maxlength="6" placeholder="Индекс">
+					</div>
+
+					<div class="form__field">
+						<label for="sites_client_addr">Адрес доставки</label>
+						<textarea id="sites_client_addr" rows="4" name="form[sites_client_addr]" placeholder="Адрес">{FORM_SITES_CLIENT_ADDR}</textarea>
+					</div>
+
+				</fieldset>
+
+				<div class="client__buttons">
+					<button type="submit" title="Сохранить персональные настройки"><span>Сохранить</span></button>
+				</div>
+			</div>
+
+			<div class="client__block">
+				<h2 class="client__title">Юридическая информация</h2>
+
+				<fieldset class="form__fields">
+					<div class="form__field">
+						<label for="sites_client_org_name">Наименование организации или ИП</label>
+						<input id="sites_client_org_name" type="text" name="form[sites_client_org_name]" value="{FORM_SITES_CLIENT_ORG_NAME}" minlength="5" placeholder="Наименование организации или ИП">
+					</div>
+
+					<div class="form__field">
+						<label for="sites_client_org_inn">ИНН</label>
+						<input id="sites_client_org_inn" type="text" name="form[sites_client_org_inn]" value="{FORM_SITES_CLIENT_ORG_INN}" minlength="9" maxlength="12" placeholder="ИНН">
+					</div>
+
+					<div class="form__field">
+						<label for="sites_client_org_ogrn">ОГРН</label>
+						<input id="sites_client_org_ogrn" type="text" name="form[sites_client_org_ogrn]" value="{FORM_SITES_CLIENT_ORG_OGRN}" minlength="13" maxlength="15" placeholder="ОГРН">
+					</div>
+
+					<div class="form__field">
+						<label for="sites_client_org_kpp">КПП</label>
+						<input id="sites_client_org_kpp" type="text" name="form[sites_client_org_kpp]" value="{FORM_SITES_CLIENT_ORG_KPP}" minlength="9" maxlength="9" placeholder="КПП">
+					</div>
+
+					<div class="form__field">
+						<label for="sites_client_org_okpo">ОКПО</label>
+						<input id="sites_client_org_okpo" type="text" name="form[sites_client_org_okpo]" value="{FORM_SITES_CLIENT_ORG_OKPO}" minlength="8" maxlength="10" placeholder="ОКПО">
+					</div>
+
+					<div class="form__field">
+						<label for="sites_client_org_address">Юридический адрес</label>
+						<input id="sites_client_org_address" type="text" name="form[sites_client_org_address]" value="{FORM_SITES_CLIENT_ORG_ADDRESS}" minlength="5" placeholder="Юридический адрес">
+					</div>
+
+				</fieldset>
+
+				<div class="client__buttons">
+					<button type="submit" title="Сохранить персональные настройки">Сохранить</button>
+				</div>
+			</div>
+
+			<div class="client__block">
+				<h2 class="client__title">Банковские реквизиты</h2>
+
+				<fieldset class="form__fields">
+					<div class="form__field">
+						<label for="sites_client_bank_account">Расчетный счет</label>
+						<input id="sites_client_bank_account" type="text" name="form[sites_client_bank_account]" value="{FORM_SITES_CLIENT_BANK_ACCOUNT}" minlength="13" maxlength="20" placeholder="Расчетный счет">
+					</div>
+
+					<div class="form__field">
+						<label for="sites_client_bank_bik">БИК</label>
+						<input id="sites_client_bank_bik" type="text" name="form[sites_client_bank_bik]" value="{FORM_SITES_CLIENT_BANK_BIK}" minlength="9" maxlength="9" placeholder="БИК">
+					</div>
+
+					<div class="form__field">
+						<label for="sites_client_bank_name">Название банка</label>
+						<input id="sites_client_bank_name" type="text" name="form[sites_client_bank_name]" value="{FORM_SITES_CLIENT_BANK_NAME}" minlength="5" placeholder="Название банка">
+					</div>
+
+					<div class="form__field">
+						<label for="sites_client_bank_corr_account">Корреспондентский счет</label>
+						<input id="sites_client_bank_corr_account" type="text" name="form[sites_client_bank_corr_account]" value="{FORM_SITES_CLIENT_BANK_CORR_ACCOUNT}" minlength="13" maxlength="20" placeholder="Корреспондентский счет">
+					</div>
+
+					<div class="form__field">
+						<label for="sites_client_bank_address">Адрес банка</label>
+						<input id="sites_client_bank_address" type="text" name="form[sites_client_bank_address]" value="{FORM_SITES_CLIENT_BANK_ADDRESS}" minlength="5" placeholder="Адрес банка">
+					</div>
+				</fieldset>
+
+				<div class="client__buttons">
+					<button type="submit" title="Сохранить персональные настройки">Сохранить</button>
+				</div>
+			</div>
+
+		</div>
+	</form>
+</div>

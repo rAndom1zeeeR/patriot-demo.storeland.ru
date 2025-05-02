@@ -1,0 +1,108 @@
+<div class="page-сallback">
+  {% IF FORM_NOTICE %}
+  <p class="notice notice--{% IF FORM_NOTICE_IS_GOOD %}success{% ELSE %}error{% ENDIF %}">{FORM_NOTICE | nl2br}</p>
+  {% ENDIF %}
+
+  {% IFNOT FORM_NOTICE_IS_GOOD %}
+  <form class="form__callback" method="post" action="{CALLBACK_URL}" enctype="multipart/form-data">
+    <input type="hidden" name="hash" value="{HASH}">
+    <input type="hidden" name="return_to" value="{CALLBACK_URL}">
+    <!-- Набор полей которые не видит пользователь, но видят боты. Когда они их заполняют мы точно знаем, что их прислал нам бот и мы не сохраняем подобный отзыв о товаре, а боту отправившему отзыв сообщаем, что отзыв добавлен успешно, но будет отображён здесь после прохождения модерации -->
+    {ANTISPAM_CODE}
+
+    <fieldset>
+      <div class="form__field">
+        <label for="callback_person">Представьтесь, пожалуйста <small>(обязательно)</small></label>
+        <input id="callback_person" class="form__person" type="text" name="form[{ANTISPAM_FORM_FIELD_NAME_CALLBACK_PERSON}]" value="{FORM_CALLBACK_PERSON}" maxlength="50" placeholder="Ваше имя" required>
+      </div>
+
+      <div class="form__field">
+        <label for="callback_phone">Телефон <small>(обязательно)</small></label>
+        <input id="callback_phone" class="form__phone" type="text" name="form[{ANTISPAM_FORM_FIELD_NAME_CALLBACK_PHONE}]" value="{FORM_CALLBACK_PHONE}" maxlength="20" placeholder="Телефон" autocomplete="tel" required>
+      </div>
+
+      <div class="form__field">
+        <label for="callback_email">Email</label>
+        <input id="callback_email" class="form__email" type="text" name="form[callback_email]" value="{FORM_CALLBACK_EMAIL}" maxlength="50" placeholder="Email" />
+      </div>
+
+      <div class="form__field">
+        <label for="callback_comment">Комментарий</label>
+        <textarea id="callback_comment" class="form__textarea" rows="3" name="form[{ANTISPAM_FORM_FIELD_NAME_CALLBACK_COMMENT}]" placeholder="Комментарий">{FORM_CALLBACK_COMMENT}</textarea>
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <div class="form__field">
+        <label for="callback_country">Страна</label>
+        <input id="callback_country" type="text" name="form[callback_country]" value="{FORM_CALLBACK_COUNTRY}" maxlength="120" placeholder="Страна" />
+      </div>
+
+      <div class="form__field">
+        <label for="callback_region">Область</label>
+        <input id="callback_region" type="text" name="form[callback_region]" value="{FORM_CALLBACK_REGION}" maxlength="120" placeholder="Область" />
+      </div>
+
+      <div class="form__field">
+        <label for="callback_city">Город</label>
+        <input id="callback_city" type="text" name="form[callback_city]" value="{FORM_CALLBACK_CITY}" maxlength="120" placeholder="Город" />
+      </div>
+
+      <div class="form__field">
+        <label for="callback_zip_code">Почтовый индекс</label>
+        <input id="callback_zip_code" type="text" name="form[callback_zip_code]" value="{FORM_CALLBACK_ZIP_CODE}" maxlength="6" placeholder="Почтовый индекс" />
+      </div>
+    </fieldset>
+
+    <fieldset>
+      <div class="form__field">
+        <label for="callback_address">Адрес</label>
+        <input id="callback_address" type="text" name="form[callback_address]" value="{FORM_CALLBACK_ADDRESS}" maxlength="120" placeholder="Адрес" />
+      </div>
+
+      <div class="form__field">
+        <label for="callback_home">Дом</label>
+        <input id="callback_home" type="text" name="form[дом]" value="{FORM_ДОМ}" maxlength="20" placeholder="Дом" />
+      </div>
+
+      <div class="form__field">
+        <label for="callback_place">Квартира</label>
+        <input id="callback_place" type="text" name="form[дом]" value="{FORM_КВАРТИРА}" maxlength="20" placeholder="Квартира" />
+      </div>
+
+      <div class="form__field">
+        <label for="callback_floor">Этаж</label>
+        <input id="callback_floor" type="text" name="form[этаж]" value="{FORM_ЭТАЖ}" maxlength="20" placeholder="Этаж" />
+      </div>
+    </fieldset>
+
+    <fieldset class="form__fields--date">
+      <div class="form__field">
+        <label for="callback_convenient_date">Удобная дата доставки dd.mm.yyyy</label>
+        <input id="callback_convenient_date" type="text" name="form[callback_convenient_date]" value="{FORM_CALLBACK_CONVENIENT_DATE}" maxlength="120" placeholder="dd.mm.yyyy" />
+      </div>
+      <div class="form__field">
+        <label for="callback_convenient_hour_from">Время С:</label>
+        <input id="callback_convenient_hour_from" type="text" name="form[callback_convenient_hour_from]" value="{FORM_CALLBACK_CONVENIENT_HOUR_FROM}" maxlength="120" />
+      </div>
+      <div class="form__field">
+        <label for="callback_convenient_hour_to">Время По:</label>
+        <input id="callback_convenient_hour_to" type="text" name="form[callback_convenient_hour_to]" value="{FORM_CALLBACK_CONVENIENT_HOUR_TO}" maxlength="120" />
+      </div>
+</div>
+</fieldset>
+
+{% IFNOT FORM_SEND_OK %}
+<div class="form__buttons">
+  <button type="submit" title="Отправить">Отправить</button>
+
+  <small class="form__pp">
+    Я принимаю условия
+    <a href="#dialogPolicy" data-dialog="#dialogPolicy">политикой конфиденциальности</a>
+  </small>
+</div>
+{% ENDIF %}
+
+</form>
+{% ENDIF %}
+</div>

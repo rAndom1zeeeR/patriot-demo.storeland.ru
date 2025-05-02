@@ -1,0 +1,33 @@
+<div class="page-error">
+  {% IF FORM_NOTICE %}
+  <p class="notice notice--{% IF FORM_NOTICE_IS_GOOD %}success{% ELSE %}error{% ENDIF %}">{FORM_NOTICE | nl2br}</p>
+  {% ENDIF %}
+
+  <div class="error__block">
+    <h2>Ой, страничка не найдена...</h2>
+    <p>{MSG}</p>
+  </div>
+
+  <div class="error__block">
+    <h3>Запрашиваемая Вами страница не найдена, и у нас есть прекрасная догадка, почему!</h3>
+    <ul>
+      <li>Если вы набрали URL напрямую, убедитесь, что написание является правильным.</li>
+      <li>Если вы нажали на ссылку, чтобы попасть сюда, ссылка устарела.</li>
+    </ul>
+  </div>
+
+  <div class="error__block">
+    <h3>Что делать? Не бойтесь, помощь рядом!</h3>
+    <ul>
+      <li>Вернуться на <a class="button button-link" href="{INDEX_PAGE_URL}">Главную</a> или <a class="button button-link" href="{CATALOG_URL}">в каталог</a>.</li>
+      <li>Используйте строку поиска в верхней части страницы для поиска нужных товаров.</li>
+      <li>Отправить письмо админиcтрации сайта через форму <a class="button button-link" href="{FEEDBACK_URL}">Обратной связи</a></li>
+    </ul>
+  </div>
+</div>
+
+<style>
+  .headline {
+    display: none;
+  }
+</style>

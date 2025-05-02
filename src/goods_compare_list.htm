@@ -1,0 +1,300 @@
+<div class="page-compare">
+  {% IF compare_list_empty %}
+  <p class="notice notice--attention">Ваш список сравнения пуст. Вы можете добавлять сюда товары из <a href="{CATALOG_URL}" title="Перейти в Каталог">каталога</a> и сравнивать их между собой.</p>
+  <a class="button" href="{CATALOG_URL}" title="Назад в Каталог">Назад</a>
+  {% ELSE %}
+  <div class="compare__table">
+    <!-- Фильтры таблицы сравнения -->
+    <div class="compare__nav headline headline--navigation">
+      <div class="compare__switcher">
+        <label for="compare_show_differences" aria-label="Показать только отличия">
+          <input id="compare_show_differences" type="checkbox" />
+          <span data-text-hide="Только отличия" data-text-show="Показать все"></span>
+        </label>
+      </div>
+      <div class="swiper-navigation">
+        <div class="swiper-button-prev"></div>
+        <div class="swiper-button-next"></div>
+      </div>
+    </div>
+
+    <!-- Тело таблицы сравнения товаров -->
+    <div class="compare__tbody">
+      <!-- Строка №1 Главное изображение товара и галлерея изображений -->
+      <div class="compare__line swiper">
+        <div class="compare__content swiper-wrapper">
+          {% FOR goods_mod_info %}
+          <div class="compare__item swiper-slide">
+            <div class="compare__image">
+              <img src="{% IF goods_mod_info.GOODS_IMAGE_EMPTY %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ELSE %}{goods_mod_info.GOODS_IMAGE_MEDIUM}{% ENDIF %}" alt="{goods_mod_info.GOODS_NAME}" loading="lazy">
+            </div>
+            <a class="compare__remove button button-icon" href="{COMPARE_DELETE_URL}?id={goods_mod_info.GOODS_MOD_ID}" title="Убрать из таблицы сравнения" aria-label="Убрать из таблицы сравнения">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="18" height="18" aria-hidden="true">
+                <path
+                      d="m568.571 512.003 443.715-443.715c15.622-15.622 15.622-40.95 0-56.57s-40.954-15.622-56.57 0L511.999 455.433 68.286 11.718c-15.622-15.622-40.95-15.622-56.57 0s-15.622 40.95 0 56.57l443.713 443.713L11.716 955.716c-15.622 15.622-15.622 40.949 0 56.57a39.925 39.925 0 0 0 12.974 8.681 39.939 39.939 0 0 0 15.312 3.032 39.939 39.939 0 0 0 15.312-3.032 39.94 39.94 0 0 0 12.974-8.681l443.711-443.713 443.711 443.713c7.811 7.811 18.051 11.713 28.285 11.713 10.24 0 20.474-3.903 28.291-11.713 15.622-15.622 15.622-40.949 0-56.57L568.571 512.003z" />
+              </svg>
+            </a>
+          </div>
+          {% ENDFOR %}
+        </div>
+      </div>
+      <!-- /END Строка №1 Главное изображение товара и галлерея изображений -->
+
+      <!-- Строка №2 Название товара -->
+      <div class="compare__line swiper">
+        <div class="compare__content swiper-wrapper">
+          {% FOR goods_mod_info %}
+          <div class="compare__item swiper-slide">
+            <a class="compare__name" href="{goods_mod_info.GOODS_MOD_URL}" title="Перейти в товар {goods_mod_info.GOODS_NAME}"><span>{goods_mod_info.GOODS_NAME}</span></a>
+            <!-- Если у товара есть отличительные свойства для модификации товара, допишем их к названию товара -->
+            {% IFNOT goods_mod_info.goods_mod_distinctive_properties_empty %}
+            <dl class="compare__mod">
+              {% FOR goods_mod_distinctive_properties %}
+              <dt>{goods_mod_info.goods_mod_distinctive_properties.NAME}:</dt>
+              <dd>{goods_mod_info.goods_mod_distinctive_properties.VALUE};</dd>
+              {% ENDFOR %}
+            </dl>
+            {% ENDIF %}
+          </div>
+          {% ENDFOR %}
+        </div>
+      </div>
+      <!-- /END Строка №2 Название товара -->
+
+      <!-- Строка №3 В корзину -->
+      <div class="compare__line swiper">
+        <div class="compare__content swiper-wrapper">
+          {% FOR goods_mod_info %}
+          <div class="compare__item swiper-slide">
+            <form class="product__form" action="{CART_ADD_GOODS_MODIFICATION_URL}" method="post" data-id="{goods_mod_info.GOODS_MOD_ID}">
+              <input type="hidden" name="hash" value="{HASH}">
+              <!-- <input type="hidden" name="form[goods_id]" value="{goods.ID}"> -->
+              <input type="hidden" name="form[goods_mod_id]" value="{goods_mod_info.GOODS_MOD_ID}">
+              <input type="hidden" name="form[goods_name]" value="{goods_mod_info.NAME}">
+              <input type="hidden" name="form[goods_desc]" value="{goods_mod_info.DESCRIPTION_SHORT}" itemprop="description">
+              <input type="hidden" name="form[goods_sku]" value="{goods_mod_info.ART_NUMBER}" itemprop="sku">
+              <!-- <input type="hidden" name="form[goods_from]" value="{goods_mod_info.GOODS_FROM}">
+              <input type="hidden" name="form[goods_count]" value="1" class="goodsDataCount">
+              <input type="hidden" name="form[goods_min_rest]" value="{goods.MIN_REST_VALUE}">
+              <input type="hidden" name="form[goods_url]" value="{goods_mod_info.GOODS_MOD_URL}">
+              <input type="hidden" name="form[goods_image]" value="{% IF goods_mod_info.GOODS_IMAGE_EMPTY %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ELSE %}{goods_mod_info.GOODS_IMAGE_SMALL}{% ENDIF %}"> -->
+
+              <!-- Добавление товара в корзину -->
+              <div class="compare__cart">
+                {% IF goods_mod_info.REST_VALUE=0 %}
+                <button class="add-notify" type="button" title="Уведомить о поступлении" data-dialog="#dialogNotify">
+                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" aria-hidden="true">
+                    <path d="M12 22c1.1 0 2-.9 2-2h-4a2 2 0 0 0 2 2zm6-6v-5c0-3.07-1.64-5.64-4.5-6.32V4c0-.83-.67-1.5-1.5-1.5s-1.5.67-1.5 1.5v.68C7.63 5.36 6 7.92 6 11v5l-2 2v1h16v-1l-2-2z" />
+                  </svg>
+                  <span>Уведомить</span>
+                </button>
+                {% ELSE %}
+                <button class="add-cart icon-hover"
+                        type="button"
+                        data-href="{CART_ADD_GOODS_MODIFICATION_URL | url_amp}?hash={HASH | url_amp}&amp;form%5Bgoods_from%5D={goods_mod_info.GOODS_FROM}&amp;form%5Bgoods_mod_id%5D={goods_mod_info.PRICE_NOW_ID}"
+                        title="Добавить в корзину &laquo;{goods_mod_info.GOODS_NAME}&raquo;">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+                    <path class="icon-hover__inert"
+                          d="M837.566 669.574c31.118-23.378 53.656-55.338 65.202-92.46L1024 218.204H244.674l-8.598-95.34c-3.117-34.73-19.057-65.236-42.986-87.164l-.1-.09C169.223 13.754 137.379.356 102.406.356H0V80.3h102.286c28.378 0 51.66 21.318 54.16 49.668l62.596 694.064c6.098 61.244 52.08 109.084 110.83 119.052 15.666 46.758 59.854 80.558 111.818 80.558 50.994 0 94.52-32.544 110.93-77.946h93.918c16.41 45.402 59.936 77.946 110.93 77.946 65.02 0 117.918-52.9 117.918-117.918s-52.898-117.918-117.918-117.918c-50.994 0-94.52 32.544-110.93 77.946H552.62c-16.41-45.402-59.936-77.946-110.93-77.946-49.288 0-91.584 30.406-109.18 73.436-18.318-7.272-31.772-24.21-33.9-44.968l-9.958-110.412h440.836c39.1.002 76.472-12.546 108.078-36.288zm-80.094 198.178c20.94 0 37.974 17.034 37.974 37.974S778.412 943.7 757.472 943.7c-20.94 0-37.974-17.034-37.974-37.974s17.034-37.974 37.974-37.974zm-315.78 0c20.94 0 37.974 17.034 37.974 37.974S462.632 943.7 441.692 943.7s-37.974-17.034-37.974-37.974 17.034-37.974 37.974-37.974zm-160.248-241.83v-.002l-29.562-327.772h660.732L826.53 553.05c-13.2 42.906-53.104 72.872-97.038 72.872H281.444z" />
+                    <path class="icon-hover__active"
+                          d="M837.566 669.574c31.118-23.378 53.656-55.338 65.202-92.46L1024 218.204H244.674l-8.598-95.34A134 134 0 0 0 192.99 35.61 134.006 134.006 0 0 0 102.286.356H0V80.3h102.286c28.378 0 51.66 21.318 54.16 49.668l62.596 694.064c6.098 61.244 52.08 109.084 110.83 119.052 15.666 46.758 59.854 80.558 111.818 80.558 50.994 0 94.52-32.544 110.93-77.946h93.918c16.41 45.402 59.936 77.946 110.93 77.946 65.02 0 117.918-52.9 117.918-117.918s-52.898-117.918-117.918-117.918c-50.994 0-94.52 32.544-110.93 77.946H552.62c-16.41-45.402-59.936-77.946-110.93-77.946-49.288 0-91.584 30.406-109.18 73.436-18.318-7.272-31.772-24.21-33.9-44.968l-9.958-110.412h440.836c39.1.002 76.472-12.546 108.078-36.288z" />
+                  </svg>
+                  <span>Купить</span>
+                </button>
+                {% ENDIF %}
+              </div>
+              <!-- /END Добавление товара в корзину -->
+            </form>
+          </div>
+          {% ENDFOR %}
+        </div>
+      </div>
+      <!-- /END Строка №3 В корзину -->
+
+      <!-- Строка №4 Цены товарных модификаций -->
+      <div class="compare__line swiper {% IF GOODS_MOD_COST_NOW_IS_SAME %}is-same{% ENDIF %}">
+        <div class="compare__title">
+          <label for="compare_tb_check_price">Цена</label>
+          <input class="compare__input square" type="checkbox" id="compare_tb_check_price">
+        </div>
+        <div class="compare__content swiper-wrapper">
+          {% FOR goods_mod_info %}
+          <div class="compare__item swiper-slide">
+            <div class="compare__price {CURRENCY_CHAR_CODE}">
+              {% IF goods_mod_info.PRICE_NOW_WITHOUT_DISCOUNT > goods_mod_info.PRICE_NOW %}
+              <s class="price__old" data-price="{goods_mod_info.PRICE_NOW_WITHOUT_DISCOUNT}">{goods_mod_info.PRICE_NOW_WITHOUT_DISCOUNT | money_format}</s>
+              {% ELSEIF goods_mod_info.PRICE_OLD > goods_mod_info.PRICE_NOW %}
+              <s class="price__old" data-price="{goods_mod_info.PRICE_OLD}">{goods_mod_info.PRICE_OLD | money_format}</s>
+              {% ENDIF %}
+              <b class="price__now" data-price="{goods_mod_info.PRICE_NOW}">{goods_mod_info.PRICE_NOW | money_format}</b>
+            </div>
+          </div>
+          {% ENDFOR %}
+        </div>
+      </div>
+      <!-- /END Строка №4 Цены товарных модификаций -->
+
+      <!-- Строка №5 Наличие товарных модификаций -->
+      <!-- В зависимости от настроек на сайте покажем либо количественное отображение остатка товаров, либо текстовое -->
+      {% IF SETTINGS_COMPARE_REST_VALUE_DISPLAY_TYPE=1%}
+      <div class="compare__line swiper {% IF GOODS_MOD_REST_VALUE_IS_SAME %}is-same{% ENDIF %}">
+        <div class="compare__title">
+          <label for="compare_tb_check_rest">Наличие</label>
+          <input class="compare__input square" type="checkbox" id="compare_tb_check_rest">
+        </div>
+        <div class="compare__content swiper-wrapper">
+          {% FOR goods_mod_info %}
+          <div class="compare__item swiper-slide">
+            <span>{goods_mod_info.REST_VALUE} {goods_mod_info.MEASURE_NAME}</span>
+          </div>
+          {% ENDFOR %}
+        </div>
+      </div>
+      {% ELSE %}
+      <div class="compare__line swiper {% IF GOODS_MOD_REST_BOOLEAN_IS_SAME %}is-same{% ENDIF %}">
+        <div class="compare__title">
+          <label for="compare_tb_check_rest">Наличие</label>
+          <input class="compare__input square" type="checkbox" id="compare_tb_check_rest">
+        </div>
+        <div class="compare__content swiper-wrapper">
+          {% FOR goods_mod_info %}
+          <div class="compare__item swiper-slide">
+            <span>{% IF goods_mod_info.REST_VALUE=0 %}Товара нет в наличии{% ELSE %}Товар есть в наличии{% ENDIF %}</span>
+          </div>
+          {% ENDFOR %}
+        </div>
+      </div>
+      {% ENDIF %}
+      <!-- END Строка №5 Наличие товарных модификаций -->
+
+      <!-- Строка с артикулом покажется, если она заполнена хотя бы для одной товарной модификации -->
+      <!-- Строка №6 Артикул товара -->
+      {% IFNOT GOODS_ART_NUMBER_IS_EMPTY_FOR_ALL %}
+      <div class="compare__line swiper {% IF GOODS_ART_NUMBER_IS_SAME %}is-same{% ENDIF %}">
+        <div class="compare__title">
+          <label for="compare_tb_check_art_number">Артикул</label>
+          <input class="compare__input square" type="checkbox" id="compare_tb_check_art_number">
+        </div>
+        <div class="compare__content swiper-wrapper">
+          {% FOR goods_mod_info %}
+          <div class="compare__item swiper-slide">
+            <span>{% IF goods_mod_info.ART_NUMBER %}{goods_mod_info.ART_NUMBER}{% ELSE %}Не указан{% ENDIF %}</span>
+          </div>
+          {% ENDFOR %}
+        </div>
+      </div>
+      {% ENDIF %}
+      <!-- END Строка №6 Артикул товара -->
+
+      <!-- Строки №7 и т.д - Характеристики товаров -->
+      {% FOR goods_attr_list %}
+      <div class="compare__line swiper {% IF goods_attr_list.IS_SAME %}is-same{% ENDIF %}">
+        <div class="compare__title">
+          <label for="compare_tb_check_attr_{goods_attr_list.ID}">{goods_attr_list.NAME}</label>
+          <input class="compare__input square" type="checkbox" id="compare_tb_check_attr_{goods_attr_list.ID}">
+        </div>
+        <div class="compare__content swiper-wrapper">
+          {% FOR values %}
+          <div class="compare__item swiper-slide">
+            {% IF goods_attr_list.values.VALUE %}
+            {goods_attr_list.values.VALUE}
+            {% ELSE %}
+            <svg class="compare__remove-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="14" height="14" aria-hidden="true">
+              <path
+                    d="m568.571 512.003 443.715-443.715c15.622-15.622 15.622-40.95 0-56.57s-40.954-15.622-56.57 0L511.999 455.433 68.286 11.718c-15.622-15.622-40.95-15.622-56.57 0s-15.622 40.95 0 56.57l443.713 443.713L11.716 955.716c-15.622 15.622-15.622 40.949 0 56.57a39.925 39.925 0 0 0 12.974 8.681 39.939 39.939 0 0 0 15.312 3.032 39.939 39.939 0 0 0 15.312-3.032 39.94 39.94 0 0 0 12.974-8.681l443.711-443.713 443.711 443.713c7.811 7.811 18.051 11.713 28.285 11.713 10.24 0 20.474-3.903 28.291-11.713 15.622-15.622 15.622-40.949 0-56.57L568.571 512.003z" />
+            </svg>
+            {% ENDIF %}
+          </div>
+          {% ENDFOR %}
+        </div>
+      </div>
+      {% ENDFOR %}
+      <!-- END Строки №7 и т.д - Характеристики товаров -->
+
+      <!-- Строка №8 Описание товара -->
+      <!-- В зависимости от настроек на сайте покажем либо полное описание товарной модификации, либо краткое
+      {% IF SETTINGS_COMPARE_DESCRIPTION_DISPLAY_TYPE=1 %}
+        Строка с полным описанием товара покажется, если оно заполнено хотя бы для одной товарной модификации
+        {% IFNOT GOODS_GOODS_DESC_LARGE_IS_EMPTY_FOR_ALL %}
+        <div style="display: none;" class="compare__line {% IF GOODS_GOODS_DESC_LARGE_IS_SAME %}is-same{% ENDIF %}">
+          <div class="compare__title">
+            <label for="compare_tb_check_description_large">Описание</label>
+            <input class="compare__input square" type="checkbox" id="compare_tb_check_description_large">
+          </div>
+          <div class="compare__content swiper-wrapper">
+            {% FOR goods_mod_info %}
+            <div class="compare__item swiper-slide">
+              <div class="html-description">
+                {% IF goods_mod_info.GOODS_DESCRIPTION_SHORT %}
+                  <div>{goods_mod_info.GOODS_DESCRIPTION_SHORT}</div>
+                {% ENDIF %}
+                {% IF goods_mod_info.GOODS_DESCRIPTION_LARGE %}
+                  <div>{goods_mod_info.GOODS_DESCRIPTION_LARGE}</div>
+                {% ENDIF %}
+              </div>
+            </div>
+          {% ENDFOR %}
+          </div>
+        </div>
+        {% ENDIF %}
+      {% ELSE %}
+       Строка с кратким описанием товара покажется, если оно заполнено хотя бы для одной товарной модификации
+        {% IFNOT GOODS_GOODS_DESC_SHORT_IS_EMPTY_FOR_ALL %}
+        <div style="display: none;" class="compare__line {% IF GOODS_GOODS_DESC_SHORT_IS_SAME %}is-same{% ENDIF %}">
+          <div class="compare__title">
+            <label for="compare_tb_check_description_short">Описание</label>
+            <input class="compare__input square" type="checkbox" id="compare_tb_check_description_short">
+          </div>
+          <div class="compare__content swiper-wrapper">
+            {% FOR goods_mod_info %}
+            <div class="compare__item swiper-slide">
+              <div class="html-description">
+                {% IF goods_mod_info.GOODS_DESCRIPTION_SHORT %}
+                  <p>{goods_mod_info.GOODS_DESCRIPTION_SHORT}</p>
+                {% ENDIF %}
+                {% IF goods_mod_info.GOODS_DESCRIPTION_LARGE%}
+                  <p>{goods_mod_info.GOODS_DESCRIPTION_LARGE}</p>
+                {% ENDIF %}
+              </div>
+            </div>
+            {% ENDFOR %}
+          </div>
+        </div>
+        {% ENDIF %}
+      {% ENDIF %}
+      END Строка №8 Описание товара -->
+    </div>
+    <!-- END Тело таблицы сравнения товаров -->
+
+    <!-- Управление выбранными строками -->
+    <div class="compare__buttons">
+      <button class="compare__button-hide is-hide" type="button" title="Скрыть выбранные">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="24" height="24" aria-hidden="true">
+          <path d="m5.24 22.51 1.43-1.42A14.06 14.06 0 0 1 3.07 16C5.1 10.93 10.7 7 16 7a12.38 12.38 0 0 1 4 .72l1.55-1.56A14.72 14.72 0 0 0 16 5 16.69 16.69 0 0 0 1.06 15.66a1 1 0 0 0 0 .68 16 16 0 0 0 4.18 6.17Z" />
+          <path
+                d="M12 15.73a4 4 0 0 1 3.7-3.7l1.81-1.82a6 6 0 0 0-7.33 7.33ZM30.94 15.66a16.4 16.4 0 0 0-5.74-7.44L30 3.41 28.59 2 2 28.59 3.41 30l5.1-5.1A15.29 15.29 0 0 0 16 27a16.69 16.69 0 0 0 14.94-10.66 1 1 0 0 0 0-.68ZM20 16a4 4 0 0 1-6 3.44L19.44 14a4 4 0 0 1 .56 2Zm-4 9a13.05 13.05 0 0 1-6-1.58l2.54-2.54a6 6 0 0 0 8.35-8.35l2.87-2.87A14.54 14.54 0 0 1 28.93 16C26.9 21.07 21.3 25 16 25Z" />
+          <path fill="none" d="M0 0h32v32H0z" data-name="&lt;Transparent Rectangle&gt;" />
+        </svg>
+        <span>Скрыть выбранные</span>
+      </button>
+      <button class="compare__button-show button-secondary is-hide" type="button" title="Отобразить скрытые">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" width="24" height="24" aria-hidden="true">
+          <path d="M30.94 15.66A16.69 16.69 0 0 0 16 5 16.69 16.69 0 0 0 1.06 15.66a1 1 0 0 0 0 .68A16.69 16.69 0 0 0 16 27a16.69 16.69 0 0 0 14.94-10.66 1 1 0 0 0 0-.68ZM16 25c-5.3 0-10.9-3.93-12.93-9C5.1 10.93 10.7 7 16 7s10.9 3.93 12.93 9C26.9 21.07 21.3 25 16 25Z" />
+          <path d="M16 10a6 6 0 1 0 6 6 6 6 0 0 0-6-6Zm0 10a4 4 0 1 1 4-4 4 4 0 0 1-4 4Z" />
+          <path fill="none" d="M0 0h32v32H0z" data-name="&lt;Transparent Rectangle&gt;" />
+        </svg>
+        <span>Отобразить скрытые</span>
+      </button>
+      <a class="button button-disabled" href="{COMPARE_RESET_URL}" title="Очистить список сравнения">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" width="24" height="24" aria-hidden="true">
+          <path d="M368 176c-8.832 0-16 7.168-16 16 0 88.224-71.776 160-160 160S32 280.224 32 192 103.776 32 192 32c42.952 0 83.272 16.784 113.536 47.264 6.224 6.264 16.36 6.304 22.624.08 6.272-6.224 6.304-16.36.08-22.632C291.928 20.144 243.536 0 192 0 86.128 0 0 86.128 0 192s86.128 192 192 192c105.864 0 192-86.128 192-192 0-8.832-7.168-16-16-16z" />
+          <path
+                d="m214.624 192 36.688-36.688c6.248-6.248 6.248-16.376 0-22.624s-16.376-6.248-22.624 0L192 169.376l-36.688-36.688c-6.24-6.248-16.384-6.248-22.624 0-6.248 6.248-6.248 16.376 0 22.624L169.376 192l-36.688 36.688c-6.248 6.248-6.248 16.376 0 22.624C135.808 254.44 139.904 256 144 256s8.192-1.56 11.312-4.688L192 214.624l36.688 36.688C231.816 254.44 235.904 256 240 256s8.184-1.56 11.312-4.688c6.248-6.248 6.248-16.376 0-22.624L214.624 192z" />
+        </svg>
+        <span>Очистить список</span>
+      </a>
+    </div>
+    <!-- END Управление выбранными строками -->
+  </div>
+  {% ENDIF %}
+</div>

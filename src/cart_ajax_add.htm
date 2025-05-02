@@ -1,0 +1,108 @@
+{% IF FORM_NOTICE %}
+<div class="cartItems__modal">
+	<p class="notice notice--{% IF FORM_NOTICE_IS_GOOD %}success{% ELSE %}error{% ENDIF %}">{FORM_NOTICE | nl2br}</p>
+
+	<!-- Отображаем подробную информацию о последнем добавленном товаре в корзину -->
+	{% FOR cart_items %}
+	{% IF cart_items.GOODS_MOD_ID = FORM_GOODS_MOD_ID || cart_items.GOODS_ID = FORM_GOODS_ID %}
+	<div class="cartItems">
+		<div class="cartItems__image">
+			<img src="{% IF cart_items.GOODS_IMAGE_EMPTY %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ELSE %}{cart_items.GOODS_IMAGE_ICON}{% ENDIF %}" alt="{cart_items.GOODS_TITLE}" loading="lazy">
+		</div>
+
+		<div class="cartItems__content">
+			<a class="cartItems__name" href="{cart_items.GOODS_URL}" title="{cart_items.GOODS_TITLE}">{cart_items.GOODS_NAME}</a>
+			{% IF cart_items.GOODS_MOD_ART_NUMBER %}
+			<div class="cartItems__art">{cart_items.GOODS_MOD_ART_NUMBER}</div>
+			{% ENDIF %}
+			<div class="cartItems__price {CURRENCY_CHAR_CODE}">
+				{% IF cart_items.ORDER_LINE_PRICE_OLD > cart_items.ORDER_LINE_PRICE_NOW %}
+				<s class="price__old" data-price="{cart_items.ORDER_LINE_PRICE_OLD}">{cart_items.ORDER_LINE_PRICE_OLD | money_format}</s>
+				{% ENDIF %}
+				<b class="price__now" data-price="{cart_items.ORDER_LINE_PRICE_NOW}">{cart_items.ORDER_LINE_PRICE_NOW | money_format}</b>
+			</div>
+		</div>
+
+	</div>
+	{% ENDIF %}
+	{% ENDFOR %}
+</div>
+{% ENDIF %}
+
+<!-- Блок для обновления данных корзины. Не виден пользователю -->
+<div style="display:none;" id="newCartCount">{CART_COUNT_TOTAL}</div>
+<div style="display:none;" id="newCartWord">товар{CART_COUNT_TOTAL | gen_word_end("","а","ов")}</div>
+<div style="display:none;" id="newCartSum">{CART_SUM_NOW}</div>
+<div style="display:none;" id="newCartSumFormated">{CART_SUM_NOW | money_format}</div>
+<div style="display:none;" id="newCartSumDiscount">{CART_SUM_NOW_WITH_DISCOUNT}</div>
+<div style="display:none;" id="newCartSumDiscountFormated">{CART_SUM_NOW_WITH_DISCOUNT | money_format}</div>
+<div style="display:none;" id="newCartSumTotal">{CART_SUM_NOW_WITH_DELIVERY_AND_DISCOUNT}</div>
+<div style="display:none;" id="newCartSumTotalFormated">{CART_SUM_NOW_WITH_DELIVERY_AND_DISCOUNT | money_format}</div>
+<div style="display:none;" id="newCartData">
+	<form class="addto__form" action="{CART_URL}" method="post">
+		<input type="hidden" name="fast_order" value="1">
+		<input type="hidden" name="hash" value="{HASH}">
+		{% FOR cart_items %}
+		<div class="addto__item" data-id="{cart_items.GOODS_ID}" data-mod-id="{cart_items.GOODS_MOD_ID}">
+			<div class="addto__image">
+				<img src="{% IF cart_items.GOODS_IMAGE_EMPTY %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ELSE %}{cart_items.GOODS_IMAGE_ICON}{% ENDIF %}" alt="{cart_items.GOODS_NAME}" loading="lazy">
+			</div>
+
+			<div class="addto__content">
+				<a class="addto__name" href="{cart_items.GOODS_URL}" title="Перейти на страницу товара">{cart_items.GOODS_NAME}</a>
+				<div class="addto__price {CURRENCY_CHAR_CODE}">
+					<span class="addto__price-count">{cart_items.ORDER_LINE_QUANTITY} x</span>
+					{% IF cart_items.GOODS_MOD_PRICE_OLD > cart_items.GOODS_MOD_PRICE_NOW %}
+					<s class="price__old" data-price="{cart_items.ORDER_LINE_PRICE_OLD}">{cart_items.ORDER_LINE_PRICE_OLD | money_format}</s>
+					{% ENDIF %}
+					<b class="price__now" data-price="{cart_items.ORDER_LINE_PRICE_NOW}">{cart_items.ORDER_LINE_PRICE_NOW | money_format}</b>
+				</div>
+				<small class="addto__mods">
+					{% FOR distinctive_properties %}
+					<span>{cart_items.distinctive_properties.NAME}:</span>
+					<b>{cart_items.distinctive_properties.VALUE};</b>
+					{% ENDFOR %}
+				</small>
+			</div>
+
+			<a class="addto__remove button-icon" href="{cart_items.ORDER_LINE_DELETE_URL}" data-qty="{cart_items.ORDER_LINE_QUANTITY}" title="Удалить позицию {cart_items.GOODS_NAME}">
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+					<path d="M256 810.667c0 46.933 38.4 85.333 85.333 85.333h341.333c46.933 0 85.333-38.4 85.333-85.333v-512h-512v512zM341.333 384h341.333v426.667h-341.333v-426.667zM661.333 170.667l-42.667-42.667h-213.333l-42.667 42.667h-149.333v85.333h597.333v-85.333h-149.333z"></path>
+				</svg>
+			</a>
+		</div>
+		{% ENDFOR cart_items %}
+	</form>
+
+	<div class="addto__buttons">
+		<!-- Скидки, действующие на заказ -->
+		{% FOR cart_discount %}
+		{% IF cart_discount.DISCOUNT_IS_ENABLED %}
+		<div class="addto__discount {CURRENCY_CHAR_CODE}">
+			<span>{cart_discount.DISCOUNT_NAME}:</span>
+			<data class="cartTotal__price {CURRENCY_CHAR_CODE} discountValue" value="{cart_discount.DISCOUNT_VALUE}">
+				{% IF cart_discount.IS_PERCENT %}
+				{cart_discount.DISCOUNT_VALUE}
+				<span class="percent">%</span>
+				{% ELSE %}
+				{cart_discount.DISCOUNT_VALUE | money_format}
+				{% ENDIF %}
+			</data>
+		</div>
+		{% ELSE %}
+		<div class="addto__discount {CURRENCY_CHAR_CODE} is-hide"></div>
+		{% ENDIF %}
+		{% ENDFOR %}
+		<div class="addto__total {CURRENCY_CHAR_CODE}">
+			<span>Итого:</span>
+			<data class="price__now cart-sum-discount" value="{CART_SUM_NOW_WITH_DISCOUNT}">{CART_SUM_NOW_WITH_DISCOUNT | money_format}</data>
+		</div>
+		<a class="addto__button button" href="{CART_URL}" rel="nofollow">Оформить заказ</a>
+		<a class="addto__clear button button-underline" href="{CART_TRUNCATE_URL}" title="Очистить корзину" rel="nofollow">
+			<span>Очистить корзину</span>
+		</a>
+	</div>
+
+	<!-- Пустая корзина -->
+	<div class="addto__empty">В корзине пока ничего нет</div>
+</div>

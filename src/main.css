@@ -205,8 +205,9 @@
 
 
 /*
-** Шапка. Промо
+** Щапка.
 */
+.header__bottom {box-shadow: 0 4px 20px rgb(72 69 69 / 5%);}
 .header-promo__list {
 	display: flex;
 	gap: 24px;
@@ -218,7 +219,7 @@
 	list-style: none;
 	scroll-snap-type: x mandatory;
 }
-.header-promo__item {display: flex;gap: 8px;align-items: center;white-space: nowrap;scroll-snap-align: start;}
+.header-promo__item {display: flex;gap: 12px;align-items: center;white-space: nowrap;scroll-snap-align: start;}
 .header-promo__item svg {flex-shrink: 0;}
 @media all and (max-width: 1023px) {
 	.header-promo__item {font-size: var(--text-size-regular);}

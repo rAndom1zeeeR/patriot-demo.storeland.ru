@@ -103,6 +103,9 @@ function scripts() {
 }
 
 function styles() {
+  return src(["src/{main,default}.css"]).pipe(dest("build/static")).pipe(wait(WAIT_TIME)).pipe(browserSync.stream());
+}
+function stylesLibs() {
   return src(["src/*.css"]).pipe(dest("build/static")).pipe(wait(WAIT_TIME)).pipe(browserSync.stream());
 }
 
@@ -294,4 +297,4 @@ exports.styles = styles;
 exports.scripts = scripts;
 exports.images = images;
 exports.build = parallel(checkConfig, html, fonts, styles, scripts, images);
-exports.default = parallel(checkConfig, styles, scripts, browsersync, startwatch);
+exports.default = parallel(checkConfig, styles, stylesLibs, scripts, browsersync, startwatch);

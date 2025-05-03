@@ -2,37 +2,18 @@
 <div class="products">
 	<!-- Вывод категорий -->
 	{% IFNOT nested_categories_list_empty %}
-	{% IFNOT IS_FULL_CATALOG && goods_empty=0 %}
-	<div id="categories" class="products__categories">
-		<div class="swiper">
-			<div class="categories__grid swiper-wrapper">
-				{% FOR nested_categories_list %}
-				<div class="categories__item swiper-slide" data-id="{nested_categories_list.ID}">
-					<a class="categories__images" href="{nested_categories_list.URL}" title="Перейти к категории &laquo;{nested_categories_list.NAME}&raquo;">
-						<img src="{% IF nested_categories_list.IMAGE_MEDIUM %}{nested_categories_list.IMAGE_MEDIUM}{% ELSE %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ENDIF %}" alt="{nested_categories_list.NAME}" loading="lazy">
-					</a>
-					<div class="categories__name">
-						<span>{nested_categories_list.NAME}</span>
-					</div>
-				</div>
-				{% ENDFOR %}
-			</div>
-		</div>
-	</div>
-	{% ELSE %}
 	<ul class="categories__grid">
 		{% FOR nested_categories_list %}
 		<li class="categories__item" data-id="{nested_categories_list.ID}">
-			<a class="categories__images" href="{nested_categories_list.URL}" title="Перейти к категории &laquo;{nested_categories_list.NAME}&raquo;">
-				<img src="{% IF nested_categories_list.IMAGE_MEDIUM %}{nested_categories_list.IMAGE_MEDIUM}{% ELSE %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ENDIF %}" alt="{nested_categories_list.NAME}" loading="lazy">
-			</a>
 			<div class="categories__name">
 				<span>{nested_categories_list.NAME}</span>
 			</div>
+			<a class="categories__images" href="{nested_categories_list.URL}" title="Перейти к категории &laquo;{nested_categories_list.NAME}&raquo;">
+				<img src="{% IF nested_categories_list.IMAGE_MEDIUM %}{nested_categories_list.IMAGE_MEDIUM}{% ELSE %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ENDIF %}" alt="{nested_categories_list.NAME}" loading="lazy">
+			</a>
 		</li>
 		{% ENDFOR %}
 	</ul>
-	{% ENDIF %}
 	{% ENDIF %}
 
 	<!-- Если нет товаров, выводим сообщение пользователю -->

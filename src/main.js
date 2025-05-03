@@ -2488,6 +2488,128 @@ function scrollTop(offsetTop) {
   });
 }
 
+
+/**
+ * Слайдер Обычный на главной. +
+ * Используется в функциях: на главной странице
+ * Использует функции: Swiper
+ */
+function swiperBanners(selector) {
+  const slider = document.querySelector(selector);
+  if (!slider) return;
+  const swiper = new Swiper(selector + " .swiper", {
+    loop: false,
+    autoplay: false,
+    autoHeight: false,
+    watchSlidesProgress: true,
+    simulateTouch: true,
+    grabCursor: true,
+    slidesPerView: 3,
+    spaceBetween: 16,
+    preloadImages: false,
+    initialSlide: 2,
+    navigation: {
+      nextEl: selector + " .swiper-button-next",
+      prevEl: selector + " .swiper-button-prev",
+    },
+    pagination: {
+      enabled: true,
+      el: selector + " .swiper-pagination",
+      clickable: true,
+      type: "bullets",
+      dynamicBullets: true,
+      dynamicMainBullets: 1,
+    },
+    scrollbar: {
+      enabled: true,
+      el: selector + " .swiper-scrollbar",
+      snapOnRelease: true,
+      draggable: true,
+    },
+    breakpoints: {
+      0: {
+        slidesPerView: 1,
+      },
+      320: {
+        slidesPerView: 1,
+      },
+      480: {
+        slidesPerView: 1,
+      },
+      640: {
+        slidesPerView: 2,
+      },
+      768: {
+        slidesPerView: 2,
+      },
+      1024: {
+        slidesPerView: 3,
+      },
+      1200: {
+        slidesPerView: 3,
+      }
+    },
+  });
+}
+
+/**
+ * Слайдер Новостей. +
+ * Используется в функциях: на всех страницах
+ * Использует функции: Swiper
+ */
+function swiperNews(selector) {
+  const related = document.querySelector(selector);
+  if (!related) return;
+  const swiper = new Swiper(selector + " .swiper", {
+    loop: false,
+    autoplay: false,
+    autoHeight: true,
+    watchSlidesProgress: true,
+    simulateTouch: true,
+    grabCursor: true,
+    slidesPerView: 3,
+    spaceBetween: 16,
+    preloadImages: false,
+    navigation: {
+      nextEl: "#news .swiper-button-next",
+      prevEl: "#news .swiper-button-prev",
+    },
+    pagination: {
+      enabled: false,
+      el: selector + " .swiper-pagination",
+      clickable: true,
+      type: "bullets",
+      dynamicBullets: true,
+    },
+    breakpoints: {
+      0: {
+        slidesPerView: 1,
+      },
+      320: {
+        slidesPerView: 1,
+      },
+      375: {
+        slidesPerView: 1,
+      },
+      480: {
+        slidesPerView: 1,
+      },
+      640: {
+        slidesPerView: 2,
+      },
+      768: {
+        slidesPerView: 2,
+      },
+      1024: {
+        slidesPerView: 3,
+      },
+      1200: {
+        slidesPerView: 3,
+      }
+    },
+  });
+}
+
 /**
  * Слайдер Маленький.
  * Используется в функциях: на всех страницах
@@ -2611,72 +2733,6 @@ function swiperMedium(selector) {
   });
 }
 
-/**
- * Слайдер Большой.
- * Используется в функциях: на всех страницах
- * Использует функции: Swiper
- */
-function swiperNews(selector) {
-  const related = document.querySelector(selector);
-  if (!related) return;
-  const swiper = new Swiper(selector + " .swiper", {
-    loop: false,
-    autoplay: false,
-    autoHeight: true,
-    watchSlidesProgress: true,
-    simulateTouch: true,
-    grabCursor: true,
-    slidesPerView: 3,
-    spaceBetween: 16,
-    preloadImages: false,
-    navigation: {
-      nextEl: "#news .swiper-button-next",
-      prevEl: "#news .swiper-button-prev",
-    },
-    pagination: {
-      enabled: true,
-      el: selector + " .swiper-pagination",
-      clickable: true,
-      type: "bullets",
-      dynamicBullets: true,
-    },
-    breakpoints: {
-      0: {
-        slidesPerView: 1,
-      },
-      320: {
-        slidesPerView: 1.25,
-      },
-      375: {
-        slidesPerView: 1.5,
-      },
-      480: {
-        slidesPerView: 2,
-      },
-      640: {
-        slidesPerView: 2,
-      },
-      768: {
-        slidesPerView: 2,
-      },
-      1024: {
-        slidesPerView: 2,
-      },
-      1200: {
-        slidesPerView: 3,
-        spaceBetween: 32,
-      },
-      1440: {
-        slidesPerView: 3,
-        spaceBetween: 32,
-      },
-      1920: {
-        slidesPerView: 3,
-        spaceBetween: 32,
-      },
-    },
-  });
-}
 
 /**
  * Слайдер Обычный на главной.
@@ -2798,68 +2854,6 @@ function swiperBrands(selector) {
   });
 }
 
-/**
- * Слайдер Обычный на главной.
- * Используется в функциях: на главной странице
- * Использует функции: Swiper
- */
-function swiperBanners(selector) {
-  const slider = document.querySelector(selector);
-  if (!slider) return;
-  const swiper = new Swiper(selector + " .swiper", {
-    loop: false,
-    autoplay: false,
-    autoHeight: false,
-    watchSlidesProgress: true,
-    simulateTouch: true,
-    grabCursor: true,
-    slidesPerView: 3,
-    spaceBetween: 16,
-    preloadImages: false,
-    initialSlide: 2,
-    navigation: {
-      nextEl: selector + " .swiper-button-next",
-      prevEl: selector + " .swiper-button-prev",
-    },
-    pagination: {
-      enabled: true,
-      el: selector + " .swiper-pagination",
-      clickable: true,
-      type: "bullets",
-      dynamicBullets: true,
-      dynamicMainBullets: 1,
-    },
-    scrollbar: {
-      enabled: true,
-      el: selector + " .swiper-scrollbar",
-      snapOnRelease: true,
-      draggable: true,
-    },
-    breakpoints: {
-      0: {
-        slidesPerView: 1,
-      },
-      320: {
-        slidesPerView: 1,
-      },
-      480: {
-        slidesPerView: 1,
-      },
-      640: {
-        slidesPerView: 2,
-      },
-      768: {
-        slidesPerView: 2,
-      },
-      1024: {
-        slidesPerView: 3,
-      },
-      1200: {
-        slidesPerView: 3,
-      }
-    },
-  });
-}
 
 /**
  * Слайдер Списком.

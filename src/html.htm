@@ -282,7 +282,7 @@
 					{% ENDFOR %}
 				</ul>
 				<div class="categories__buttons">
-					<button class="button-tertiary button-small" type="button">
+					<button class="button-tertiary button-small" type="button" data-categories-more>
 						<span>Подробнее</span>
 						<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="12" height="12" aria-hidden="true">
 							<path d="M129.1 183.3 237.3 75c4.7-4.8 4.7-12.5 0-17.2-4.8-4.8-12.5-4.8-17.2 0l-99.7 99.7-99.7-99.7C16 53 8.3 53 3.5 57.8c-4.7 4.8-4.7 12.5 0 17.2l108.4 108.3c4.7 4.7 12.5 4.7 17.2 0z" />
@@ -292,6 +292,65 @@
 			</div>
 		</section>
 		{% ENDIF catalog_empty %}
+
+		<!-- Баннеры -->
+		<section id="banners" class="section" aria-labelledby="Баннеры">
+			<div class="container">
+				<div class="banners__items swiper">
+					<div class="swiper-wrapper">
+						<div class="banners__item swiper-slide">
+							<a class="banners__images" href="#" title="Перейти к баннеру">
+								<img src="{ASSETS_IMAGES_PATH}banner_1.jpg" alt="Берцы" loading="lazy">
+							</a>
+							<div class="banners__title">Берцы</div>
+							<div class="banners__link" title="Перейти к баннеру">
+								<span>Ликвидация</span>
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="12" height="12" aria-hidden="true">
+									<path d="M129.1 183.3 237.3 75c4.7-4.8 4.7-12.5 0-17.2-4.8-4.8-12.5-4.8-17.2 0l-99.7 99.7-99.7-99.7C16 53 8.3 53 3.5 57.8c-4.7 4.8-4.7 12.5 0 17.2l108.4 108.3c4.7 4.7 12.5 4.7 17.2 0z" />
+								</svg>
+							</div>
+						</div>
+						<div class="banners__item swiper-slide">
+							<a class="banners__images" href="#" title="Перейти к баннеру">
+								<img src="{ASSETS_IMAGES_PATH}banner_2.jpg" alt="Камуфляж" loading="lazy">
+							</a>
+							<div class="banners__title">Камуфляж</div>
+							<div class="banners__link" title="Перейти к баннеру">
+								<span>Последний размер</span>
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="12" height="12" aria-hidden="true">
+									<path d="M129.1 183.3 237.3 75c4.7-4.8 4.7-12.5 0-17.2-4.8-4.8-12.5-4.8-17.2 0l-99.7 99.7-99.7-99.7C16 53 8.3 53 3.5 57.8c-4.7 4.8-4.7 12.5 0 17.2l108.4 108.3c4.7 4.7 12.5 4.7 17.2 0z" />
+								</svg>
+							</div>
+						</div>
+						<div class="banners__item swiper-slide">
+							<a class="banners__images" href="#" title="Перейти к баннеру">
+								<img src="{ASSETS_IMAGES_PATH}banner_3.jpg" alt="Рюкзаки" loading="lazy">
+							</a>
+							<div class="banners__title">Рюкзаки</div>
+							<div class="banners__link" title="Перейти к баннеру">
+								<span>Скидка 40%</span>
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="12" height="12" aria-hidden="true">
+									<path d="M129.1 183.3 237.3 75c4.7-4.8 4.7-12.5 0-17.2-4.8-4.8-12.5-4.8-17.2 0l-99.7 99.7-99.7-99.7C16 53 8.3 53 3.5 57.8c-4.7 4.8-4.7 12.5 0 17.2l108.4 108.3c4.7 4.7 12.5 4.7 17.2 0z" />
+								</svg>
+							</div>
+						</div>
+						<div class="banners__item swiper-slide">
+							<a class="banners__images" href="#" title="Перейти к баннеру">
+								<img src="{ASSETS_IMAGES_PATH}banner_1.jpg" alt="Берцы" loading="lazy">
+							</a>
+							<div class="banners__title">Берцы</div>
+							<div class="banners__link" title="Перейти к баннеру">
+								<span>Ликвидация</span>
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="12" height="12" aria-hidden="true">
+									<path d="M129.1 183.3 237.3 75c4.7-4.8 4.7-12.5 0-17.2-4.8-4.8-12.5-4.8-17.2 0l-99.7 99.7-99.7-99.7C16 53 8.3 53 3.5 57.8c-4.7 4.8-4.7 12.5 0 17.2l108.4 108.3c4.7 4.7 12.5 4.7 17.2 0z" />
+								</svg>
+							</div>
+						</div>
+					</div>
+					<div class="swiper-pagination"></div>
+				</div>
+			</div>
+		</section>
 
 
 		{% ENDIF index_page %}

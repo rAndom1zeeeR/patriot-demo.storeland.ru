@@ -2840,10 +2840,10 @@ function swiperBanners(selector) {
         slidesPerView: 1,
       },
       320: {
-        slidesPerView: 1.2,
+        slidesPerView: 1,
       },
       480: {
-        slidesPerView: 1.2,
+        slidesPerView: 1,
       },
       640: {
         slidesPerView: 2,
@@ -2852,16 +2852,11 @@ function swiperBanners(selector) {
         slidesPerView: 2,
       },
       1024: {
-        slidesPerView: 2,
-      },
-      1440: {
         slidesPerView: 3,
-        spaceBetween: 32,
       },
-      1920: {
+      1200: {
         slidesPerView: 3,
-        spaceBetween: 32,
-      },
+      }
     },
   });
 }

@@ -2622,7 +2622,7 @@ function swiperNews(selector) {
 }
 
 /**
- * Слайдер Маленький.
+ * Слайдер Маленький. +
  * Используется в функциях: на всех страницах
  * Использует функции: Swiper
  */
@@ -2637,8 +2637,8 @@ function swiperSmall(selector) {
     watchSlidesProgress: true,
     simulateTouch: true,
     grabCursor: true,
-    slidesPerView: 8,
-    spaceBetween: 0,
+    slidesPerView: 4,
+    spaceBetween: 16,
     preloadImages: false,
     navigation: {
       nextEl: selector + " .swiper-button-next",
@@ -2658,31 +2658,31 @@ function swiperSmall(selector) {
       320: {
         slidesPerView: 2,
       },
+      375: {
+        slidesPerView: 2,
+      },
       480: {
-        slidesPerView: 3,
+        slidesPerView: 2,
       },
       640: {
-        slidesPerView: 4,
+        slidesPerView: 3,
       },
       768: {
-        slidesPerView: 4,
+        slidesPerView: 3,
       },
       1024: {
-        slidesPerView: 5,
+        slidesPerView: 3,
       },
-      1440: {
-        slidesPerView: 7,
-      },
-      1920: {
-        slidesPerView: 8,
-      },
+      1200: {
+        slidesPerView: 4,
+      }
     },
   });
   // console.log("[DEBUG]: swiper", swiper);
 }
 
 /**
- * Слайдер Обычный.
+ * Слайдер Обычный. +
  * Используется в функциях: на всех страницах
  * Использует функции: Swiper
  */
@@ -2729,78 +2729,15 @@ function swiperMedium(selector) {
         slidesPerView: 3,
       },
       1024: {
-        slidesPerView: 3,
+        slidesPerView: 4,
       },
       1200: {
-        slidesPerView: 3,
-      },
-      1440: {
         slidesPerView: 4,
-      },
-      1920: {
-        slidesPerView: 4,
-      },
+      }
     },
   });
 }
 
-
-/**
- * Слайдер Обычный на главной.
- * Используется в функциях: на главной странице
- * Использует функции: Swiper
- */
-function swiperMediumIndex(selector) {
-  const related = document.querySelector(selector);
-  if (!related) return;
-  const swiper = new Swiper(selector + " .swiper", {
-    loop: false,
-    autoplay: false,
-    autoHeight: true,
-    watchSlidesProgress: true,
-    simulateTouch: true,
-    grabCursor: true,
-    slidesPerView: 4,
-    spaceBetween: 16,
-    preloadImages: false,
-    initialSlide: 2,
-    navigation: {
-      nextEl: selector + " .swiper-button-next",
-      prevEl: selector + " .swiper-button-prev",
-    },
-    pagination: {
-      enabled: true,
-      el: selector + " .swiper-pagination",
-      clickable: true,
-      type: "bullets",
-      dynamicBullets: true,
-      dynamicMainBullets: 1,
-    },
-    breakpoints: {
-      0: {
-        slidesPerView: 1,
-      },
-      320: {
-        slidesPerView: 1,
-      },
-      480: {
-        slidesPerView: 2,
-      },
-      640: {
-        slidesPerView: 2,
-      },
-      768: {
-        slidesPerView: 2.5,
-      },
-      1024: {
-        slidesPerView: 3,
-      },
-      1200: {
-        slidesPerView: 4,
-      },
-    },
-  });
-}
 
 /**
  * Слайдшоу
@@ -2843,59 +2780,7 @@ function swiperShow() {
   });
 }
 
-/**
- * Слайдер Брендов на главной.
- * Используется в функциях: на главной странице
- * Использует функции: Swiper
- */
-function swiperBrands(selector) {
-  const related = document.querySelector(selector);
-  if (!related) return;
-  const swiper = new Swiper(selector + " .swiper", {
-    loop: true,
-    loopAdditionalSlides: 6,
-    autoplay: false,
-    autoHeight: false,
-    watchSlidesProgress: true,
-    simulateTouch: true,
-    grabCursor: true,
-    spaceBetween: 50,
-    preloadImages: false,
-    slidesPerView: "auto",
-  });
-}
 
-
-/**
- * Слайдер Списком.
- * Используется в функциях: на странице Товаров, Акции, Поиск
- * Использует функции: Swiper
- */
-function swiperList(selector) {
-  const related = document.querySelector(selector);
-  if (!related) return;
-  const swiper = new Swiper(selector + " .swiper", {
-    loop: false,
-    autoplay: false,
-    watchSlidesProgress: true,
-    simulateTouch: true,
-    grabCursor: true,
-    slidesPerView: 1,
-    spaceBetween: 0,
-    preloadImages: false,
-    navigation: {
-      nextEl: selector + " .swiper-button-next",
-      prevEl: selector + " .swiper-button-prev",
-    },
-    pagination: {
-      enabled: true,
-      el: selector + " .swiper-pagination",
-      clickable: true,
-      type: "bullets",
-      dynamicBullets: true,
-    },
-  });
-}
 
 /**
  * Слайдер Отзывов.

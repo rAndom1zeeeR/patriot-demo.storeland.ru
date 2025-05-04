@@ -394,15 +394,14 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 	font-weight: bold;
 	font-size: var(--text-size-small);
 	line-height: var(--text-height-small);
-	border-radius: var(--border-radius);
 }
 .sticker::before {position: relative;z-index: 2;}
-.sticker--sales {background: var(--color-error);}
-.sticker--sale {background: var(--color-error);}
+.sticker--sales {background: var(--color-secondary);}
+.sticker--sale {background: var(--color-secondary);}
 .sticker--sale::before {content: 'Скидка';}
-.sticker--best {background: var(--color-primary);}
+.sticker--best {background: #DB802D;}
 .sticker--best::before {content: 'Хит';}
-.sticker--new {background: var(--color-secondary);}
+.sticker--new {background: var(--color-primary);}
 .sticker--new::before {content: 'Новинка';}
 
 /*

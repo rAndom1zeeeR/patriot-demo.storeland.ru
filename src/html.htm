@@ -481,10 +481,12 @@
 		<!-- Основная часть -->
 		<main id="main">
 			<div class="container">
-				<div class="headline">
-					<h1 class="headline__title">{PAGE_TITLE}</h1>
+				<div class="main__inner">
+					<div class="main__headline headline">
+						<h1 class="headline__title">{PAGE_TITLE}</h1>
+					</div>
+					<div class="main__body">{BODY}</div>
 				</div>
-				<div>{BODY}</div>
 			</div>
 		</main>
 		{% ENDIF index_page %}

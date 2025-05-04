@@ -623,6 +623,15 @@
 }
 
 /*
+** Основная часть
+*/
+@media all and (min-width: 1024px) {
+	.main__inner {display: flex;gap: 32px;align-items: flex-start;}
+	.main__headline {flex-shrink: 0;width: 280px;}
+	.main__body {flex-grow: 1;}
+}
+
+/*
 ** Свайперы
 */
 .swiper-navigation {

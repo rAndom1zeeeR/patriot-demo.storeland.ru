@@ -229,16 +229,7 @@
 /* 
 ** Баннеры на главной.
 */
-#banners {
-	overflow: hidden;
-	--swiper-pagination-color: var(--color-black);
-	--swiper-pagination-bullet-width: 30px;
-	--swiper-pagination-bullet-height: 4px;
-	--swiper-pagination-bullet-inactive-color: var(--color-gray);
-	--swiper-pagination-bullet-border-radius: 0;
-	--swiper-pagination-bullet-horizontal-gap: 4px;
-	--swiper-pagination-bottom: 0;
-}
+#banners {overflow: hidden;}
 .is-loading #banners .swiper-slide {display: none;}
 .banners__items.swiper {padding-bottom: 20px;}
 .banners__item {position: relative;background-color: var(--color-background);}
@@ -523,26 +514,6 @@
 }
 
 
-/*
-** 
-*/
-.headline {margin-bottom: 40px;}
-.headline--navigation {display: flex;gap: 12px;align-items: center;justify-content: space-between;}
-.headline--navigation .swiper-navigation {
-	position: relative;
-	display: flex;
-	flex-shrink: 0;
-	align-items: center;
-	width: 174px;
-	height: 32px;
-}
-.headline--navigation :is(.swiper-button-prev, .swiper-button-next) {background-color: var(--color-background);--swiper-navigation-color: var(--color-black);--swiper-navigation-size: 40px;}
-.headline--navigation :is(.swiper-button-prev, .swiper-button-next)::after {--swiper-navigation-size: 16px;}
-
-
-
-
-
 
 
 /*
@@ -624,4 +595,46 @@
 @media all and (max-width: 479px) {
 	.categories__name {font-size: var(--text-size-regular);line-height: var(--text-height-regular);}
 	.categories__images {aspect-ratio: 1 / 1;}
+}
+
+/*
+** Заголовки
+*/
+.headline {margin-bottom: 40px;}
+.headline--navigation {display: flex;gap: 12px;align-items: center;justify-content: space-between;}
+.headline--navigation .swiper-navigation {
+	position: relative;
+	display: flex;
+	flex-shrink: 0;
+	align-items: center;
+	width: 174px;
+	height: 32px;
+	--swiper-pagination-bottom: 8px;
+}
+.headline--navigation :is(.swiper-button-prev, .swiper-button-next) {z-index: 11;width: var(--swiper-navigation-size);background-color: var(--color-background);transform: skew(-15deg);}
+.headline--navigation :is(.swiper-button-prev, .swiper-button-next)::after {--swiper-navigation-size: 12px;transform: skew(15deg);}
+.headline--navigation .swiper-pagination {--swiper-pagination-bottom: 14px;}
+@media all and (max-width: 639px) {
+	.headline__title {font-size: var(--heading-03);}
+}
+@media all and (max-width: 479px) {
+	.headline--navigation .swiper-pagination {display: none;}
+	.headline--navigation .swiper-navigation {width: 88px;}
+}
+
+/*
+** Свайперы
+*/
+.swiper-navigation {
+	--swiper-navigation-color: var(--color-black);
+	--swiper-navigation-size: 30px;
+}
+.swiper-pagination {
+	--swiper-pagination-color: var(--color-black);
+	--swiper-pagination-bullet-width: 30px;
+	--swiper-pagination-bullet-height: 4px;
+	--swiper-pagination-bullet-inactive-color: var(--color-gray);
+	--swiper-pagination-bullet-border-radius: 0;
+	--swiper-pagination-bullet-horizontal-gap: 4px;
+	--swiper-pagination-bottom: 0;
 }

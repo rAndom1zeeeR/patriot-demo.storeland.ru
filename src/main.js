@@ -2573,7 +2573,7 @@ function swiperNews(selector) {
   if (!related) return;
   const swiper = new Swiper(selector + " .swiper", {
     loop: true,
-    autoplay: true,
+    autoplay: false,
     autoHeight: true,
     watchSlidesProgress: true,
     simulateTouch: true,
@@ -2586,8 +2586,8 @@ function swiperNews(selector) {
       prevEl: "#news .swiper-button-prev",
     },
     pagination: {
-      enabled: false,
-      el: selector + " .swiper-pagination",
+      enabled: true,
+      el: "#news .swiper-pagination",
       clickable: true,
       type: "bullets",
       dynamicBullets: true,

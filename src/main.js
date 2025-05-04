@@ -2569,10 +2569,11 @@ function swiperBanners(selector) {
  */
 function swiperNews(selector) {
   const related = document.querySelector(selector);
+  console.log("[DEBUG]: related", related);
   if (!related) return;
   const swiper = new Swiper(selector + " .swiper", {
-    loop: false,
-    autoplay: false,
+    loop: true,
+    autoplay: true,
     autoHeight: true,
     watchSlidesProgress: true,
     simulateTouch: true,

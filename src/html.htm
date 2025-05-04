@@ -1529,8 +1529,10 @@
 				VisibleItems('#pdtSale');
 
 				swiperBanners("#banners");
-				swiperNews('[data-tab-content="news_list_all"]');
-				swiperNews('[data-tab-content="news_list_shop"]');
+				// swiperNews('[data-tab-content="news_list_all"]');
+				setTimeout(() => {
+					swiperNews('[data-tab-content="news_list_shop"]');
+				}, 1000);
 			});
 		</script>
 		{% ENDIF %}

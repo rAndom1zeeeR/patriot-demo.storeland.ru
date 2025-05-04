@@ -291,9 +291,9 @@ textarea.is-success {border-color: var(--color-primary-hover);}
 */
 h1, h2, h3, h4, h5, h6 {
 	margin: 0;
-	color: var(--color-text-secondary);
+	color: var(--color-text-primary);
 	font-weight: bold;
-	font-family: var(--font-secondary);
+	font-family: var(--font-primary);
 	font-style: normal;
 	line-height: 1.375;
 	text-transform: none;

@@ -465,15 +465,24 @@
 	line-height: var(--text-height-regular);
 }
 .footer__blocks .footer__block:last-child {text-align: right;}
-.footer__title {margin-bottom: 16px;font-weight: 600;font-size: var(--heading-06);text-transform: uppercase;}
-.footer__links {margin: 0;padding: 0;list-style: none;}
+.footer__title {position: relative;font-weight: 600;font-size: var(--heading-06);text-transform: uppercase;}
+.footer__links {margin: 16px 0 0;padding: 0;list-style: none;}
 .footer__link {display: block;padding-block: 6px;}
 .footer__links li:nth-child(n+10) {display: none;}
+@media all and (min-width: 480px) {
+	.footer__title svg {display: none;}
+}
 @media all and (min-width: 640px) {
 	.footer-blocks {display: grid;grid-template-columns: repeat(3, 1fr);gap: 24px;justify-content: space-between;}
 }
 @media all and (max-width: 639px) {
 	.footer-blocks > .footer__block {margin-bottom: 16px;padding-bottom: 16px;border-bottom: 1px solid var(--color-border);}
+}
+@media all and (max-width: 479px) {
+	.footer__links {display: none;}
+	.footer__block.is-opened .footer__links {display: block;}
+	.footer__block .footer__title svg {position: absolute;right: 12px;transform: rotate(-90deg);}
+	.footer__block.is-opened .footer__title svg {transform: rotate(0deg);}
 }
 
 /* Подвал. Платежные системы */

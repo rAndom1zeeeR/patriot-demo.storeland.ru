@@ -2269,6 +2269,16 @@ function ValidateInput(item) {
  * Использует функции: search__reset
  */
 function Opener() {
+  // Открытие блоков в подвале
+  const footerTitles = document.querySelectorAll(".footer__title");
+  if (footerTitles.length > 0) {
+    footerTitles.forEach((title) => {
+      title.addEventListener("click", (event) => {
+        event.preventDefault();
+        title.parentElement.classList.toggle("is-opened");
+      });
+    });
+  }
   const search = document.querySelector(".search__icon");
   const reset = document.querySelector(".search__reset");
   if (search) {

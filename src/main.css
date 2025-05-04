@@ -9,7 +9,7 @@
 	--color-lightgray: #E1E6E9;  /* светлый серый */
 	--color-background: #F1F4F6; /* фоновой */
 	--color-text-primary: var(--color-black);
-	--color-border: var(--color-gray);
+	--color-border: var(--color-lightgray);
 	--color-border-secondary: var(--color-text-primary);
 	--color-disabled: var(--color-lightgray);
 	--color-error: #F9504D;
@@ -395,6 +395,127 @@
 @media all and (min-width: 1200px) {
 	.subscribe__inner {padding-inline: 80px;}
 }
+
+
+/*
+** Подвал
+*/
+#footer {background-color: var(--color-background);}
+.footer__inner {display: grid;align-items: flex-start;padding-block: 40px;}
+
+/* Подвал. О компании */
+.footer-about {position: relative;display: none;}
+@media all and (min-width: 1024px) {
+	.footer__inner {grid-template-columns: 352px 1fr;}
+	.footer-about {display: block;grid-row: 1 / 3;height: 476px;margin-right: 32px;color: white;	}
+	.footer-about__title {position: absolute;bottom: 60px;left: 12px;}
+	.footer-about__text {position: absolute;bottom: 12px;left: 12px;}
+	.footer-about img {width: 100%;height: 100%;object-fit: cover;}
+}
+@media all and (min-width: 1200px) {
+	.footer__inner {grid-template-columns: 480px 1fr;}
+	.footer-about {margin-right: auto;}
+}
+
+/* Подвал. Контакты */
+.footer-contacts {
+	display: grid;
+	grid-template-columns: 100%;
+	gap: 12px 24px;
+	margin-bottom: 16px;
+	padding-bottom: 16px;
+	border-bottom: 1px solid var(--color-border);
+}
+.footer-contacts__link {font-weight: 600;}
+.footer-contacts__link--phone {display: block;font-weight: 700;}
+.footer-contacts__link--email {color: var(--color-gray);font-weight: 400;font-size: var(--text-size-regular);}
+@media all and (min-width: 480px) and (max-width: 639px) {
+	.footer-contacts {grid-template-columns: repeat(2, 1fr);}
+	.footer-contacts__block:last-child {grid-column: 1 / 3;}
+}
+@media all and (min-width: 640px) {
+	.footer-contacts {grid-template-columns: repeat(3, 1fr);margin-bottom: 32px;padding-bottom: 32px;}
+}
+
+/* Подвал. Социальные сети */
+.social__links {display: flex;gap: 12px;margin: 0;padding: 0;list-style: none;}
+.social__link {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 50px;
+	height: 40px;
+	color: white;
+	background-color: var(--color-lightgray);
+	transform: skew(-15deg);
+}
+.social__link svg {transform: skew(15deg);}
+.social__link span {display: none;}
+
+/* Подвал. Блоки */
+.footer__blocks {
+	display: flex;
+	flex-wrap: wrap;
+	grid-column: 1 / 4;
+	gap: 24px;
+	justify-content: space-between;
+	width: 100%;
+	color: var(--color-gray);
+	font-size: var(--text-size-regular);
+	line-height: var(--text-height-regular);
+}
+.footer__blocks .footer__block:last-child {text-align: right;}
+.footer__title {margin-bottom: 16px;font-weight: 600;font-size: var(--heading-06);text-transform: uppercase;}
+.footer__links {margin: 0;padding: 0;list-style: none;}
+.footer__link {display: block;padding-block: 6px;}
+.footer__links li:nth-child(n+10) {display: none;}
+@media all and (min-width: 640px) {
+	.footer-blocks {display: grid;grid-template-columns: repeat(3, 1fr);gap: 24px;justify-content: space-between;}
+}
+@media all and (max-width: 639px) {
+	.footer-blocks > .footer__block {margin-bottom: 16px;padding-bottom: 16px;border-bottom: 1px solid var(--color-border);}
+}
+
+/* Подвал. Платежные системы */
+.payments__links {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 4px;
+	margin: 12px 0 0;
+	padding: 0;
+	list-style: none;
+}
+.payments__link {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	width: 40px;
+	height: 30px;
+	background-color: white;
+}
+.payments__link span {display: none;}
+
+/* Подвал. Копирайт */
+.footer-copyright {
+	margin: 0;
+	color: var(--color-gray);
+	font-size: var(--text-size-small);
+	text-align: center;
+	border-top: 1px solid var(--color-border);
+	padding-block: 12px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
 ** Категории. Категории на главной.

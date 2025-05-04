@@ -380,6 +380,19 @@
 						<div class="swiper-wrapper">
 							{% FOR news_list_all %}
 							<div class="swiper-slide news__item">
+								<div class="news__hover" hidden>
+									<div class="news__images">
+										<img src="{% IF news_list_all.IMG %}{news_list_all.IMG}{% ELSE %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ENDIF %}" alt="{news_list_all.TITLE}" loading="lazy">
+									</div>
+	
+									{% IF news_list_all.SHOW_TIME %}
+									<time class="news__date" datetime="{news_list_all.TIME | date('Y-m-d')}"><span>{news_list_all.TIME | date('d.m.Y')}</span></time>
+									{% ENDIF %}
+	
+									<a class="news__title" href="{news_list_all.URL}" title="Перейти к странице &laquo;{news_list_all.TITLE}&raquo;">
+										<span>{news_list_all.TITLE}</span>
+									</a>
+								</div>
 								<div class="news__images">
 									<img src="{% IF news_list_all.IMG %}{news_list_all.IMG}{% ELSE %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ENDIF %}" alt="{news_list_all.TITLE}" loading="lazy">
 								</div>
@@ -419,6 +432,16 @@
 							{% FOR news_list_shop %}
 							<div class="swiper-slide">
 								<article class="news__item">
+									<div class="news__hover" style="background-image: url('{% IF news_list_shop.IMG %}{news_list_shop.IMG}{% ELSE %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ENDIF %}');" hidden>
+										{% IF news_list_shop.SHOW_TIME %}
+										<time class="news__date" datetime="{news_list_shop.TIME | date('Y-m-d')}"><span>{news_list_shop.TIME | date('d.m.Y')}</span></time>
+										{% ENDIF %}
+
+										<a class="news__title" href="{news_list_shop.URL}" title="Перейти к странице &laquo;{news_list_shop.TITLE}&raquo;">
+											<span>{news_list_shop.TITLE}</span>
+										</a>
+									</div>
+
 									<div class="news__images">
 										<img src="{% IF news_list_shop.IMG %}{news_list_shop.IMG}{% ELSE %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ENDIF %}" alt="{news_list_shop.TITLE}" loading="lazy">
 									</div>

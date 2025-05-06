@@ -86,7 +86,7 @@ function browsersync() {
 }
 
 function html() {
-  return src("src/*.htm")
+  return src("src/htm/*.htm")
     .pipe(posthtml([include()]))
     .pipe(dest("build/html"));
 }
@@ -139,7 +139,7 @@ function startwatch() {
       uploadFile(event);
     });
   // Загрузка htm файлов
-  watch(baseDir + "/*.{" + fileswatch + "}").on("change", function (event) {
+  watch(baseDir + "/htm/*.{" + fileswatch + "}").on("change", function (event) {
     uploadFile(event);
   });
   // Загрузка js файлов

@@ -2439,11 +2439,14 @@ function SidebarOpener(selector, opener) {
  */
 function VisibleItems(selector) {
   const block = document.querySelector(selector);
-  if (!block) return false;
-  const button = block.querySelector(".products__button");
-  if (!button) return false;
-  const items = block.querySelectorAll(".product__item");
-  const itemsVisible = $(block).find(".product__item:visible");
+  console.log("[DEBUG]: block", block);
+  if (!block) return;
+  const button = block.querySelector("[data-visible-button]");
+  console.log("[DEBUG]: button", button);
+  if (!button) return;
+  const items = block.querySelectorAll("[data-visible-item]");
+  const itemsVisible = $(block).find("[data-visible-item]:visible");
+  console.log("[DEBUG]: itemsVisible", itemsVisible);
   // Скрыть/показать кнопку
   button.parentElement.style.display = items.length > itemsVisible.length ? "block" : "none";
 
@@ -3054,7 +3057,7 @@ function Autorization() {
 
   // Проверяем наличие необходимых элементов
   if (!dialogBlock || !authForm) {
-    console.warn("[WARNING]: Authorization elements not found");
+    console.log("[WARNING]: Authorization elements not found");
     return;
   }
 

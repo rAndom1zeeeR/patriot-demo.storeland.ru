@@ -664,9 +664,12 @@
 	flex-direction: column;
 	gap: 4px;
 }
+.product__link {display: inline-flex;background-color: white;border: 1px solid var(--color-lightgray);fill: var(--color-gray)}
 .product__link span {display: none;}
+.product__link.is-added, .product__link:active {border-color: var(--color-primary);fill: var(--color-primary);}
 @media (hover: hover) and (pointer: fine) {
 	.product__add:hover {color: white;background-color: var(--color-black);border-color: var(--color-black);fill: white;}
+	.product__link:hover {border-color: var(--color-primary);fill: var(--color-primary);}
 }
 .is-loading .product__item {width: 136px;}
 .is-loading .products__grid.swiper-wrapper {display: grid;grid-template-columns: repeat(2, 1fr);gap: 16px;overflow: hidden;}
@@ -708,6 +711,15 @@
 @media all and (max-width: 479px) {
 	.product__sticker .sticker:nth-child(n+2) {display: none;}
 }
+
+/*
+** Товары таблицей на главной
+*/
+.products__grid {display: grid;gap: 16px;}
+@media all and (min-width: 1200px) {
+	.products__grid {grid-template-columns: repeat(5, 1fr);}
+}
+
 
 /*
 ** Товары таблицей medium
@@ -763,6 +775,19 @@
 	.product__grid--medium .product__add span {display: block;}
 	.product__grid--medium .product__add:active {color: white;}
 }
+
+
+/*
+** Товары таблицей на главной
+*/
+.products__grid--visible .product__item {display: none;}
+.pdt__visible.is-active .product__item {display: block;}
+.products__buttons {margin-top: 24px;text-align: center;}
+@media all and (min-width: 1200px) {
+	.products__grid--visible {grid-template-columns: repeat(5, 1fr);}
+	.products__grid--visible .product__item:nth-child(-n+10) {display: block;}
+}
+
 
 /*
 ** Свайперы

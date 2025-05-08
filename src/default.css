@@ -127,7 +127,6 @@ button:active, .button:active, .paymentFormSubmitLink:active, .paymentFormTbodyS
 }
 .button-tertiary span {position: relative;transform: skew(15deg);}
 .button-tertiary svg {position: relative;transform: skew(15deg) rotate(-90deg);}
-.button-tertiary:active {color: var(--color-primary);background-color: var(--color-background);border: 0;}
 .button-icon {height: auto;padding: 0;color: var(--color-gray);background: none;border: none;}
 .button-icon:active {color: var(--color-text-primary);background: none;}
 .button-link {

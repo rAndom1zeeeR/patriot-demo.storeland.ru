@@ -2316,8 +2316,14 @@ function Opener() {
           parent.querySelector(".search__input").focus();
         }, 100);
       }
-      parent.classList.toggle("is-opened");
+      
+      OverlayOpener(parent, handleSearchOpened);
+      // parent.classList.toggle("is-opened");
     });
+
+    function handleSearchOpened(event) {
+      OverlayCloser(event, ".search", handleSearchOpened);
+    }
   }
 
   // Открытие каталога

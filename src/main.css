@@ -62,7 +62,7 @@
 /*
 ** Шапка
 */
-.header__inner {display: flex;gap: 16px;align-items: center;padding-block: 8px;}
+.header__inner {position: relative;display: flex;gap: 16px;align-items: center;padding-block: 8px;}
 .header-logo {flex-shrink: 0;}
 .header-logo--middle {margin-right: auto;}
 @media all and (min-width: 1024px) {
@@ -137,10 +137,18 @@
 }
 
 /* Шапка. Поиск */
-.header-search {position: relative;display: flex;}
+.header-search {display: flex;}
 .search__form {position: relative;display: none;align-items: center;width: 100%;text-align: left;}
 .search__form button {position: absolute;height: 100%;padding: 0;}
 .search__form button svg {flex-shrink: 0;}
+.header-search.is-opened .search__form {
+	position: absolute;
+	top: 8px;
+	left: 0;
+	z-index: 2;
+	display: flex;
+	width: 100%;
+}
 .search__input {color: var(--color-text-primary);font-size: var(--text-size-regular);padding-inline: 16px 96px;}
 .search__submit {right: 16px;pointer-events: none;padding-inline: 16px;}
 .search--success .search__submit {pointer-events: all;}
@@ -167,7 +175,7 @@
 	100% {transform: rotate(360deg);}
 }
 @media all and (min-width: 1024px) {
-	.header-search {flex-grow: 1;}
+	.header-search {position: relative;flex-grow: 1;}
 	.search__icon {display: none;}
 	.search__form {display: flex;}
 }
@@ -223,31 +231,36 @@
 	z-index: 6;
 	display: none;
 	width: 100%;
-	margin-top: 12px;
+	margin-top: 8px;
 	padding: 16px;
 	text-align: left;
 	background-color: white;
 	box-shadow: var(--drop-shadow);
 }
-.search__results-inner {display: flex;flex-flow: column wrap;gap: 24px;}
-.search__results-items {
-	max-height: 360px;
+.search-results__inner {display: flex;flex-flow: column wrap;gap: 24px;}
+.search-results__items {
+	max-height: 394px;
 	margin: 0;
 	padding: 0;
-	overflow: auto;
+	overflow-y: auto;
 	line-height: 1.25;
 	list-style: none;
 }
-.search__results-items::-webkit-scrollbar {width: var(--scrollbar-width-thin);}
-.search__results-item {display: flex;gap: 12px;align-items: center;margin-bottom: 16px;}
-.search__results-item:last-child {margin-bottom: 4px;}
-.search__results-items--goods {width: 100%;}
-.search__results-items--category {width: 100%;}
-.search__results-price {display: none;margin-top: 12px;}
-.search__results-button {justify-content: flex-start;width: 100%;}
-.search__results-name {display: flex;gap: 16px;align-items: center;}
-.search__results-image {width: 88px;height: 88px;background-color: var(--color-background);}
-.search__results-items--category .search__results-image {display: none;}
+.search-results__items::-webkit-scrollbar {width: var(--scrollbar-width-thin);}
+.search-results__item {display: flex;gap: 12px;align-items: center;margin-bottom: 16px;}
+.search-results__item:last-child {margin-bottom: 6px;}
+.search-results__items--goods {width: 100%;}
+.search-results__price {display: block;margin-top: 4px;font-size: var(--text-size-medium) !important;}
+.search-results__name {display: flex;gap: 16px;align-items: center;}
+.search-results__image {width: 60px;height: 60px;background-color: var(--color-background);}
+.search-results__items--category {display: flex;flex-wrap: wrap;gap: 8px;width: 100%;}
+.search-results__items--category .search-results__image {display: none;}
+.search-results__items--category .search-results__item {
+	margin: 0;
+	padding: 8px;
+	font-size: var(--text-size-regular);
+	background-color: var(--color-background);
+}
 
 
 /* Шапка. Промо */
@@ -858,6 +871,7 @@
 	--swiper-pagination-bullet-border-radius: 0;
 	--swiper-pagination-bullet-horizontal-gap: 4px;
 	--swiper-pagination-bottom: 0;
+	z-index: 3 !important;
 }
 
 

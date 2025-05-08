@@ -82,7 +82,7 @@ function SearchFieldInit(object) {
     })
     .bind("cut", function (e) {
       $(".search__results").hide();
-      $(".search__results-item").remove();
+      $(".search-results__item").remove();
       object.__SearchFieldCheck();
     });
 
@@ -90,7 +90,7 @@ function SearchFieldInit(object) {
   var suggestCount;
   var suggestSelected = 0;
   function keyActivate(n) {
-    var $links = $(".search__results-item");
+    var $links = $(".search-results__item");
     $links.eq(suggestSelected - 1).removeClass("is-active");
     if (n == 1 && suggestSelected < suggestCount) {
       suggestSelected++;
@@ -111,7 +111,7 @@ function SearchFieldInit(object) {
       // Нажатие enter при выделенном пункте из поиска
       case 13: // enter
         if (suggestSelected) {
-          var $link = $(".search__results-item").eq(suggestSelected - 1);
+          var $link = $(".search-results__item").eq(suggestSelected - 1);
           var href = $link.attr("href");
           if (href) {
             document.location = href;
@@ -125,7 +125,7 @@ function SearchFieldInit(object) {
       case 38: // стрелка вверх
       case 40: // стрелка вниз
         I.preventDefault();
-        suggestCount = $(".search__results-item").length;
+        suggestCount = $(".search-results__item").length;
         if (suggestCount) {
           //делаем выделение пунктов в слое, переход по стрелочкам
           keyActivate(I.keyCode - 39);
@@ -141,7 +141,7 @@ function SearchFieldInit(object) {
     event.preventDefault();
     object.search_input.val("").focus();
     $(".search__results").hide();
-    $(".search__results-item").remove();
+    $(".search-results__item").remove();
     $(".search").removeClass("search--focused");
     $(".search").removeClass("search--success");
     $(".search").removeClass("search--loading");
@@ -512,7 +512,7 @@ $(function () {
     function showDropdownSearch(data) {
       // Отображение категорий в поиске
       if (data.category.length != undefined && data.category.length > 0) {
-        $(".search__results-items--category .search__results-item").remove();
+        $(".search-results__items--category .search-results__item").remove();
         $(".search__results").hide();
         for (с = 0; с < data.category.length; с++) {
           // Проверка наличия изображения
@@ -523,21 +523,21 @@ $(function () {
           }
           // Отображаем результат поиска
           if (с <= 3) {
-            $(".search__results-items--category").append(`
-							<a class="search__results-item" href="${data.category[с].url}">
-								<span class="search__results-name">${data.category[с].goods_cat_name}</span>
+            $(".search-results__items--category").append(`
+							<a class="search-results__item" href="${data.category[с].url}">
+								<span class="search-results__name">${data.category[с].goods_cat_name}</span>
 							</a>
 						`);
           }
         }
       } else {
-        $(".search__results-items--category .search__results-item").remove();
+        $(".search-results__items--category .search-results__item").remove();
         $(".search__results").hide();
       }
 
       // Отображение товаров в поиске
       if (data.goods.length != undefined && data.goods.length > 0) {
-        $(".search__results-items--goods .search__results-item").remove();
+        $(".search-results__items--goods .search-results__item").remove();
         $(".search__results").hide();
         for (i = 0; i < data.goods.length; i++) {
           // Проверка наличия изображения
@@ -548,35 +548,35 @@ $(function () {
           }
           // Отображаем результат поиска
           if (i <= 3) {
-            $(".search__results-buttons").addClass("is-hide");
-            $(".search__results-items--goods").append(`
-							<a class="search__results-item" href="${data.goods[i].url}">
-								<div class="search__results-image">
+            $(".search-results__buttons").addClass("is-hide");
+            $(".search-results__items--goods").append(`
+							<a class="search-results__item" href="${data.goods[i].url}">
+								<div class="search-results__image">
 									<img src="${data.goods[i].image_icon}">
 								</div>
-								<div class="search__results-content RUB">
-									<div class="search__results-name"><span>${data.goods[i].goods_name}</span></div>
-                  <b class="search__results-price price__now"><span class="num">${getMoneyFormat(parseInt(data.goods[i].min_price_now))}</span></b>
+								<div class="search-results__content RUB">
+									<div class="search-results__name"><span>${data.goods[i].goods_name}</span></div>
+                  <b class="search-results__price price__now"><span class="num">${getMoneyFormat(parseInt(data.goods[i].min_price_now))}</span></b>
 								</div>
 							</a>
 						`);
           }
           // Если последняя итерация цикла вставим кнопку "показать все"
           if (i > 3) {
-            $(".search__results-buttons").removeClass("is-hide");
+            $(".search-results__buttons").removeClass("is-hide");
           }
         }
       } else {
-        $(".search__results-items--goods .search__results-item").remove();
+        $(".search-results__items--goods .search-results__item").remove();
         $(".search__results").hide();
       }
 
       // Скрываем результаты поиска если ничего не найдено
       data.category.length + data.goods.length > 0 ? $(".search__results").show() : $(".search__results").hide();
-      data.category.length > 0 ? $(".search__results-items--category").show() : $(".search__results-items--category").hide();
-      data.category.length > 0 ? $(".search__results-items--category").prev().show() : $(".search__results-items--category").prev().hide();
-      data.goods.length > 0 ? $(".search__results-items--goods").show() : $(".search__results-items--goods").hide();
-      data.goods.length > 0 ? $(".search__results-items--goods").prev().show() : $(".search__results-items--goods").prev().hide();
+      data.category.length > 0 ? $(".search-results__items--category").show() : $(".search-results__items--category").hide();
+      data.category.length > 0 ? $(".search-results__items--category").prev().show() : $(".search-results__items--category").prev().hide();
+      data.goods.length > 0 ? $(".search-results__items--goods").show() : $(".search-results__items--goods").hide();
+      data.goods.length > 0 ? $(".search-results__items--goods").prev().show() : $(".search-results__items--goods").prev().hide();
 
       // Убираем информацию о том что запрос грузится.
       searchBlock.removeClass("search--loading");
@@ -585,7 +585,7 @@ $(function () {
 
   SearchFieldInit(searchBlock);
 
-  $(".search__results-button").on("click", function () {
+  $(".search-results__button").on("click", function () {
     $(".search__form").submit();
   });
 });

@@ -137,7 +137,7 @@
 }
 
 /* Шапка. Поиск */
-.header-search {display: flex;}
+.header-search {position: relative;display: flex;}
 .search__form {position: relative;display: none;align-items: center;width: 100%;text-align: left;}
 .search__form button {position: absolute;height: 100%;padding: 0;}
 .search__form button svg {flex-shrink: 0;}
@@ -211,6 +211,44 @@
 @media all and (max-width: 639px) {
 	.addto__link:not(.cart) {display: none;}
 }
+
+
+/*
+** Результаты поиска
+*/
+.search__results {
+	position: absolute;
+	top: 100%;
+	left: 0;
+	z-index: 6;
+	display: none;
+	width: 100%;
+	margin-top: 12px;
+	padding: 16px;
+	text-align: left;
+	background-color: white;
+	box-shadow: var(--drop-shadow);
+}
+.search__results-inner {display: flex;flex-flow: column wrap;gap: 24px;}
+.search__results-items {
+	max-height: 360px;
+	margin: 0;
+	padding: 0;
+	overflow: auto;
+	line-height: 1.25;
+	list-style: none;
+}
+.search__results-items::-webkit-scrollbar {width: var(--scrollbar-width-thin);}
+.search__results-item {display: flex;gap: 12px;align-items: center;margin-bottom: 16px;}
+.search__results-item:last-child {margin-bottom: 4px;}
+.search__results-items--goods {width: 100%;}
+.search__results-items--category {width: 100%;}
+.search__results-price {display: none;margin-top: 12px;}
+.search__results-button {justify-content: flex-start;width: 100%;}
+.search__results-name {display: flex;gap: 16px;align-items: center;}
+.search__results-image {width: 88px;height: 88px;background-color: var(--color-background);}
+.search__results-items--category .search__results-image {display: none;}
+
 
 /* Шапка. Промо */
 .header__bottom {box-shadow: var(--drop-shadow);}
@@ -986,10 +1024,10 @@
 .addto__buttons {display: flex;flex-flow: column wrap;gap: 16px;padding: 24px;border-top: 1px solid var(--color-border);}
 .addto__total {display: flex;flex-shrink: 0;justify-content: space-between;}
 .addto__total > span {font-size: var(--text-size-large);}
-.addto__total data {font-weight: bold;font-size: var(--heading-05);}
+.addto__total data {font-size: var(--heading-05);}
 .addto__discount {display: flex;flex-shrink: 0;justify-content: space-between;}
 .addto__discount > span {font-size: var(--text-size-large);}
-.addto__discount data {color: var(--color-error);font-weight: bold;font-size: var(--text-size-large);}
+.addto__discount data {color: var(--color-error);font-weight: bold;font-size: var(--text-size-large);white-space: nowrap;}
 .addto__discount:empty {display: none;}
 .addto__empty {display: none;}
 .is-empty .addto__empty {display: block;padding: 24px;}

@@ -93,30 +93,40 @@ main {margin-block: 20px;}
 ** Кнопки
 */
 button, .button, .paymentFormSubmitLink, .paymentFormTbodySubmitButton {
+	--button-height: var();
 	position: relative;
 	display: inline-flex;
 	gap: 8px;
 	align-items: center;
 	justify-content: center;
-	height: var(--button-large);
-	color: white;
+	height: var(--button-medium);
+	color: var(--color-black);
 	font-weight: 400;
 	font-size: var(--text-size-medium);
 	font-family: inherit;
 	line-height: var(--text-height-medium);
-	background-color: var(--color-primary);
-	border: 1px solid var(--color-primary);
-	border-radius: var(--border-radius);
+	background-color: white;
+	border: 1px solid var(--color-black);
+	border-radius: 0;
 	cursor: pointer;
 	transition: color var(--duration), background-color var(--duration), border-color var(--duration);
 	fill: currentcolor;
 	padding-inline: 32px;
 }
-button:active, .button:active, .paymentFormSubmitLink:active, .paymentFormTbodySubmitButton:active {color: white;background-color: var(--color-secondary);border-color: var(--color-secondary);}
-.button-secondary {color: white;background-color: var(--color-secondary);border-color: var(--color-secondary);}
-.button-secondary:active {color: white;background-color: var(--color-text-primary);border-color: var(--color-border-tertiary);}
+button:active, .button:active, .paymentFormSubmitLink:active, .paymentFormTbodySubmitButton:active {color: white;background-color: var(--color-black);border-color: var(--color-black);}
+@media (hover: hover) and (pointer: fine) {
+	button:hover, .button:hover, .paymentFormSubmitLink:hover, .paymentFormTbodySubmitButton:hover {color: white;background-color: var(--color-black);border-color: var(--color-black);}
+}
+
+/* Кнопка Вторичная */
+.button-secondary {color: var(--color-secondary);background-color: white;border-color: var(--color-secondary);}
+.button-secondary:active {color: white;background-color: var(--color-secondary);border-color: var(--color-secondary);}
+@media (hover: hover) and (pointer: fine) {
+	.button-secondary:hover {color: white;background-color: var(--color-secondary);border-color: var(--color-secondary);}
+}
+
+/* Кнопка Третичная */
 .button-tertiary {
-	color: var(--color-text-primary);
 	font-weight: 600;
 	font-style: italic;
 	text-transform: uppercase;
@@ -127,36 +137,62 @@ button:active, .button:active, .paymentFormSubmitLink:active, .paymentFormTbodyS
 }
 .button-tertiary span {position: relative;transform: skew(15deg);}
 .button-tertiary svg {position: relative;transform: skew(15deg) rotate(-90deg);}
+.button-tertiary:active {color: var(--color-primary);background-color: var(--color-background);border-color: var(--color-background);}
+@media (hover: hover) and (pointer: fine) {
+	.button-tertiary:hover {color: var(--color-primary);background-color: var(--color-background);border-color: var(--color-background);}
+}
+
+/* Кнопка с иконкой */
 .button-icon {height: auto;padding: 0;color: var(--color-gray);background: none;border: none;}
-.button-icon:active {color: var(--color-text-primary);background: none;}
+.button-icon:active {color: var(--color-primary);background: none;}
+@media (hover: hover) and (pointer: fine) {
+	.button-icon:hover {color: var(--color-primary);background: none;}
+}
+
+/* Кнопка ссылка */
 .button-link {
 	justify-content: flex-start;
 	height: auto;
 	padding: 0;
-	color: var(--color-text-primary);
+	color: var(--color-gray);
+	font-size: var(--text-size-regular);
 	background: none;
 	border: none;
 }
 .button-link:active, .button-link.is-active {color: var(--color-secondary);background: none;}
+@media (hover: hover) and (pointer: fine) {
+	.button-link:hover {color: var(--color-secondary);background: none;}
+}
+
+/* Кнопка с подчеркиванием */
 .button-underline {
 	justify-content: flex-start;
 	height: auto;
 	padding: 0;
 	color: var(--color-text-secondary);
 	font-size: var(--text-size-medium);
-	font-family: var(--font-secondary);
 	line-height: var(--text-height-medium);
 	background: none;
 	border: none;
 }
 .button-underline span {border-bottom: 1px solid currentcolor;}
 .button-underline:active, .button-underline.is-active {color: var(--color-secondary);background: none;}
+@media (hover: hover) and (pointer: fine) {
+	.button-underline:hover {color: var(--color-secondary);background: none;}
+}
+
+/* Кнопка отключена */
 .button-disabled, .add-notify {color: white;background-color: var(--color-disabled);border-color: var(--color-disabled);}
 .button-disabled:active, .add-notify:active {background-color: var(--color-disabled);border-color: var(--color-disabled);}
-.button-outline {color: var(--color-text-primary);background-color: transparent;border: 1px solid var(--color-border-secondary);}
-.button-outline.is-active {color: white;background-color: var(--color-secondary);}
+@media (hover: hover) and (pointer: fine) {
+	.button-disabled:hover {background-color: var(--color-disabled);border-color: var(--color-disabled);}
+}
+
+/* Кнопка маленькая и большая */
 .button-small {height: var(--button-small);font-size: var(--text-size-small);padding-inline: 24px;}
 .button-large {height: var(--button-large);font-size: var(--text-size-large);padding-inline: 40px;}
+
+/* Кнопка загрузки */
 button::before {opacity: 0;}
 button.is-loading {position: relative;pointer-events: none;}
 button.is-loading::before {
@@ -172,14 +208,6 @@ button.is-loading::before {
 	opacity: 1;
 	animation: spin 1s linear infinite;
 	content: '';
-}
-@media (hover: hover) and (pointer: fine) {
-	button:hover, .button:hover, .paymentFormSubmitLink:hover, .paymentFormTbodySubmitButton:hover {color: white;background-color: var(--color-secondary);border-color: var(--color-secondary);}
-	.button-secondary:hover {color: white;background-color: var(--color-text-primary);border-color: var(--color-border-tertiary);}
-	.button-icon:hover {color: var(--color-text-primary);background: none;}
-	.button-link:hover {color: var(--color-secondary);background: none;}
-	.button-underline:hover {color: var(--color-secondary);background: none;}
-	.button-disabled:hover {background-color: var(--color-disabled);border-color: var(--color-disabled);}
 }
 
 /* Анимация вращения */
@@ -351,12 +379,19 @@ h6 {font-size: var(--heading-06);}
 */
 fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 .form__fields {position: relative;}
-.form__field + .form__field {margin-top: 12px;}
+.form__field + .form__field {margin-top: 8px;}
 .form__field label {display: block;margin-bottom: 8px;font-size: var(--text-size-regular);}
 .form__field label small {display: none;}
 .form__field label[required] small {display: inline;}
 .form__text {margin: 0;}
-.form__buttons {display: flex;flex-wrap: wrap;gap: 16px 32px;align-items: center;margin-top: 20px;}
+.form__buttons {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 8px 32px;
+	align-items: center;
+	justify-content: center;
+	margin-top: 16px;
+}
 
 /*
 ** Поле формы с регистрацией
@@ -367,7 +402,7 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 /*
 ** Политика конфиденциальности
 */
-.form__pp {display: block;}
+.form__pp {display: block;width: 100%;color: var(--color-gray);text-align: center;}
 .form__pp a {color: currentcolor;text-decoration: underline;}
 .form__pp a:active {color: var(--color-secondary);}
 @media (hover: hover) and (pointer: fine) {
@@ -508,7 +543,7 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 ** Пароль
 */
 .password {position: relative;}
-.password__button {position: absolute;right: 12px;bottom: 0;}
+.password__button {position: absolute;right: 12px;bottom: 12px;}
 .password__button[aria-pressed="true"] .svg-lock {display: none;}
 .password__button[aria-pressed="false"] .svg-unlock {display: none;}
 .password__input {padding-right: 50px;}
@@ -640,7 +675,6 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 	align-items: center;
 	font-weight: bold;
 	font-size: var(--text-size-large);
-	font-family: var(--font-secondary);
 }
 .contacts__link + .contacts__link {margin-top: 12px;}
 
@@ -743,23 +777,25 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 dialog {padding: 0;border: 0;border-radius: var(--border-radius);}
 dialog::backdrop {z-index: 3;}
 .dialog__container {max-width: 680px;padding: 40px;}
-.dialog__title {margin-bottom: 20px;color: var(--color-text-primary);}
+.dialog__title {margin-bottom: 20px;font-weight: 600;font-size: var(--heading-06);text-transform: uppercase;}
+.dialog__text {margin-block: -12px 20px;}
 .dialog__close {
 	position: absolute;
 	top: 12px;
 	right: 12px;
-	width: 32px;
-	height: 32px;
+	width: var(--button-small);
+	height: var(--button-small);
 	padding: 0;
-	color: var(--color-text-primary);
 	background: none;
+	background-color: transparent;
+	border: none;
 	border-radius: var(--border-radius);
 }
-.dialog__close:active {color: var(--color-secondary);border-color: currentcolor;}
-dialog .form__buttons {flex-direction: column;}
+.dialog__close:active {color: var(--color-primary);background: none;}
+.dialog__list {display: grid;gap: 12px;margin: 0;padding: 0;list-style: none;}
 dialog .form__button {width: 100%;}
 @media (hover: hover) and (pointer: fine) {
-	.dialog__close:hover {color: var(--color-secondary);border-color: currentcolor;}
+	.dialog__close:hover {color: var(--color-primary);background: none;}
 }
 @media all and (max-width: 479px) {
 	.dialog__container {padding: 20px;}

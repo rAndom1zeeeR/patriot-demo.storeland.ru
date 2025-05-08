@@ -252,7 +252,7 @@ function DialogsCloser(dialog) {
   if (dialog.querySelector(".dialog__close")) return;
   const button = document.createElement("button");
   button.setAttribute("type", "button");
-  button.classList.add("dialog__close", "button-icon");
+  button.classList.add("dialog__close");
   button.setAttribute("aria-label", "Закрыть модальное окно");
   button.setAttribute("data-dialog-close", "");
   button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="18" height="18" aria-hidden="true"><path d="m568.571 512.003 443.715-443.715c15.622-15.622 15.622-40.95 0-56.57s-40.954-15.622-56.57 0L511.999 455.433 68.286 11.718c-15.622-15.622-40.95-15.622-56.57 0s-15.622 40.95 0 56.57l443.713 443.713L11.716 955.716c-15.622 15.622-15.622 40.949 0 56.57a39.925 39.925 0 0 0 12.974 8.681 39.939 39.939 0 0 0 15.312 3.032 39.939 39.939 0 0 0 15.312-3.032 39.94 39.94 0 0 0 12.974-8.681l443.711-443.713 443.711 443.713c7.811 7.811 18.051 11.713 28.285 11.713 10.24 0 20.474-3.903 28.291-11.713 15.622-15.622 15.622-40.949 0-56.57L568.571 512.003z"/></svg>`;
@@ -375,6 +375,7 @@ function Mainnav(selector = document) {
     let mainnavItemsWidth = mainnavMore.clientWidth;
     mainnavItems.forEach((item) => {
       mainnavItemsWidth += item.clientWidth;
+      console.log("[DEBUG]: mainnavItemsWidth", mainnavItemsWidth);
       if (mainnavItemsWidth > mainnavList.clientWidth) {
         mainnavDropdown.append(item);
       } else {
@@ -2404,7 +2405,7 @@ function Opener() {
     });
   }
 
-  SidebarOpener("#addtoCart", ".cart__open");
+  SidebarOpener("#addtoCart", ".addto__link.cart");
   SidebarOpener("#addtoCompare", ".addto__link.compare");
   SidebarOpener("#addtoFavorites", ".addto__link.favorites");
   SidebarOpener("#addtoMenu", ".mobile-nav__link.menu");

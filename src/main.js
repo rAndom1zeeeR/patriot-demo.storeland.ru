@@ -2238,29 +2238,52 @@ function OrderCoupons() {
 }
 
 /**
- * Валидация форм
- * Используется в функциях: Passwords, handleAddtoOrderOpen, handleCartOrderStart
+ * Валидация обязательных полей форм
+ * 
+ * Инициализирует проверку всех полей с атрибутом [required] в указанном контейнере,
+ * добавляет слушатели событий для обновления состояния ошибок в реальном времени.
+ * 
+ * @param {HTMLElement|Document} doc - Родительский элемент для поиска обязательных полей
+ * 
+ * @example
+ * // Инициализация валидации формы
+ * ValidateRequired(document.querySelector('form'));
  */
 function ValidateRequired(doc = document) {
+  // Находим все обязательные поля
   const requireds = doc.querySelectorAll("[required]");
+  
+  // Для каждого поля добавляем обработчик и выполняем начальную проверку
   requireds.forEach((item) => {
     item.addEventListener("input", () => {
       ValidateInput(item);
     });
+    // Выполняем начальную валидацию
     ValidateInput(item);
   });
 }
 
 /**
- * Валидация поля
- * Используется в функциях: ValidateRequired, handleAddtoOrderOpen, handleCartOrderStart
+ * Проверяет заполнение поля формы и устанавливает соответствующий класс ошибки
+ * 
+ * Функция анализирует значение поля и добавляет/удаляет класс ошибки.
+ * Используется для визуальной валидации полей форм в реальном времени.
+ * 
+ * @param {HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement} item - Проверяемый элемент формы
+ * 
+ * @example
+ * // Проверка поля при вводе
+ * document.querySelector('input').addEventListener('input', function() {
+ *   ValidateInput(this);
+ * });
+ * 
+ * @example
+ * // Проверка всех обязательных полей формы
+ * document.querySelectorAll('[required]').forEach(ValidateInput);
  */
 function ValidateInput(item) {
-  if (item.value === "") {
-    item.classList.add("is-error");
-  } else {
-    item.classList.remove("is-error");
-  }
+  // Проверяем наличие значения в поле и применяем соответствующий класс
+  item.classList.toggle('is-error', item.value === '');
 }
 
 /**
@@ -2435,27 +2458,50 @@ function SidebarOpener(selector, opener) {
 }
 
 /**
- * Функция Показать все/Скрыть.
+ * Управляет отображением элементов "показать больше/скрыть" для выбранного блока
+ * 
+ * Функция находит блок по селектору, определяет видимые и скрытые элементы,
+ * управляет отображением кнопки "показать/скрыть" и добавляет обработчики событий.
+ * 
+ * @param {string} selector - CSS-селектор для поиска контейнера с элементами и кнопкой
+ * 
+ * VisibleItems('.pdt__visible');
  */
 function VisibleItems(selector) {
+  // Находим основной блок
   const block = document.querySelector(selector);
-  console.log("[DEBUG]: block", block);
   if (!block) return;
+  
+  // Находим кнопку переключения видимости
   const button = block.querySelector("[data-visible-button]");
-  console.log("[DEBUG]: button", button);
   if (!button) return;
+  
+  // Получаем все элементы, которые могут быть скрыты/показаны
   const items = block.querySelectorAll("[data-visible-item]");
-  const itemsVisible = $(block).find("[data-visible-item]:visible");
-  console.log("[DEBUG]: itemsVisible", itemsVisible);
-  // Скрыть/показать кнопку
-  button.parentElement.style.display = items.length > itemsVisible.length ? "block" : "none";
+  
+  // Фильтруем только видимые элементы (имеющие размеры)
+  const visibleItems = Array.from(items).filter(
+    item => !!(item.offsetWidth || item.offsetHeight || item.getClientRects().length)
+  );
+  
+  // Управляем отображением кнопки - показываем только если есть скрытые элементы
+  const hasHiddenItems = items.length > visibleItems.length;
+  button.parentElement.style.display = hasHiddenItems ? "block" : "none";
 
+  // Обработчик клика по кнопке
   button.addEventListener("click", (event) => {
     event.preventDefault();
+    
+    // Меняем текст кнопки используя слоты
     SlotText(event.currentTarget);
+    
+    // Переключаем активное состояние для кнопки и блока
     event.currentTarget.classList.toggle("is-active");
     block.classList.toggle("is-active");
+    
+    // Прокручиваем к нужной позиции с задержкой
     setTimeout(() => {
+      // Если кнопка активна - остаемся на месте, иначе прокручиваем к блоку
       scrollTop(button.classList.contains("is-active") ? true : block.offsetTop);
     }, 100);
   });
@@ -2501,9 +2547,8 @@ function scrollTop(offsetTop) {
   });
 }
 
-
 /**
- * Слайдер Обычный на главной. +
+ * Слайдер Обычный на главной.
  * Используется в функциях: на главной странице
  * Использует функции: Swiper
  */
@@ -2566,7 +2611,7 @@ function swiperBanners(selector) {
 }
 
 /**
- * Слайдер Новостей. +
+ * Слайдер Новостей.
  * Используется в функциях: на всех страницах
  * Использует функции: Swiper
  */
@@ -2625,7 +2670,7 @@ function swiperNews(selector) {
 }
 
 /**
- * Слайдер Маленький. +
+ * Слайдер Маленький.
  * Используется в функциях: на всех страницах
  * Использует функции: Swiper
  */
@@ -2685,7 +2730,7 @@ function swiperSmall(selector) {
 }
 
 /**
- * Слайдер Обычный. +
+ * Слайдер Обычный.
  * Используется в функциях: на всех страницах
  * Использует функции: Swiper
  */

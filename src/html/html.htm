@@ -1339,15 +1339,20 @@
 									<path d="M129.1 183.3 237.3 75c4.7-4.8 4.7-12.5 0-17.2-4.8-4.8-12.5-4.8-17.2 0l-99.7 99.7-99.7-99.7C16 53 8.3 53 3.5 57.8c-4.7 4.8-4.7 12.5 0 17.2l108.4 108.3c4.7 4.7 12.5 4.7 17.2 0z" />
 								</svg>
 							</div>
-							<ul class="footer__links">
+							<ul class="footer__links" data-visible-list>
 								{% FOR catalog_full %}
 								{% IF catalog_full.LEVEL > 0 || catalog_full.HIDE %}{continue}{% ENDIF %}
-								<li>
+								<li data-visible-item>
 									<a class="footer__link" href="{catalog_full.URL}" title="Перейти к категории &laquo;{catalog_full.NAME}&raquo;">
 										<span>{catalog_full.NAME}</span>
 									</a>
 								</li>
 								{% ENDFOR %}
+								<li data-visible-item>
+									<a class="footer__link footer__link--more" href="{CATALOG_URL}" title="Посмотреть все" data-visible-button>
+										<span slot="Скрыть">Посмотреть все</span>
+									</a>
+								</li>
 							</ul>
 						</div>
 						<div class="footer__block">
@@ -2244,6 +2249,7 @@
 					swiperSmall('#pdtBest');
 					swiperSmall('#pdtNew');
 					VisibleItems('#pdtSale');
+					VisibleItems('footer [data-visible-list]');
 				}, 1000);
 			});
 		</script>

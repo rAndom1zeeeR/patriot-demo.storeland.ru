@@ -93,7 +93,6 @@ main {margin-block: 20px;}
 ** Кнопки
 */
 button, .button, .paymentFormSubmitLink, .paymentFormTbodySubmitButton {
-	--button-height: var();
 	position: relative;
 	display: inline-flex;
 	gap: 8px;
@@ -117,12 +116,27 @@ button:active, .button:active, .paymentFormSubmitLink:active, .paymentFormTbodyS
 @media (hover: hover) and (pointer: fine) {
 	button:hover, .button:hover, .paymentFormSubmitLink:hover, .paymentFormTbodySubmitButton:hover {color: white;background-color: var(--color-black);border-color: var(--color-black);}
 }
+.button::before, .button::after, button::before, button::after {
+	position: absolute;
+	inset: -5px auto auto -5px;
+	z-index: 2;
+	display: block;
+	width: 10px;
+	height: 10px;
+	background-color: white;
+	border-bottom: 1px solid var(--color-black);
+	transform: rotate(-45deg);
+	content: '';
+}
+.button::after, button::after {inset: auto -5px -5px auto;transform: rotate(135deg);}
 
 /* Кнопка Вторичная */
 .button-secondary {color: var(--color-secondary);background-color: white;border-color: var(--color-secondary);}
 .button-secondary:active {color: white;background-color: var(--color-secondary);border-color: var(--color-secondary);}
+.button-secondary::before, .button-secondary::after {border-color: var(--color-secondary);}
 @media (hover: hover) and (pointer: fine) {
 	.button-secondary:hover {color: white;background-color: var(--color-secondary);border-color: var(--color-secondary);}
+	.button-secondary:hover::before, .button-secondary:hover::after {border-color: var(--color-secondary);}
 }
 
 /* Кнопка Третичная */
@@ -138,6 +152,7 @@ button:active, .button:active, .paymentFormSubmitLink:active, .paymentFormTbodyS
 .button-tertiary span {position: relative;transform: skew(15deg);}
 .button-tertiary svg {position: relative;transform: skew(15deg) rotate(-90deg);}
 .button-tertiary:active {color: var(--color-primary);background-color: var(--color-background);border-color: var(--color-background);}
+.button-tertiary::before, .button-tertiary::after {display: none;}
 @media (hover: hover) and (pointer: fine) {
 	.button-tertiary:hover {color: var(--color-primary);background-color: var(--color-background);border-color: var(--color-background);}
 }
@@ -145,6 +160,7 @@ button:active, .button:active, .paymentFormSubmitLink:active, .paymentFormTbodyS
 /* Кнопка с иконкой */
 .button-icon {height: auto;padding: 0;color: var(--color-gray);background: none;border: none;}
 .button-icon:active {color: var(--color-primary);background: none;}
+.button-icon::before, .button-icon::after {display: none;}
 @media (hover: hover) and (pointer: fine) {
 	.button-icon:hover {color: var(--color-primary);background: none;}
 }
@@ -160,6 +176,7 @@ button:active, .button:active, .paymentFormSubmitLink:active, .paymentFormTbodyS
 	border: none;
 }
 .button-link:active, .button-link.is-active {color: var(--color-secondary);background: none;}
+.button-link::before, .button-link::after {display: none;}
 @media (hover: hover) and (pointer: fine) {
 	.button-link:hover {color: var(--color-secondary);background: none;}
 }
@@ -177,6 +194,7 @@ button:active, .button:active, .paymentFormSubmitLink:active, .paymentFormTbodyS
 }
 .button-underline span {border-bottom: 1px solid currentcolor;}
 .button-underline:active, .button-underline.is-active {color: var(--color-secondary);background: none;}
+.button-underline::before, .button-underline::after {display: none;}
 @media (hover: hover) and (pointer: fine) {
 	.button-underline:hover {color: var(--color-secondary);background: none;}
 }
@@ -184,36 +202,16 @@ button:active, .button:active, .paymentFormSubmitLink:active, .paymentFormTbodyS
 /* Кнопка отключена */
 .button-disabled, .add-notify {color: white;background-color: var(--color-disabled);border-color: var(--color-disabled);}
 .button-disabled:active, .add-notify:active {background-color: var(--color-disabled);border-color: var(--color-disabled);}
+.button-disabled::before, .button-disabled::after, .add-notify::before, .add-notify::after {border-color: var(--color-disabled);}
 @media (hover: hover) and (pointer: fine) {
 	.button-disabled:hover {background-color: var(--color-disabled);border-color: var(--color-disabled);}
+	.button-disabled:hover::before, .button-disabled:hover::after, .add-notify:hover::before, .add-notify:hover::after {border-color: var(--color-black);}
 }
 
 /* Кнопка маленькая и большая */
 .button-small {height: var(--button-small);font-size: var(--text-size-small);padding-inline: 24px;}
 .button-large {height: var(--button-large);font-size: var(--text-size-large);padding-inline: 40px;}
 
-/* Кнопка загрузки */
-button::before {opacity: 0;}
-button.is-loading {position: relative;pointer-events: none;}
-button.is-loading::before {
-	position: absolute;
-	top: 50%;
-	left: 12px;
-	width: 20px;
-	height: 20px;
-	border: 3px solid white;
-	border-top-color: var(--color-primary);
-	border-radius: 50%;
-	transform: translateY(-50%);
-	opacity: 1;
-	animation: spin 1s linear infinite;
-	content: '';
-}
-
-/* Анимация вращения */
-@keyframes spin {
-  to { transform: translateY(-50%) rotate(360deg); }
-}
 
 /*
 ** Инпут поля

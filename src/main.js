@@ -380,7 +380,7 @@ function Mainnav(selector = document) {
     let mainnavItemsWidth = mainnavMore.clientWidth;
     mainnavItems.forEach((item) => {
       mainnavItemsWidth += item.clientWidth;
-      console.log("[DEBUG]: mainnavItemsWidth", mainnavItemsWidth);
+      // console.log("[DEBUG]: mainnavItemsWidth", mainnavItemsWidth);
       if (mainnavItemsWidth > mainnavList.clientWidth) {
         mainnavDropdown.append(item);
       } else {

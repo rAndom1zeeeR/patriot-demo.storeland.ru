@@ -1122,7 +1122,7 @@
 						<div class="swiper-wrapper">
 							{% FOR news_list_all %}
 							<div class="swiper-slide news__item">
-								<div class="news__images">
+								<div class="news__image">
 									<img src="{% IF news_list_all.IMG %}{news_list_all.IMG}{% ELSE %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ENDIF %}" alt="{news_list_all.TITLE}" loading="lazy">
 								</div>
 
@@ -1161,7 +1161,7 @@
 							{% FOR news_list_shop %}
 							<div class="swiper-slide">
 								<article class="news__item">
-									<div class="news__images">
+									<div class="news__image">
 										<img src="{% IF news_list_shop.IMG %}{news_list_shop.IMG}{% ELSE %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ENDIF %}" alt="{news_list_shop.TITLE}" loading="lazy">
 									</div>
 

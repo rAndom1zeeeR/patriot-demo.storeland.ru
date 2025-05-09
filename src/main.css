@@ -297,9 +297,13 @@
 #banners {overflow: hidden;}
 .is-loading #banners .swiper-slide {display: none;}
 .banners__items.swiper {padding-bottom: 20px;}
-.banners__item {position: relative;background-color: var(--color-background);}
+.banners__item {position: relative;overflow: hidden;background-color: var(--color-background);}
 .banners__images {position: relative;display: block;}
 .banners__images::before {position: absolute;z-index: 1;background-color: rgb(72 69 69 / 20%);content: '';inset: 0;}
+.banners__images img {transition: transform var(--duration) ease-in-out;}
+@media (hover: hover) and (pointer: fine) {
+	.banners__item:hover img {transform: scale(1.15);}
+}
 .banners__title {
 	position: absolute;
 	bottom: 25px;
@@ -356,7 +360,7 @@
 	align-items: flex-start;
 	width: 100%;
 }
-.news__images {
+.news__image {
 	position: relative;
 	display: flex;
 	width: 100%;
@@ -364,6 +368,10 @@
 	overflow: hidden;
 	background-color: var(--color-background);
 	border-radius: var(--border-radius);
+}
+.news__image img {transition: transform var(--duration) ease-in-out;}
+@media (hover: hover) and (pointer: fine) {
+	.news__item:hover img {transform: scale(1.15);}
 }
 .news__title {
 	display: -webkit-box;
@@ -398,7 +406,7 @@
 	.is-loading #news .swiper-slide:nth-child(-n+2) {display: flex;}
 }
 @media all and (min-width: 768px) {
-	.news__images {height: 240px;}
+	.news__image {height: 240px;}
 	.news__date {top: 212px;}
 	.news__desc {display: block;}
 	.news__desc span {
@@ -611,6 +619,10 @@
 }
 .is-loading .categories__images {width: 120px;height: 120px;}
 .categories__images::after {position: absolute;z-index: 2;content: '';inset: 0;}
+.categories__images img {transition: transform var(--duration) ease-in-out;}
+@media (hover: hover) and (pointer: fine) {
+	.categories__item:hover img {transform: scale(1.15);}
+}
 .categories__name {
 	margin-bottom: auto;
 	overflow: hidden;
@@ -673,6 +685,10 @@
 	border-radius: var(--border-radius);
 	aspect-ratio: 1 / 1;
 	margin-inline: auto;
+}
+.product__image img {transition: transform var(--duration) ease-in-out;}
+@media (hover: hover) and (pointer: fine) {
+	.product__item:hover img {transform: scale(1.15);}
 }
 .product__name {
 	display: block;
@@ -876,7 +892,7 @@
 	--swiper-pagination-bullet-border-radius: 0;
 	--swiper-pagination-bullet-horizontal-gap: 4px;
 	--swiper-pagination-bottom: 0;
-	z-index: 3 !important;
+	z-index: 2 !important;
 }
 
 

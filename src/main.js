@@ -103,8 +103,10 @@ function OverlayCloser(event, selector, handler) {
   const content = document.querySelector(selector);
   if (event.target.closest(selector) !== content) {
     content.classList.remove("is-opened");
-    document.querySelector(".search__reset").click();
     document.body.removeEventListener("click", handler);
+    if (selector !== "[data-search]") {
+      document.querySelector(".search__reset").click();
+    }
   } else {
     content.classList.add("is-opened");
   }
@@ -116,6 +118,8 @@ function OverlayCloser(event, selector, handler) {
  * Использует функции:
  */
 function OverlayOpener(content, handler) {
+  console.log("[DEBUG]: handler", handler);
+  console.log("[DEBUG]: content", content);
   content.classList.toggle("is-opened");
   if (content.classList.contains("is-opened")) {
     document.body.addEventListener("click", handler);
@@ -133,7 +137,7 @@ function СreateNoty(type, content) {
   // console.log("[DEBUG]: content", content);
   const Toast = Swal.mixin({
     toast: true,
-    position: "bottom",
+    position: "top-end",
     showConfirmButton: false,
     timer: 3000,
     timerProgressBar: true,
@@ -2334,7 +2338,11 @@ function Opener() {
     catalogButton.addEventListener("click", (event) => {
       event.preventDefault();
       const parentTarget = event.currentTarget.closest('[data-mobile-catalog]');
-      OverlayOpener(parentTarget, handleCatalogOpened);
+      if(getClientWidth() > 1024) {
+        OverlayOpener(parentTarget, handleCatalogOpened);
+      } else {
+        document.querySelector('#addtoMenu').removeAttribute('hidden');
+      }
     });
     // Закрытие мобильного каталога
     function handleCatalogOpened(event) {

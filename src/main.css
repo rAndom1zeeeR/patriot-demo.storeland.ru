@@ -231,7 +231,7 @@
 	z-index: 6;
 	display: none;
 	width: 100%;
-	margin-top: 8px;
+	margin-top: 16px;
 	padding: 16px;
 	text-align: left;
 	background-color: white;
@@ -260,6 +260,9 @@
 	padding: 8px;
 	font-size: var(--text-size-regular);
 	background-color: var(--color-background);
+}
+@media all and (min-width: 640px) {
+	.search__results {margin-top: 8px;}
 }
 
 
@@ -1050,3 +1053,57 @@
 .is-empty .addto__buttons {display: none;}
 .is-empty .addto__title data {display: none;}
 
+
+/*
+** Каталог
+*/
+.catalog__content {display: none;}
+@media all and (min-width: 1024px) {
+	.catalog__content ul {flex-direction: column;margin: 0;padding: 0;list-style: none;}
+	.header-catalog.is-opened .catalog__content {
+		position: absolute;
+		top: 100%;
+		z-index: 5;
+		display: block;
+		width: 100%;
+		background-color: white;
+		box-shadow: var(--drop-shadow);
+	}
+	.catalog__link {display: flex;gap: 8px;align-items: center;padding: 6px;}
+	.catalog__link[data-level="0"] {
+		width: 360px;
+		padding: 16px 24px;
+		font-weight: 600;
+		transition: background-color var(--duration);
+	}
+	.catalog__link[data-level="1"] {padding-block: 10px;font-weight: bold;}
+	.catalog__link:not([data-level="0"]) svg {display: none;}
+	.catalog__sub {display: none;}
+	.catalog__sub::-webkit-scrollbar {width: var(--scrollbar-width-thin);}
+	.catalog__sub[data-level="0"] {
+		display: block;
+		height: 500px;
+		overflow: hidden auto;
+		border: 1px solid var(--color-border);
+	}
+	.catalog__sub[data-level="1"] {
+		position: absolute;
+		top: 0;
+		left: 360px;
+		grid-auto-rows: max-content;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 8px;
+		align-items: flex-start;
+		width: calc(100% - 360px);
+		height: 500px;
+		padding: 16px 24px;
+		overflow: hidden auto;
+		background-color: white;
+		border: 1px solid var(--color-border);
+	}
+	.catalog__sub[data-level="2"] {display: block;}
+	@media (hover: hover) and (pointer: fine) {
+		.catalog__link[data-level="0"]:hover {background-color: var(--color-background);}
+		.catalog__item.is-parent:hover > .catalog__sub[data-level="1"] {display: grid;}
+	}
+}

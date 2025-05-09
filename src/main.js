@@ -103,6 +103,7 @@ function OverlayCloser(event, selector, handler) {
   const content = document.querySelector(selector);
   if (event.target.closest(selector) !== content) {
     content.classList.remove("is-opened");
+    document.querySelector(".search__reset").click();
     document.body.removeEventListener("click", handler);
   } else {
     content.classList.add("is-opened");
@@ -2294,7 +2295,7 @@ function ValidateInput(item) {
  */
 function Opener() {
   // Открытие блоков в подвале
-  const footerTitles = document.querySelectorAll(".footer__title");
+  const footerTitles = document.querySelectorAll("[data-footer-title]");
   if (footerTitles.length > 0) {
     footerTitles.forEach((title) => {
       title.addEventListener("click", (event) => {
@@ -2303,8 +2304,10 @@ function Opener() {
       });
     });
   }
-  const search = document.querySelector(".search__icon");
-  const reset = document.querySelector(".search__reset");
+
+  // Открытие мобильного поиска
+  const search = document.querySelector("[data-search-mobile-button]");
+  const reset = document.querySelector("[data-search-reset]");
   if (search) {
     search.addEventListener("click", (event) => {
       event.preventDefault();
@@ -2313,33 +2316,33 @@ function Opener() {
         reset.click();
       } else {
         setTimeout(() => {
-          parent.querySelector(".search__input").focus();
+          parent.querySelector("[data-search-input]").focus();
         }, 100);
       }
-      
+      // Открытие мобильного поиска
       OverlayOpener(parent, handleSearchOpened);
-      // parent.classList.toggle("is-opened");
     });
-
+    // Закрытие мобильного поиска
     function handleSearchOpened(event) {
-      OverlayCloser(event, ".search", handleSearchOpened);
+      OverlayCloser(event, "[data-search]", handleSearchOpened);
     }
   }
 
-  // Открытие каталога
-  const catalogButton = document.querySelector(".mainnav__link--catalog");
+  // Открытие мобильного каталога
+  const catalogButton = document.querySelector("[data-mobile-catalog-button]");
   if (catalogButton) {
     catalogButton.addEventListener("click", (event) => {
       event.preventDefault();
-      const parentTarget = event.currentTarget.closest('#catalog');
+      const parentTarget = event.currentTarget.closest('[data-mobile-catalog]');
       OverlayOpener(parentTarget, handleCatalogOpened);
     });
+    // Закрытие мобильного каталога
+    function handleCatalogOpened(event) {
+      OverlayCloser(event, "[data-mobile-catalog]", handleCatalogOpened);
+    }
   }
 
-  function handleCatalogOpened(event) {
-    OverlayCloser(event, "#catalog", handleCatalogOpened);
-  }
-
+  // Открытие мобильного меню
   const mobileMenu = document.querySelector("[data-mobile-menu=open]");
   const mobileContent = document.querySelector("[data-mobile-menu=content]");
   const mobileСlose = document.querySelector("[data-mobile-menu=close]");
@@ -2365,7 +2368,7 @@ function Opener() {
   }
 
   // Открытие каталога с сохранением вложенности
-  const catalogOpens = document.querySelectorAll(".catalog__link-icon");
+  const catalogOpens = document.querySelectorAll("[data-catalog-parent-button]");
   if (catalogOpens.length > 0) {
     catalogOpens.forEach((catalogOpen) => {
       catalogOpen.addEventListener("click", (event) => {

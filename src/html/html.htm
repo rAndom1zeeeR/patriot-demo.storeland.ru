@@ -124,13 +124,31 @@
 			<div class="header__middle">
 				<div class="container">
 					<div class="header__inner header__inner--middle">
-						<div class="header-catalog">
-							<button class="header-catalog__button button-icon" type="button" aria-label="Открыть мобильный каталог" title="Открыть мобильный каталог">
+						<div class="header-catalog" data-mobile-catalog>
+							<button class="header-catalog__button button-icon" data-mobile-catalog-button type="button" aria-label="Открыть мобильный каталог" title="Открыть мобильный каталог">
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
 									<path d="M21 7H3C2.4 7 2 6.6 2 6C2 5.4 2.4 5 3 5H21C21.6 5 22 5.4 22 6C22 6.6 21.6 7 21 7ZM21 13H3C2.4 13 2 12.6 2 12C2 11.4 2.4 11 3 11H21C21.6 11 22 11.4 22 12C22 12.6 21.6 13 21 13ZM21 19H3C2.4 19 2 18.6 2 18C2 17.4 2.4 17 3 17H21C21.6 17 22 17.4 22 18C22 18.6 21.6 19 21 19Z" />
 								</svg>
 								<span>Каталог товаров</span>
 							</button>
+							<div class="catalog__content">
+								{% FOR catalog_full %}
+								{% IF catalog_full.FIRST %}<ul class="catalog__sub" data-level="{catalog_full.LEVEL}">{% ENDIF %}
+									<li class="catalog__item {% IF catalog_full.ISSET_VISIBLE_SUB %}is-parent{% ENDIF %} {% IF catalog_full.CURRENT_PARENT %}is-opened{% ENDIF %}" data-level="{catalog_full.LEVEL}" data-id="{catalog_full.ID}" {% IF catalog_full.HIDE %}style="display:none;" {% ENDIF %}>
+										<a class="catalog__link {% IF catalog_full.CURRENT %}is-opened{% ENDIF %}" href="{catalog_full.URL}" data-level="{catalog_full.LEVEL}">
+											<span>{catalog_full.NAME}</span>
+											{% IF catalog_full.ISSET_VISIBLE_SUB %}
+											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="10" height="10" aria-hidden="true">
+												<path d="M183.2 111.8 74.9 3.6c-4.8-4.7-12.5-4.7-17.2 0-4.8 4.8-4.8 12.5 0 17.2l99.7 99.7-99.7 99.7c-4.8 4.7-4.8 12.4 0 17.2 4.8 4.7 12.5 4.7 17.2 0L183.2 129c4.7-4.7 4.7-12.5 0-17.2z" />
+											</svg>
+											{% ENDIF %}
+										</a>
+										{% IF catalog_full.ISSET_SUB=0 %}
+									</li>{% ENDIF %}
+									{% IF catalog_full.LAST %}{% FOR out %}</li>{% IFNOT catalog_full.out.LAST %}
+								</ul>{% ENDIF %}{% ENDFOR %}{% ENDIF %}
+								{% ENDFOR %}
+							</div>
 						</div>
 
 						<div class="header-logo header-logo--middle">
@@ -139,9 +157,9 @@
 							</a>
 						</div>
 
-						<div class="header-search search" itemscope itemtype="https://schema.org/WebSite" role="search" aria-label="Поиск по сайту">
+						<div class="header-search search" data-search itemscope itemtype="https://schema.org/WebSite" role="search" aria-label="Поиск по сайту">
 							<link itemprop="url" href="{INDEX_PAGE_URL}">
-							<button class="search__icon button-icon" type="submit" aria-label="Открыть мобильный поиск" title="Открыть мобильный поиск">
+							<button class="search__icon button-icon" data-search-mobile-button type="submit" aria-label="Открыть мобильный поиск" title="Открыть мобильный поиск">
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
 									<path
 												d="M21.8009 20.8212L16.3993 15.4195C16.399 15.4192 16.399 15.4187 16.3993 15.4185C17.5555 14.0548 18.2274 12.3465 18.3099 10.5605C18.5423 5.72187 14.692 1.82702 9.85102 2.00593C5.58696 2.16732 2.16732 5.58697 2.00592 9.85103C1.82706 14.692 5.72195 18.5424 10.5606 18.3098C12.3465 18.2272 14.0547 17.5553 15.4184 16.3992C15.4185 16.3991 15.4187 16.399 15.4189 16.399C15.4191 16.399 15.4193 16.3991 15.4195 16.3992L20.8212 21.8009C21.0938 22.0693 21.5325 22.0659 21.8009 21.7933C22.0664 21.5236 22.0664 21.0908 21.8009 20.8212ZM3.56157 11.7314C3.02979 9.35761 3.72442 7.0149 5.36969 5.36966C7.01497 3.72442 9.35761 3.02976 11.7315 3.56158C13.9774 4.06488 16.2546 6.34188 16.7579 8.58754C17.29 10.9616 16.5953 13.3046 14.9499 14.9499C13.3046 16.5953 10.9615 17.29 8.58742 16.7578C6.34176 16.2544 4.06487 13.9771 3.56157 11.7314Z" />
@@ -150,14 +168,14 @@
 							<form class="search__form" action="{QUICK_SEARCH_URL}" method="get" itemprop="potentialAction" itemscope itemtype="https://schema.org/SearchAction">
 								<meta itemprop="target" content="{SEARCH_URL}?q={query}">
 								<input type="hidden" name="goods_search_field_id" value="0">
-								<input class="search__input" type="text" name="q" value="{FORM_SEARCH_Q}" itemprop="query" placeholder="Поиск...">
-								<button class="search__submit button-icon" type="submit" aria-label="Искать на сайте" title="Искать">
+								<input class="search__input" data-search-input type="text" name="q" value="{FORM_SEARCH_Q}" itemprop="query" placeholder="Поиск...">
+								<button class="search__submit button-icon" data-search-submit type="submit" aria-label="Искать на сайте" title="Искать">
 									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
 										<path
 													d="M21.8009 20.8212L16.3993 15.4195C16.399 15.4192 16.399 15.4187 16.3993 15.4185C17.5555 14.0548 18.2274 12.3465 18.3099 10.5605C18.5423 5.72187 14.692 1.82702 9.85102 2.00593C5.58696 2.16732 2.16732 5.58697 2.00592 9.85103C1.82706 14.692 5.72195 18.5424 10.5606 18.3098C12.3465 18.2272 14.0547 17.5553 15.4184 16.3992C15.4185 16.3991 15.4187 16.399 15.4189 16.399C15.4191 16.399 15.4193 16.3991 15.4195 16.3992L20.8212 21.8009C21.0938 22.0693 21.5325 22.0659 21.8009 21.7933C22.0664 21.5236 22.0664 21.0908 21.8009 20.8212ZM3.56157 11.7314C3.02979 9.35761 3.72442 7.0149 5.36969 5.36966C7.01497 3.72442 9.35761 3.02976 11.7315 3.56158C13.9774 4.06488 16.2546 6.34188 16.7579 8.58754C17.29 10.9616 16.5953 13.3046 14.9499 14.9499C13.3046 16.5953 10.9615 17.29 8.58742 16.7578C6.34176 16.2544 4.06487 13.9771 3.56157 11.7314Z" />
 									</svg>
 								</button>
-								<button class="search__reset button-icon" type="button" aria-label="Сбросить поисковый запрос" title="Сбросить поисковый запрос">
+								<button class="search__reset button-icon" data-search-reset type="button" aria-label="Сбросить поисковый запрос" title="Сбросить поисковый запрос">
 									<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="14" height="14" aria-hidden="true">
 										<path
 													d="m568.571 512.003 443.715-443.715c15.622-15.622 15.622-40.95 0-56.57s-40.954-15.622-56.57 0L511.999 455.433 68.286 11.718c-15.622-15.622-40.95-15.622-56.57 0s-15.622 40.95 0 56.57l443.713 443.713L11.716 955.716c-15.622 15.622-15.622 40.949 0 56.57a39.925 39.925 0 0 0 12.974 8.681 39.939 39.939 0 0 0 15.312 3.032 39.939 39.939 0 0 0 15.312-3.032 39.94 39.94 0 0 0 12.974-8.681l443.711-443.713 443.711 443.713c7.811 7.811 18.051 11.713 28.285 11.713 10.24 0 20.474-3.903 28.291-11.713 15.622-15.622 15.622-40.949 0-56.57L568.571 512.003z" />
@@ -177,7 +195,10 @@
 									<ul class="search-results__items search-results__items--goods"></ul>
 									<div class="search-results__buttons">
 										<button class="search-results__button button-tertiary button-small" type="button">
-											<span>Смотреть все результаты</span>
+											<span>Смотреть все</span>
+											<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="12" height="12" aria-hidden="true">
+												<path d="M129.1 183.3 237.3 75c4.7-4.8 4.7-12.5 0-17.2-4.8-4.8-12.5-4.8-17.2 0l-99.7 99.7-99.7-99.7C16 53 8.3 53 3.5 57.8c-4.7 4.8-4.7 12.5 0 17.2l108.4 108.3c4.7 4.7 12.5 4.7 17.2 0z" />
+											</svg>
 										</button>
 									</div>
 								</div>
@@ -1312,7 +1333,7 @@
 					</div>
 					<div class="footer-blocks">
 						<div class="footer__block">
-							<div class="footer__title">
+							<div class="footer__title" data-footer-title>
 								<span>Каталог</span>
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="12" height="12" aria-hidden="true">
 									<path d="M129.1 183.3 237.3 75c4.7-4.8 4.7-12.5 0-17.2-4.8-4.8-12.5-4.8-17.2 0l-99.7 99.7-99.7-99.7C16 53 8.3 53 3.5 57.8c-4.7 4.8-4.7 12.5 0 17.2l108.4 108.3c4.7 4.7 12.5 4.7 17.2 0z" />
@@ -1330,7 +1351,7 @@
 							</ul>
 						</div>
 						<div class="footer__block">
-							<div class="footer__title">
+							<div class="footer__title" data-footer-title>
 								<span>О компании</span>
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="12" height="12" aria-hidden="true">
 									<path d="M129.1 183.3 237.3 75c4.7-4.8 4.7-12.5 0-17.2-4.8-4.8-12.5-4.8-17.2 0l-99.7 99.7-99.7-99.7C16 53 8.3 53 3.5 57.8c-4.7 4.8-4.7 12.5 0 17.2l108.4 108.3c4.7 4.7 12.5 4.7 17.2 0z" />
@@ -1354,7 +1375,7 @@
 							</ul>
 						</div>
 						<div class="footer__block">
-							<div class="footer__title">
+							<div class="footer__title" data-footer-title>
 								<span>Покупателям</span>
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="12" height="12" aria-hidden="true">
 									<path d="M129.1 183.3 237.3 75c4.7-4.8 4.7-12.5 0-17.2-4.8-4.8-12.5-4.8-17.2 0l-99.7 99.7-99.7-99.7C16 53 8.3 53 3.5 57.8c-4.7 4.8-4.7 12.5 0 17.2l108.4 108.3c4.7 4.7 12.5 4.7 17.2 0z" />
@@ -1695,7 +1716,7 @@
 							<a class="catalog__link {% IF catalog_full.CURRENT %}is-opened{% ENDIF %}" href="{catalog_full.URL}" data-level="{catalog_full.LEVEL}">
 								<span>{catalog_full.NAME}</span>
 								{% IF catalog_full.ISSET_VISIBLE_SUB %}
-								<svg class="catalog__link-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="12" height="12" aria-hidden="true">
+								<svg class="catalog__link-icon" data-catalog-parent-button xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="12" height="12" aria-hidden="true">
 									<path d="M183.2 111.8 74.9 3.6c-4.8-4.7-12.5-4.7-17.2 0-4.8 4.8-4.8 12.5 0 17.2l99.7 99.7-99.7 99.7c-4.8 4.7-4.8 12.4 0 17.2 4.8 4.7 12.5 4.7 17.2 0L183.2 129c4.7-4.7 4.7-12.5 0-17.2z" />
 								</svg>
 								{% ENDIF %}

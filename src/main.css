@@ -848,6 +848,8 @@
 @media (hover: hover) and (pointer: fine) {
 	.product__link:hover {border-color: var(--color-primary);fill: var(--color-primary);}
 }
+.product__item[data-rest-value="0"] {color: var(--color-gray);}
+.product__item[data-rest-value="0"] .product__name {color: var(--color-gray);}
 .products__grid.swiper-wrapper {gap: 0;}
 .is-loading .product__item {width: 136px;}
 .is-loading .products__grid.swiper-wrapper {display: grid;grid-template-columns: repeat(2, 1fr);gap: 16px;overflow: hidden;}

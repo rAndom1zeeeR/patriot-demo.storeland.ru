@@ -175,10 +175,10 @@ button:active, .button:active, .paymentFormSubmitLink:active, .paymentFormTbodyS
 	background: none;
 	border: none;
 }
-.button-link:active, .button-link.is-active {color: var(--color-secondary);background: none;}
+.button-link:active, .button-link.is-active {color: var(--color-primary);background: none;}
 .button-link::before, .button-link::after {display: none;}
 @media (hover: hover) and (pointer: fine) {
-	.button-link:hover {color: var(--color-secondary);background: none;}
+	.button-link:hover {color: var(--color-primary);background: none;}
 }
 
 /* Кнопка с подчеркиванием */

@@ -400,7 +400,8 @@
 /* 
 ** Баннеры на главной.
 */
-#banners {overflow: hidden;--swiper-pagination-bottom: 8px;}
+#banners {overflow: hidden;}
+#banners .swiper-pagination {--swiper-pagination-bottom: 4px;}
 .is-loading #banners .swiper-slide {display: none;}
 .banners__items.swiper {padding-bottom: 20px;}
 .banners__item {position: relative;overflow: hidden;background-color: var(--color-background);}
@@ -914,8 +915,8 @@
 	flex-direction: column;
 	gap: 12px;
 	justify-content: center;
-	width: 400px;
-	padding: 24px 24px 40px;
+	width: 200px;
+	padding: 24px 12px;
 	text-align: center;
 	background-color: var(--color-background);
 	outline: 5px solid var(--color-background);
@@ -923,7 +924,7 @@
 	transform: skew(-15deg);
 	margin-inline: auto;
 }
-.pdtSales__inner .headline__title {transform: skew(10deg);}
+.pdtSales__inner .headline__title {font-size: var(--heading-04);transform: skew(10deg);}
 .pdtSales__inner .headline--navigation :is(.swiper-button-prev, .swiper-button-next) {background-color: white;}
 .pdtSales__sticker {
 	position: relative;
@@ -951,6 +952,9 @@
 .product__grid--medium .product__date svg {margin-top: -3px;}
 @media (hover: hover) and (pointer: fine) {
 	.product__grid--medium .product__add:hover {color: white;}
+}
+@media all and (min-width: 480px) {
+	.pdtSales__inner .headline {width: 400px;padding: 24px 24px 40px;}
 }
 @media all and (min-width: 1200px) {
 	.pdtSales__swiper {padding-inline: 32px;}

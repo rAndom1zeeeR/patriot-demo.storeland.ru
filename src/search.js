@@ -1,45 +1,27 @@
 ///////////////////////////////////////////////////////
-/* Поиск */
+/* Поиск (реализация без jQuery) */
 //////////////////////////////////////////////////////
-// Форма поиска ( Сразу же помечаем объект поиска, как инициализированный, чтобы случайно не инициализировать его дважды.)
 function SearchFieldInit(object) {
-  // console.info("[DEBUG]: Поиск на сайте", object);
   // Блок в котором лежит поле поиска
-  object.search_form = object.find(".search__form");
-  // Если поля поиска не нашлось, завершаем работу, ничего страшного.
-  if (0 === object.search_form.length) {
-    return;
-  }
-  // Поле поиска товара
-  object.search_input = object.find(".search__input");
-  object.search_submit = object.find(".search__submit");
-  // Обнуление данных в форме поиска
-  object.s_reset = object.find(".search__reset");
-  // Проверка на существование функции проверки поля и действий с ним
-  // if (typeof object.SearchFieldCheck !== "function") {
-  //   console.error("function SearchFieldCheck is not found in object for SearchFieldInit", { status: "error" });
-  //   return;
-  //   // Проверка, сколько полей поиска нам подсунули за раз на инициализацию
-  // } else if (1 < object.search_form.length) {
-  //   console.error("function SearchFieldInit must have only one search object", { status: "error" });
-  //   return;
-  // }
-  // Создаём функцию которая будет отвечать за основные действия с полем поиска
+  object.search_form = object.querySelector('.search__form');
+  if (!object.search_form) return;
+  object.search_input = object.querySelector('.search__input');
+  object.search_submit = object.querySelector('.search__submit');
+  object.s_reset = object.querySelector('.search__reset');
+
   object.__SearchFieldCheck = function (isAfter) {
-    // Если в поле текста есть вбитые данные
-    if (object.search_input.val().length) {
-      object.addClass("search--filled");
-      if (object.search_input.val().length > 2) {
-        object.addClass("search--success");
+    if (object.search_input.value.length) {
+      object.classList.add('search--filled');
+      if (object.search_input.value.length > 2) {
+        object.classList.add('search--success');
       } else {
-        object.removeClass("search--success");
+        object.classList.remove('search--success');
       }
     } else {
-      object.removeClass("search--filled");
-      object.removeClass("search--success");
+      object.classList.remove('search--filled');
+      object.classList.remove('search--success');
     }
-    // При нажатии клавиши данных внутри поля ещё нет, так что проверки вернут информацию что менять поле не нужно, хотя как только операция будет завершена данные в поле появятся. Поэтому произведём вторую проверку спустя 2 сотых секунды.
-    if (typeof isAfter == "undefined" || !isAfter) {
+    if (typeof isAfter === 'undefined' || !isAfter) {
       setTimeout(function () {
         object.__SearchFieldCheck(1);
       }, 20);
@@ -47,87 +29,82 @@ function SearchFieldInit(object) {
       return object.SearchFieldCheck();
     }
   };
-  // Действия с инпут полем поиска
-  object.search_input
-    .click(function () {
-      object.__SearchFieldCheck();
-    })
-    .focus(function () {
-      object.addClass("search--focused");
-      object.__SearchFieldCheck();
-    })
-    .blur(function () {
-      object.removeClass("search--focused");
-      object.__SearchFieldCheck();
-    })
-    .keyup(function (I) {
-      switch (I.keyCode) {
-        // игнорируем нажатия на эти клавишы
-        case 13: // enter
-        case 27: // escape
-        case 38: // стрелка вверх
-        case 40: // стрелка вниз
-          break;
-        default:
-          object.removeClass("search--focused");
-          object.__SearchFieldCheck();
-          break;
-      }
-    })
-    .bind("paste", function (e) {
-      object.__SearchFieldCheck();
-      setTimeout(function () {
-        object.__SearchFieldCheck();
-      }, 20);
-    })
-    .bind("cut", function (e) {
-      $(".search__results").hide();
-      $(".search-results__item").remove();
-      object.__SearchFieldCheck();
-    });
 
-  //Считываем нажатие клавиш, уже после вывода подсказки
+  object.search_input.addEventListener('click', function () {
+    object.__SearchFieldCheck();
+  });
+  object.search_input.addEventListener('focus', function () {
+    object.classList.add('search--focused');
+    object.__SearchFieldCheck();
+  });
+  object.search_input.addEventListener('blur', function () {
+    object.classList.remove('search--focused');
+    object.__SearchFieldCheck();
+  });
+  object.search_input.addEventListener('keyup', function (I) {
+    switch (I.keyCode) {
+      case 13:
+      case 27:
+      case 38:
+      case 40:
+        break;
+      default:
+        object.classList.remove('search--focused');
+        object.__SearchFieldCheck();
+        break;
+    }
+  });
+  object.search_input.addEventListener('paste', function (e) {
+    object.__SearchFieldCheck();
+    setTimeout(function () {
+      object.__SearchFieldCheck();
+    }, 20);
+  });
+  object.search_input.addEventListener('cut', function (e) {
+    hideSearchResults();
+    removeAllSearchItems();
+    object.__SearchFieldCheck();
+  });
+
   var suggestCount;
   var suggestSelected = 0;
   function keyActivate(n) {
-    var $links = $(".search-results__item");
-    $links.eq(suggestSelected - 1).removeClass("is-active");
-    if (n == 1 && suggestSelected < suggestCount) {
+    var $links = document.querySelectorAll('.search-results__item');
+    if ($links[suggestSelected - 1]) $links[suggestSelected - 1].classList.remove('is-active');
+    if (n === 1 && suggestSelected < suggestCount) {
       suggestSelected++;
-    } else if (n == -1 && suggestSelected > 0) {
+    } else if (n === -1 && suggestSelected > 0) {
       suggestSelected--;
     }
-    if (suggestSelected > 0) {
-      $links.eq(suggestSelected - 1).addClass("is-active");
+    if (suggestSelected > 0 && $links[suggestSelected - 1]) {
+      $links[suggestSelected - 1].classList.add('is-active');
     }
   }
-  object.search_input.keydown(function (I) {
+  object.search_input.addEventListener('keydown', function (I) {
     switch (I.keyCode) {
-      // По нажатию клавиш прячем подсказку
-      case 27: // escape
-        $(".search__results").hide();
+      case 27:
+        hideSearchResults();
+        I.preventDefault();
         return false;
-        break;
-      // Нажатие enter при выделенном пункте из поиска
-      case 13: // enter
+      case 13:
         if (suggestSelected) {
-          var $link = $(".search-results__item").eq(suggestSelected - 1);
-          var href = $link.attr("href");
+          var $links = document.querySelectorAll('.search-results__item');
+          var $link = $links[suggestSelected - 1];
+          var href = $link ? $link.getAttribute('href') : null;
           if (href) {
             document.location = href;
-          } else {
-            $link.trigger("click");
+          } else if ($link) {
+            $link.click();
           }
+          I.preventDefault();
           return false;
         }
         break;
-      // делаем переход по подсказке стрелочками клавиатуры
-      case 38: // стрелка вверх
-      case 40: // стрелка вниз
+      case 38:
+      case 40:
         I.preventDefault();
-        suggestCount = $(".search-results__item").length;
+        suggestCount = document.querySelectorAll('.search-results__item').length;
         if (suggestCount) {
-          //делаем выделение пунктов в слое, переход по стрелочкам
           keyActivate(I.keyCode - 39);
         }
         break;
@@ -136,19 +113,201 @@ function SearchFieldInit(object) {
         break;
     }
   });
-  // Кнопка обнуления данных в форме поиска
-  object.s_reset.click(function (event) {
+  object.s_reset.addEventListener('click', function (event) {
     event.preventDefault();
-    object.search_input.val("").focus();
-    $(".search__results").hide();
-    $(".search-results__item").remove();
-    $(".search").removeClass("search--focused");
-    $(".search").removeClass("search--success");
-    $(".search").removeClass("search--loading");
+    object.search_input.value = '';
+    object.search_input.focus();
+    hideSearchResults();
+    removeAllSearchItems();
+    document.querySelectorAll('.search').forEach(function (el) {
+      el.classList.remove('search--focused', 'search--success', 'search--loading');
+    });
   });
-  // Проверка данных в форме после инициализации функционала. Возможно браузер вставил туда какой-либо текст, нужно обработать и такой вариант
   object.__SearchFieldCheck();
 }
+
+function hideSearchResults() {
+  const el = document.querySelector('.search__results');
+  if (el) el.style.display = 'none';
+}
+function showSearchResults() {
+  const el = document.querySelector('.search__results');
+  if (el) el.style.display = '';
+}
+function removeAllSearchItems() {
+  document.querySelectorAll('.search-results__item').forEach(function (el) {
+    el.remove();
+  });
+}
+
+// Живой поиск (без jQuery)
+document.addEventListener('DOMContentLoaded', function () {
+  const searchBlock = document.querySelector('.search');
+  const options = {
+    target: 'form.store_ajax_catalog',
+    url: '/admin/store_catalog',
+    items_target: '#goods',
+    last_search_query: '',
+  };
+  const randHash = GenMd5Hash();
+  if (typeof document.SearchInCatalogAjaxQuerySender === 'undefined') {
+    document.SearchInCatalogAjaxQuerySender = {};
+  }
+  searchBlock.SearchFieldCheck = function () {
+    if (typeof document.lastTimeoutId !== 'undefined') {
+      clearTimeout(document.lastTimeoutId);
+    }
+    document.lastTimeoutId = setTimeout(function () {
+      document.SearchInCatalogAjaxQuerySender[randHash](htmlspecialchars(searchBlock.search_input.value));
+    }, 300);
+  };
+  document.SearchInCatalogAjaxQuerySender[randHash] = function (old_val) {
+    const last_search_query_array = [];
+    if (typeof sessionStorage !== 'undefined') {
+      try {
+        if (sessionStorage.getItem('lastSearchQueryArray')) {
+          last_search_query_array = JSON.parse(sessionStorage.getItem('lastSearchQueryArray'));
+          const currentSearch = last_search_query_array.filter(function (item) {
+            return item.search_query == old_val;
+          })[0];
+          if (currentSearch) {
+            showDropdownSearch(JSON.parse(currentSearch.content));
+            return;
+          }
+        } else {
+          sessionStorage.setItem('lastSearchQueryArray', '[]');
+        }
+      } catch (e) {}
+    }
+    if (htmlspecialchars(searchBlock.search_input.value) == old_val && searchBlock.search_input.value.length > 1) {
+      options['last_search_query'] = old_val;
+      searchBlock.classList.add('search--loading');
+      const params = new URLSearchParams({
+        ajax_q: 1,
+        goods_search_field_id: 0,
+        q: options['last_search_query'],
+      });
+      const search_field_object = searchBlock.search_input;
+      fetch(searchBlock.search_form.getAttribute('action'), {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: params.toString(),
+      })
+        .then(function (response) { return response.json(); })
+        .then(function (data) {
+          if (search_field_object.value != old_val) return false;
+          if (typeof sessionStorage !== 'undefined') {
+            try {
+              sessionStorage.setItem('lastSearchQueryArray', JSON.stringify(last_search_query_array));
+              const currentSearch = last_search_query_array.filter(function (item) {
+                return item.search_query == old_val;
+              })[0];
+              if (typeof currentSearch == 'undefined') {
+                last_search_query_array.push({
+                  search_query: old_val,
+                  content: JSON.stringify(data),
+                });
+                sessionStorage.setItem('lastSearchQueryArray', JSON.stringify(last_search_query_array));
+              }
+            } catch (e) {}
+          }
+          showDropdownSearch(data);
+          searchBlock.classList.remove('search--loading');
+        });
+    } else {
+      hideSearchResults();
+    }
+
+    function showDropdownSearch(data) {
+      // Категории
+      const catItems = document.querySelector('.search-results__items--category');
+      if (catItems) {
+        catItems.querySelectorAll('.search-results__item').forEach(function (el) { el.remove(); });
+      }
+      hideSearchResults();
+      if (data.category && data.category.length > 0) {
+        for (var c = 0; c < data.category.length; c++) {
+          if (data.category[c].image_icon == null) {
+            data.category[c].image_icon = '/design/no-photo.png';
+          }
+          if (c <= 3 && catItems) {
+            catItems.insertAdjacentHTML('beforeend',
+              `<a class="search-results__item" href="${data.category[c].url}">
+                <span class="search-results__name">${data.category[c].goods_cat_name}</span>
+              </a>`
+            );
+          }
+        }
+      }
+      // Товары
+      const goodsItems = document.querySelector('.search-results__items--goods');
+      if (goodsItems) {
+        goodsItems.querySelectorAll('.search-results__item').forEach(function (el) { el.remove(); });
+      }
+      hideSearchResults();
+      const buttons = document.querySelector('.search-results__buttons');
+      if (data.goods && data.goods.length > 0) {
+        for (var i = 0; i < data.goods.length; i++) {
+          if (data.goods[i].image_icon == null) {
+            data.goods[i].image_icon = '/design/no-photo.png';
+          }
+          if (i <= 3 && goodsItems) {
+            if (buttons) buttons.classList.add('is-hide');
+            goodsItems.insertAdjacentHTML('beforeend',
+              `<a class="search-results__item" href="${data.goods[i].url}">
+                <div class="search-results__image">
+                  <img src="${data.goods[i].image_icon}">
+                </div>
+                <div class="search-results__content RUB">
+                  <div class="search-results__name"><span>${data.goods[i].goods_name}</span></div>
+                  <b class="search-results__price price__now"><span class="num">${getMoneyFormat(parseInt(data.goods[i].min_price_now))}</span></b>
+                </div>
+              </a>`
+            );
+          }
+          if (i > 3 && buttons) {
+            buttons.classList.remove('is-hide');
+          }
+        }
+      }
+      // Скрываем результаты поиска если ничего не найдено
+      if ((data.category && data.category.length || 0) + (data.goods && data.goods.length || 0) > 0) {
+        showSearchResults();
+      } else {
+        hideSearchResults();
+      }
+      // Категории видимость
+      if (catItems) {
+        if (data.category && data.category.length > 0) {
+          catItems.style.display = '';
+          if (catItems.previousElementSibling) catItems.previousElementSibling.style.display = '';
+        } else {
+          catItems.style.display = 'none';
+          if (catItems.previousElementSibling) catItems.previousElementSibling.style.display = 'none';
+        }
+      }
+      // Товары видимость
+      if (goodsItems) {
+        if (data.goods && data.goods.length > 0) {
+          goodsItems.style.display = '';
+          if (goodsItems.previousElementSibling) goodsItems.previousElementSibling.style.display = '';
+        } else {
+          goodsItems.style.display = 'none';
+          if (goodsItems.previousElementSibling) goodsItems.previousElementSibling.style.display = 'none';
+        }
+      }
+      searchBlock.classList.remove('search--loading');
+    }
+  };
+  SearchFieldInit(searchBlock);
+  const searchResultsButton = document.querySelector('.search-results__button');
+  if (searchResultsButton) {
+    searchResultsButton.addEventListener('click', function () {
+      const form = document.querySelector('.search__form');
+      if (form) form.submit();
+    });
+  }
+});
 
 // Аналог php функции.
 function htmlspecialchars(text) {
@@ -156,7 +315,7 @@ function htmlspecialchars(text) {
 }
 function substr(str, start, len) {
   str += "";
-  var end = str.length;
+  let end = str.length;
   if (start < 0) {
     start += end;
   }
@@ -164,12 +323,12 @@ function substr(str, start, len) {
   return start >= str.length || start < 0 || start > end ? !1 : str.slice(start, end);
 }
 function md5(str) {
-  var xl;
-  var rotateLeft = function (lValue, iShiftBits) {
+  let xl;
+  const rotateLeft = function (lValue, iShiftBits) {
     return (lValue << iShiftBits) | (lValue >>> (32 - iShiftBits));
   };
-  var addUnsigned = function (lX, lY) {
-    var lX4, lY4, lX8, lY8, lResult;
+  const addUnsigned = function (lX, lY) {
+    let lX4, lY4, lX8, lY8, lResult;
     lX8 = lX & 0x80000000;
     lY8 = lY & 0x80000000;
     lX4 = lX & 0x40000000;
@@ -188,43 +347,43 @@ function md5(str) {
       return lResult ^ lX8 ^ lY8;
     }
   };
-  var _F = function (x, y, z) {
+  const _F = function (x, y, z) {
     return (x & y) | (~x & z);
   };
-  var _G = function (x, y, z) {
+  const _G = function (x, y, z) {
     return (x & z) | (y & ~z);
   };
-  var _H = function (x, y, z) {
+  const _H = function (x, y, z) {
     return x ^ y ^ z;
   };
-  var _I = function (x, y, z) {
+  const _I = function (x, y, z) {
     return y ^ (x | ~z);
   };
-  var _FF = function (a, b, c, d, x, s, ac) {
+  const _FF = function (a, b, c, d, x, s, ac) {
     a = addUnsigned(a, addUnsigned(addUnsigned(_F(b, c, d), x), ac));
     return addUnsigned(rotateLeft(a, s), b);
   };
-  var _GG = function (a, b, c, d, x, s, ac) {
+  const _GG = function (a, b, c, d, x, s, ac) {
     a = addUnsigned(a, addUnsigned(addUnsigned(_G(b, c, d), x), ac));
     return addUnsigned(rotateLeft(a, s), b);
   };
-  var _HH = function (a, b, c, d, x, s, ac) {
+  const _HH = function (a, b, c, d, x, s, ac) {
     a = addUnsigned(a, addUnsigned(addUnsigned(_H(b, c, d), x), ac));
     return addUnsigned(rotateLeft(a, s), b);
   };
-  var _II = function (a, b, c, d, x, s, ac) {
+  const _II = function (a, b, c, d, x, s, ac) {
     a = addUnsigned(a, addUnsigned(addUnsigned(_I(b, c, d), x), ac));
     return addUnsigned(rotateLeft(a, s), b);
   };
-  var convertToWordArray = function (str) {
-    var lWordCount;
-    var lMessageLength = str.length;
-    var lNumberOfWords_temp1 = lMessageLength + 8;
-    var lNumberOfWords_temp2 = (lNumberOfWords_temp1 - (lNumberOfWords_temp1 % 64)) / 64;
-    var lNumberOfWords = (lNumberOfWords_temp2 + 1) * 16;
-    var lWordArray = new Array(lNumberOfWords - 1);
-    var lBytePosition = 0;
-    var lByteCount = 0;
+  const convertToWordArray = function (str) {
+    let lWordCount;
+    let lMessageLength = str.length;
+    let lNumberOfWords_temp1 = lMessageLength + 8;
+    let lNumberOfWords_temp2 = (lNumberOfWords_temp1 - (lNumberOfWords_temp1 % 64)) / 64;
+    let lNumberOfWords = (lNumberOfWords_temp2 + 1) * 16;
+    const lWordArray = new Array(lNumberOfWords - 1);
+    let lBytePosition = 0;
+    let lByteCount = 0;
     while (lByteCount < lMessageLength) {
       lWordCount = (lByteCount - (lByteCount % 4)) / 4;
       lBytePosition = (lByteCount % 4) * 8;
@@ -238,8 +397,8 @@ function md5(str) {
     lWordArray[lNumberOfWords - 1] = lMessageLength >>> 29;
     return lWordArray;
   };
-  var wordToHex = function (lValue) {
-    var wordToHexValue = "",
+  const wordToHex = function (lValue) {
+    let wordToHexValue = "",
       wordToHexValue_temp = "",
       lByte,
       lCount;
@@ -404,188 +563,3 @@ function rand(min, max) {
 function GenMd5Hash() {
   return substr(md5(parseInt(new Date().getTime() / 1000, 10)), rand(0, 24), 8);
 }
-
-// Живой поиск
-$(function () {
-  // Навигационная таблица над таблицей с данными
-  var searchBlock = $(".search");
-  var options = {
-    target: "form.store_ajax_catalog",
-    url: "/admin/store_catalog",
-    items_target: "#goods",
-    last_search_query: "",
-  };
-  // По этому хэшу будем обращаться к объекту извне
-  var randHash = GenMd5Hash();
-  // Если объекта со списком ajax функций не существует, создаём её
-  if (typeof document.SearchInCatalogAjaxQuerySender == "undefined") {
-    document.SearchInCatalogAjaxQuerySender = {};
-  }
-  // Поле поиска обновилось, внутри него можно выполнять любые действия
-  searchBlock.SearchFieldCheck = function () {
-    // Отменяем выполнение последнего запущенного через таймаут скрипта, если таковой был.
-    if (typeof document.lastTimeoutId != "undefined") {
-      clearTimeout(document.lastTimeoutId);
-    }
-    document.lastTimeoutId = setTimeout("document.SearchInCatalogAjaxQuerySender['" + randHash + "']('" + htmlspecialchars(searchBlock.search_input.val()) + "');", 300);
-  };
-  // Отправляет запрос к серверу с задачей поиска товаров
-  document.SearchInCatalogAjaxQuerySender[randHash] = function (old_val) {
-    var last_search_query_array = [];
-    // sessionStorage is available
-    if (typeof sessionStorage !== "undefined") {
-      try {
-        if (sessionStorage.getItem("lastSearchQueryArray")) {
-          last_search_query_array = JSON.parse(sessionStorage.getItem("lastSearchQueryArray"));
-          // Находим соответствие текущего запроса с sessionStorage
-          var currentSearch = $.grep(last_search_query_array, function (item) {
-            return item.search_query == old_val;
-          })[0];
-          if (currentSearch) {
-            showDropdownSearch(JSON.parse(currentSearch.content));
-            return;
-          }
-        } else {
-          sessionStorage.setItem("lastSearchQueryArray", "[]");
-        }
-      } catch (e) {
-        // sessionStorage is disabled
-      }
-    }
-    // Если текущее значение не изменилось спустя 300 сотых секунды и это значение не то по которому мы искали товары при последнем запросе
-    if (htmlspecialchars(searchBlock.search_input.val()) == old_val && searchBlock.search_input.val().length > 1) {
-      // Запоминаем этот запрос, который мы ищем, чтобы не произвводить повторного поиска
-      options["last_search_query"] = old_val;
-      // Добавляем нашей форме поиска поле загрузки
-      searchBlock.addClass("search--loading");
-      // Собираем параметры для Ajax запроса
-      var params = {
-        ajax_q: 1,
-        goods_search_field_id: 0,
-        q: options["last_search_query"],
-      },
-        // Объект со значением которого будем в последствии проверять полученные от сервера данные
-        search_field_object = searchBlock.search_input;
-      // Аяксом отправляем запрос на поиск нужных товаров и категорий
-      $.ajax({
-        type: "POST",
-        cache: false,
-        url: searchBlock.search_form.attr("action"),
-        data: params,
-        dataType: "json",
-        success: function (data) {
-          // Если набранный запрос не соответствует полученным данным, видимо запрос пришёл не вовремя, отменяем его.
-          if (search_field_object.val() != old_val) {
-            return false;
-          }
-          // Записываем в sessionStorage
-          if (typeof sessionStorage !== "undefined") {
-            try {
-              sessionStorage.setItem("lastSearchQueryArray", JSON.stringify(last_search_query_array));
-              // Находим соответствие текущего запроса с sessionStorage
-              var currentSearch = $.grep(last_search_query_array, function (item) {
-                return item.search_query == old_val;
-              })[0];
-              //Если такого запроса ещё не было запишем его в sessionStorage
-              if (typeof currentSearch == "undefined") {
-                // Добавляем в массив последних запросов данные по текущему запросу
-                last_search_query_array.push({
-                  search_query: old_val,
-                  content: JSON.stringify(data),
-                });
-                sessionStorage.setItem("lastSearchQueryArray", JSON.stringify(last_search_query_array));
-              }
-            } catch (e) {
-              // sessionStorage is disabled
-            }
-          }
-          // Показываем результаты на основе пришедших данных
-          showDropdownSearch(data);
-          // Убираем информацию о том что запрос грузится.
-          searchBlock.removeClass("search--loading");
-        },
-      });
-    } else {
-      $(".search__results").hide();
-    }
-
-    function showDropdownSearch(data) {
-      // Отображение категорий в поиске
-      if (data.category.length != undefined && data.category.length > 0) {
-        $(".search-results__items--category .search-results__item").remove();
-        $(".search__results").hide();
-        for (с = 0; с < data.category.length; с++) {
-          // Проверка наличия изображения
-          if (data.category[с].image_icon == null) {
-            data.category[с].image_icon = "/design/no-photo.png";
-          } else {
-            data.category[с].image_icon = data.category[с].image_icon;
-          }
-          // Отображаем результат поиска
-          if (с <= 3) {
-            $(".search-results__items--category").append(`
-							<a class="search-results__item" href="${data.category[с].url}">
-								<span class="search-results__name">${data.category[с].goods_cat_name}</span>
-							</a>
-						`);
-          }
-        }
-      } else {
-        $(".search-results__items--category .search-results__item").remove();
-        $(".search__results").hide();
-      }
-
-      // Отображение товаров в поиске
-      if (data.goods.length != undefined && data.goods.length > 0) {
-        $(".search-results__items--goods .search-results__item").remove();
-        $(".search__results").hide();
-        for (i = 0; i < data.goods.length; i++) {
-          // Проверка наличия изображения
-          if (data.goods[i].image_icon == null) {
-            data.goods[i].image_icon = "/design/no-photo.png";
-          } else {
-            data.goods[i].image_icon = data.goods[i].image_icon;
-          }
-          // Отображаем результат поиска
-          if (i <= 3) {
-            $(".search-results__buttons").addClass("is-hide");
-            $(".search-results__items--goods").append(`
-							<a class="search-results__item" href="${data.goods[i].url}">
-								<div class="search-results__image">
-									<img src="${data.goods[i].image_icon}">
-								</div>
-								<div class="search-results__content RUB">
-									<div class="search-results__name"><span>${data.goods[i].goods_name}</span></div>
-                  <b class="search-results__price price__now"><span class="num">${getMoneyFormat(parseInt(data.goods[i].min_price_now))}</span></b>
-								</div>
-							</a>
-						`);
-          }
-          // Если последняя итерация цикла вставим кнопку "показать все"
-          if (i > 3) {
-            $(".search-results__buttons").removeClass("is-hide");
-          }
-        }
-      } else {
-        $(".search-results__items--goods .search-results__item").remove();
-        $(".search__results").hide();
-      }
-
-      // Скрываем результаты поиска если ничего не найдено
-      data.category.length + data.goods.length > 0 ? $(".search__results").show() : $(".search__results").hide();
-      data.category.length > 0 ? $(".search-results__items--category").show() : $(".search-results__items--category").hide();
-      data.category.length > 0 ? $(".search-results__items--category").prev().show() : $(".search-results__items--category").prev().hide();
-      data.goods.length > 0 ? $(".search-results__items--goods").show() : $(".search-results__items--goods").hide();
-      data.goods.length > 0 ? $(".search-results__items--goods").prev().show() : $(".search-results__items--goods").prev().hide();
-
-      // Убираем информацию о том что запрос грузится.
-      searchBlock.removeClass("search--loading");
-    }
-  };
-
-  SearchFieldInit(searchBlock);
-
-  $(".search-results__button").on("click", function () {
-    $(".search__form").submit();
-  });
-});

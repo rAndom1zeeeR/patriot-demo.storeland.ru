@@ -1,8 +1,79 @@
 console.time("start time");
 
 /**
+ * Плавно поднимает элемент вверх
+ * @param {Element} element - Элемент, который нужно поднять
+ * @param {number} duration - Длительность анимации в миллисекундах (по умолчанию 600)
+ */
+function SlideUp(element, duration = 600) {
+  if (!element) return;
+  element.style.transitionProperty = 'height, margin, padding';
+  element.style.transitionDuration = duration + 'ms';
+  element.style.boxSizing = 'border-box';
+  element.style.height = element.offsetHeight + 'px';
+  element.offsetHeight; // reflow
+  element.style.overflow = 'hidden';
+  element.style.height = 0;
+  element.style.paddingTop = 0;
+  element.style.paddingBottom = 0;
+  element.style.marginTop = 0;
+  element.style.marginBottom = 0;
+
+  window.setTimeout(function () {
+    element.style.display = 'none';
+    element.style.removeProperty('height');
+    element.style.removeProperty('padding-top');
+    element.style.removeProperty('padding-bottom');
+    element.style.removeProperty('margin-top');
+    element.style.removeProperty('margin-bottom');
+    element.style.removeProperty('overflow');
+    element.style.removeProperty('transition-duration');
+    element.style.removeProperty('transition-property');
+    element.style.removeProperty('box-sizing');
+  }, duration);
+}
+
+/**
+ * Плавно опускает элемент вниз
+ * @param {Element} element - Элемент, который нужно опустить
+ * @param {number} duration - Длительность анимации в миллисекундах (по умолчанию 600)
+ */
+function SlideDown(element, duration = 600) {
+  if (!element) return;
+  element.style.removeProperty('display');
+  let display = window.getComputedStyle(element).display;
+  if (display === 'none') display = 'block';
+  element.style.display = display;
+  let height = element.scrollHeight;
+  element.style.overflow = 'hidden';
+  element.style.height = 0;
+  element.style.paddingTop = 0;
+  element.style.paddingBottom = 0;
+  element.style.marginTop = 0;
+  element.style.marginBottom = 0;
+  element.offsetHeight; // reflow
+  element.style.transitionProperty = 'height, margin, padding';
+  element.style.transitionDuration = duration + 'ms';
+  element.style.boxSizing = 'border-box';
+  element.style.height = height + 'px';
+  element.style.removeProperty('padding-top');
+  element.style.removeProperty('padding-bottom');
+  element.style.removeProperty('margin-top');
+  element.style.removeProperty('margin-bottom');
+  window.setTimeout(function () {
+    element.style.removeProperty('height');
+    element.style.removeProperty('overflow');
+    element.style.removeProperty('transition-duration');
+    element.style.removeProperty('transition-property');
+    element.style.removeProperty('box-sizing');
+  }, duration);
+}
+
+/**
  * Функция Добавления пробела между разрядами.
  * Используется в функциях: StickerSales, handleQuantityProductView, CartMinSum, handleDeliveryPrice
+ * @param {string} str - Строка, которую нужно преобразовать
+ * @returns {string} - Преобразованная строка
  */
 function getMoneyFormat(str) {
   return String(str).replace(/(\d)(?=(\d\d\d)+([^\d]|$))/g, "$1 ");
@@ -11,6 +82,7 @@ function getMoneyFormat(str) {
 /**
  * Функция определения ширины экрана пользователя.
  * Используется в функциях: Mainnav
+ * @returns {number} - Ширина экрана пользователя
  */
 function getClientWidth() {
   // TODO Разобрать функцию
@@ -20,6 +92,8 @@ function getClientWidth() {
 /**
  * Функция формирования ссылки с атрибутом only_body.
  * Используется в функциях: CartClear, CartRemove, handleAddtoModClick
+ * @param {string} url - Ссылка
+ * @returns {string} - Ссылка с атрибутом only_body
  */
 function getUrlBody(url) {
   return url + (url.indexOf("?") ? "&" : "?") + "only_body=1";
@@ -1474,7 +1548,7 @@ function Opinions() {
 /**
  * Количество
  * Используется в функциях: handleCartInit, Goodsб на странице "Товар", "Корзина"
- * Использует функции: СreateNoty
+ * Использует функции: СreateNoty, getMoneyFormat
  */
 function Quantity(doc = document) {
   // console.log("[DEBUG]: Quantity doc", doc);
@@ -1958,6 +2032,7 @@ function CartDiscountUppdate(elements, selector) {
 /**
  * Оформление быстрого заказа
  * Используется в функциях: handleAddtoOrderOpen, handleCartOrderStart
+ * Использует функции: getMoneyFormat
  */
 function Orderfast(doc = document) {
   const container = doc.querySelector(".orderfast__container");
@@ -2342,6 +2417,7 @@ function Opener() {
         OverlayOpener(parentTarget, handleCatalogOpened);
       } else {
         document.querySelector('#addtoMenu').removeAttribute('hidden');
+        document.body.classList.add('is-bodylock');
       }
     });
     // Закрытие мобильного каталога
@@ -2385,11 +2461,11 @@ function Opener() {
         const parent = open.closest(".is-parent");
         const sub = open.parentElement.nextElementSibling;
         if (parent.classList.contains("is-opened")) {
-          $(sub).slideUp(600);
+          SlideUp(sub, 600);
           parent.classList.remove("is-opened");
           open.classList.remove("is-opened");
         } else {
-          $(sub).slideDown(600);
+          SlideDown(sub, 600);
           parent.classList.add("is-opened");
           open.classList.add("is-opened");
         }
@@ -2433,6 +2509,8 @@ function Opener() {
  */
 function SidebarOpener(selector, opener) {
   const content = document.querySelector(selector);
+  console.log("[DEBUG]: content", content);
+  console.log("[DEBUG]: opener", opener);
   if (!content) return;
   const button = document.querySelector(opener);
   const header = content.querySelector(".sidebar__header");
@@ -2463,6 +2541,7 @@ function SidebarOpener(selector, opener) {
   }
 
   function handleOpened() {
+    console.log("[DEBUG]: handleOpened");
     button.classList.add("is-active");
     content.removeAttribute("hidden");
     document.body.classList.add("is-bodylock");

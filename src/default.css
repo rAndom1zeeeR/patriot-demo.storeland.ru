@@ -786,8 +786,6 @@ dialog::backdrop {z-index: 3;}
 	padding: 0;
 	background: none;
 	background-color: transparent;
-	border: none;
-	border-radius: var(--border-radius);
 }
 .dialog__close:active {color: var(--color-primary);background: none;}
 .dialog__list {display: grid;gap: 12px;margin: 0;padding: 0;list-style: none;}

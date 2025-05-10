@@ -189,7 +189,7 @@
 								</span>
 							</form>
 
-							<div class="search__results" hidden>
+							<div class="search__results" style="display: none;">
 								<div class="search-results__inner">
 									<ul class="search-results__items search-results__items--category"></ul>
 									<ul class="search-results__items search-results__items--goods"></ul>
@@ -297,6 +297,77 @@
 
 		{% IF index_page %}
 		<!-- Слайдшоу -->
+		<section id="slideshow" aria-label="Слайдшоу">
+			<div class="container">
+				<div class="swiper">
+					<div class="swiper-wrapper">
+						<div class="slideshow__item swiper-slide" data-slide="1">
+							<div class="slideshow__inner">
+								<div class="slideshow__content">
+									<div class="slideshow__discount">-50%</div>
+									<h3 class="slideshow__title">На&nbsp;Зимние берцы “Фрегат”</h3>
+									<div class="swiper-navigation">
+										<div class="swiper-button-prev"></div>
+										<div class="swiper-pagination"></div>
+										<div class="swiper-button-next"></div>
+									</div>
+									<a class="slideshow__button button button-secondary button-large" href="{CATALOG_URL}">
+										<span>Подробнее</span>
+									</a>
+								</div>
+								<div class="slideshow__image">
+									<span class="slideshow__image-cover slideshow__image-cover--one"></span>
+									<span class="slideshow__image-cover slideshow__image-cover--two"></span>
+									<img src="{ASSETS_IMAGES_PATH}slide_1.jpg?design=THEMENAME" alt="" loading="lazy" />
+								</div>
+							</div>
+						</div>
+						<div class="slideshow__item swiper-slide" data-slide="2">
+							<div class="slideshow__inner">
+								<div class="slideshow__content">
+									<div class="slideshow__discount">-10%</div>
+									<h3 class="slideshow__title">Военное тактическое снаряжение</h3>
+									<div class="swiper-navigation">
+										<div class="swiper-button-prev"></div>
+										<div class="swiper-pagination"></div>
+										<div class="swiper-button-next"></div>
+									</div>
+									<a class="slideshow__button button button-secondary button-large" href="{CATALOG_URL}">
+										<span>Подробнее</span>
+									</a>
+								</div>
+								<div class="slideshow__image">
+									<span class="slideshow__image-cover slideshow__image-cover--one"></span>
+									<span class="slideshow__image-cover slideshow__image-cover--two"></span>
+									<img src="{ASSETS_IMAGES_PATH}slide_2.jpg?design=THEMENAME" alt="" loading="lazy" />
+								</div>
+							</div>
+						</div>
+						<div class="slideshow__item swiper-slide" data-slide="3">
+							<div class="slideshow__inner">
+								<div class="slideshow__content">
+									<div class="slideshow__discount">NEW</div>
+									<h3 class="slideshow__title">Армейские палатки</h3>
+									<div class="swiper-navigation">
+										<div class="swiper-button-prev"></div>
+										<div class="swiper-pagination"></div>
+										<div class="swiper-button-next"></div>
+									</div>
+									<a class="slideshow__button button button-secondary button-large" href="{CATALOG_URL}">
+										<span>Подробнее</span>
+									</a>
+								</div>
+								<div class="slideshow__image">
+									<span class="slideshow__image-cover slideshow__image-cover--one"></span>
+									<span class="slideshow__image-cover slideshow__image-cover--two"></span>
+									<img src="{ASSETS_IMAGES_PATH}slide_3.jpg?design=THEMENAME" alt="" loading="lazy" />
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</section>
 
 		<!-- Категории каталога -->
 		{% IFNOT catalog_empty %}
@@ -357,7 +428,7 @@
 									<!-- Изображение -->
 									<div class="product__images">
 										<a class="product__image" href="{index_page_favorites_goods.URL_MIN_PRICE_NOW | url_amp}">
-											<img src="{% IF index_page_favorites_goods.IMAGE_EMPTY %}{ASSETS_IMAGES_PATH}no-photo.png?design=IMPERIO{% ELSE %}{index_page_favorites_goods.IMAGE_MEDIUM}{% ENDIF %}" alt="{index_page_favorites_goods.NAME}" loading="lazy" itemprop="image">
+											<img src="{% IF index_page_favorites_goods.IMAGE_EMPTY %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ELSE %}{index_page_favorites_goods.IMAGE_MEDIUM}{% ENDIF %}" alt="{index_page_favorites_goods.NAME}" loading="lazy" itemprop="image">
 										</a>
 										<!-- Стикеры -->
 										{% IF index_page_favorites_goods.IS_NEW || index_page_favorites_goods.IS_TOP || index_page_favorites_goods.MIN_PRICE_NOW_WITHOUT_DISCOUNT > index_page_favorites_goods.MIN_PRICE_NOW || index_page_favorites_goods.MIN_PRICE_OLD > index_page_favorites_goods.MIN_PRICE_NOW %}
@@ -536,7 +607,7 @@
 										<!-- Изображение -->
 										<div class="product__images">
 											<a class="product__image" href="{index_page_sale_goods.URL_MIN_PRICE_NOW | url_amp}">
-												<img src="{% IF index_page_sale_goods.IMAGE_EMPTY %}{ASSETS_IMAGES_PATH}no-photo.png?design=IMPERIO{% ELSE %}{index_page_sale_goods.IMAGE_MEDIUM}{% ENDIF %}" alt="{index_page_sale_goods.NAME}" loading="lazy" itemprop="image">
+												<img src="{% IF index_page_sale_goods.IMAGE_EMPTY %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ELSE %}{index_page_sale_goods.IMAGE_MEDIUM}{% ENDIF %}" alt="{index_page_sale_goods.NAME}" loading="lazy" itemprop="image">
 											</a>
 											<!-- Стикеры -->
 											{% IF index_page_sale_goods.IS_NEW || index_page_sale_goods.IS_TOP || index_page_sale_goods.MIN_PRICE_NOW_WITHOUT_DISCOUNT > index_page_sale_goods.MIN_PRICE_NOW || index_page_sale_goods.MIN_PRICE_OLD > index_page_sale_goods.MIN_PRICE_NOW %}
@@ -783,7 +854,7 @@
 									<!-- Изображение -->
 									<div class="product__images">
 										<a class="product__image" href="{index_page_new_goods.URL_MIN_PRICE_NOW | url_amp}">
-											<img src="{% IF index_page_new_goods.IMAGE_EMPTY %}{ASSETS_IMAGES_PATH}no-photo.png?design=IMPERIO{% ELSE %}{index_page_new_goods.IMAGE_MEDIUM}{% ENDIF %}" alt="{index_page_new_goods.NAME}" loading="lazy" itemprop="image">
+											<img src="{% IF index_page_new_goods.IMAGE_EMPTY %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ELSE %}{index_page_new_goods.IMAGE_MEDIUM}{% ENDIF %}" alt="{index_page_new_goods.NAME}" loading="lazy" itemprop="image">
 										</a>
 										<!-- Стикеры -->
 										{% IF index_page_new_goods.IS_NEW || index_page_new_goods.IS_TOP || index_page_new_goods.MIN_PRICE_NOW_WITHOUT_DISCOUNT > index_page_new_goods.MIN_PRICE_NOW || index_page_new_goods.MIN_PRICE_OLD > index_page_new_goods.MIN_PRICE_NOW %}
@@ -952,7 +1023,7 @@
 							<!-- Изображение -->
 							<div class="product__images">
 								<a class="product__image" href="{index_page_goods.URL_MIN_PRICE_NOW | url_amp}">
-									<img src="{% IF index_page_goods.IMAGE_EMPTY %}{ASSETS_IMAGES_PATH}no-photo.png?design=IMPERIO{% ELSE %}{index_page_goods.IMAGE_MEDIUM}{% ENDIF %}" alt="{index_page_goods.NAME}" loading="lazy" itemprop="image">
+									<img src="{% IF index_page_goods.IMAGE_EMPTY %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ELSE %}{index_page_goods.IMAGE_MEDIUM}{% ENDIF %}" alt="{index_page_goods.NAME}" loading="lazy" itemprop="image">
 								</a>
 								<!-- Стикеры -->
 								{% IF index_page_goods.IS_NEW || index_page_goods.IS_TOP || index_page_goods.MIN_PRICE_NOW_WITHOUT_DISCOUNT > index_page_goods.MIN_PRICE_NOW || index_page_goods.MIN_PRICE_OLD > index_page_goods.MIN_PRICE_NOW %}
@@ -2239,10 +2310,10 @@
 		{% IF index_page %}
 		<script>
 			document.addEventListener('DOMContentLoaded', function () {
-				swiperShow();
 
 				// swiperNews('[data-tab-content="news_list_all"]');
 				setTimeout(() => {
+					swiperShow();
 					swiperBanners("#banners");
 					swiperNews('[data-tab-content="news_list_shop"]');
 					swiperMedium("#pdtSales");

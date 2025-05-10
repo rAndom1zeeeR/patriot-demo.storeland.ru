@@ -2804,7 +2804,6 @@ function swiperMedium(selector) {
   });
 }
 
-
 /**
  * Слайдшоу
  * Используется в функциях: на главной
@@ -2812,7 +2811,7 @@ function swiperMedium(selector) {
  */
 function swiperShow() {
   const id = "#slideshow";
-  const swiperSlider = new Swiper(id + " .slideshow__slider", {
+  const swiperSlider = new Swiper(id + " .swiper", {
     loop: false,
     preloadImages: false,
     watchSlidesProgress: true,
@@ -2845,7 +2844,6 @@ function swiperShow() {
     },
   });
 }
-
 
 
 /**

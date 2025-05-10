@@ -311,10 +311,10 @@
 	#slideshow .swiper-navigation {
 		position: absolute;
 		top: 50%;
+		left: 6px;
 		z-index: 2;
 		width: 180px;
 		height: 30px;
-		margin-top: 16px;
 		transform: translateY(50%);
 	}
 	.slideshow__inner {height: 136px;}
@@ -359,6 +359,7 @@
 	.slideshow__image-cover--two::after {right: 98px;left: auto;}
 }
 @media all and (min-width: 1024px) {
+	#slideshow .swiper-navigation {margin-top: 12px;}
 	.is-loading #slideshow {height: 266px;}
 	.slideshow__inner {height: 266px;}
 	.slideshow__discount {font-size: 70px;}

@@ -2356,8 +2356,6 @@
 		{% IF index_page %}
 		<script>
 			document.addEventListener('DOMContentLoaded', function () {
-
-				// swiperNews('[data-tab-content="news_list_all"]');
 				setTimeout(() => {
 					swiperShow();
 					swiperBanners("#banners");
@@ -2367,7 +2365,7 @@
 					swiperSmall('#pdtNew');
 					VisibleItems('#pdtSale');
 					VisibleItems('footer [data-visible-list]');
-				}, 1000);
+				}, 100);
 			});
 		</script>
 		{% ENDIF %}

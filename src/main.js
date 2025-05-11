@@ -192,8 +192,8 @@ function OverlayCloser(event, selector, handler) {
  * Использует функции:
  */
 function OverlayOpener(content, handler) {
-  console.log("[DEBUG]: handler", handler);
-  console.log("[DEBUG]: content", content);
+  // console.log("[DEBUG]: handler", handler);
+  // console.log("[DEBUG]: content", content);
   content.classList.toggle("is-opened");
   if (content.classList.contains("is-opened")) {
     document.body.addEventListener("click", handler);
@@ -1307,15 +1307,14 @@ function Goods(doc) {
 
     // Слайдер дополнительных изображений
     const swiper = new Swiper(".thumblist .swiper", {
+      direction: 'vertical',
       loop: true,
-      slidesPerView: 1,
-      spaceBetween: 16,
+      slidesPerView: 4,
+      spaceBetween: 8,
       watchSlidesProgress: true,
-      scrollbar: {
-        enabled: true,
-        el: ".thumblist .swiper-scrollbar",
-        snapOnRelease: true,
-        draggable: true,
+      navigation: {
+        nextEl: ".thumblist .swiper-button-next",
+        prevEl: ".thumblist .swiper-button-prev",
       },
     });
 
@@ -1396,11 +1395,11 @@ function Goods(doc) {
   Thumbs();
   // Запуск Функции Галереи изображений.
   Fancybox.bind('[data-fancybox="gallery"]');
-  // Открытие доставки
-  SidebarOpener("#deliverys", ".delivery__open");
   // Запуск функции форматирования даты.
   const campaignDate = productViewBlock.querySelector(".productView__campaign time");
-  campaignDate.innerHTML = getDateMonthsName(campaignDate.getAttribute("datetime"));
+  if (campaignDate) {
+    campaignDate.innerHTML = getDateMonthsName(campaignDate.getAttribute("datetime"));
+  }
   // console.log("[DEBUG]: campaignDate", campaignDate);
 }
 
@@ -2516,8 +2515,8 @@ function Opener() {
  */
 function SidebarOpener(selector, opener) {
   const content = document.querySelector(selector);
-  console.log("[DEBUG]: content", content);
-  console.log("[DEBUG]: opener", opener);
+  // console.log("[DEBUG]: content", content);
+  // console.log("[DEBUG]: opener", opener);
   if (!content) return;
   const button = document.querySelector(opener);
   const header = content.querySelector(".sidebar__header");
@@ -3060,21 +3059,23 @@ function swiperViewed(selector) {
 }
 
 /**
- * Табы новостей.
- * Используется в функциях: на странице Новости
- * Использует функции: getHtmlFromPost
+ * Табы.
+ * Используется в функциях: на странице Товар
+ * Использует функции: 
  */
-function NewsTabs(selector) {
+function Tabs(selector) {
   const block = document.querySelector(selector);
   if (!block) return;
-  const tabsContainer = block.querySelector('.tabs');
-  const tabsContent = block.querySelectorAll('.tabs__content');
-  const tabsLinks = block.querySelectorAll('.tabs__link');
+  const tabsContainer = block;
+  const tabsContent = block.querySelectorAll('[data-tabs-content]');
+  const tabsLinks = block.querySelectorAll('[data-tabs-link]');
 
   if (!tabsContainer || !tabsContent.length || !tabsLinks.length) return;
 
+  tabsContainer.addEventListener('click', handleTabClick);
+
   function handleTabClick(event) {
-    const target = event.target.closest('.tabs__link');
+    const target = event.target.closest('[data-tabs-link]');
     if (!target) return;
 
     event.preventDefault();
@@ -3084,46 +3085,16 @@ function NewsTabs(selector) {
     // Добавляем активный класс текущему табу
     target.classList.add('is-active');
 
-    const tabId = target.dataset.tab;
-    navigateVisibility('#' + tabId, block)
+    const tabId = target.dataset.tabsLink;
 
     // Скрываем все контенты
     tabsContent.forEach(content => {
-      content.hidden = true;
-      if (content.dataset.tabContent === tabId) {
-        content.hidden = false;
+      content.classList.remove('is-active');
+      if (content.dataset.tabsContent === tabId) {
+        content.classList.add('is-active');
       }
     });
-
-    // Перезапускаем Swiper для активного таба
-    const activeContent = block.querySelector(`[data-tab-content="${tabId}"]`);
-    if (activeContent) {
-      const swiper = activeContent.querySelector('.swiper');
-      if (swiper && swiper.swiper) {
-        swiper.swiper.update();
-      }
-    }
   }
-
-  // Управление видимостью навигации
-  function navigateVisibility(tabId, block) {
-    const itemsLength = document.querySelectorAll(tabId + ' .swiper-slide').length;
-    const nextButton = block.querySelector('.swiper-button-next');
-    const prevButton = block.querySelector('.swiper-button-prev');
-    // console.log("[DEBUG]: tabId", tabId);
-    // console.log("[DEBUG]: selector", block);
-    // console.log("[DEBUG]: itemsLength", itemsLength);
-
-    if (!nextButton || !prevButton) return;
-
-    const display = itemsLength > 3 ? '' : 'none';
-    // console.log("[DEBUG]: nextButton", nextButton);
-    // console.log("[DEBUG]: prevButton", prevButton);
-    nextButton.style.display = display;
-    prevButton.style.display = display;
-  }
-
-  tabsContainer.addEventListener('click', handleTabClick);
 }
 
 /**

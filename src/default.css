@@ -425,16 +425,28 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 ** Количество
 */
 .qty {
+	position: relative;
 	display: flex;
-	flex-shrink: 0;
 	align-items: center;
 	width: 122px;
-	overflow: hidden;
 	background-color: white;
 	border: 1px solid var(--color-border-secondary);
-	border-radius: var(--border-radius);
-	--qty-size: 40px;
+	--qty-size: 42px;
 }
+.qty::before, .qty::after {
+	position: absolute;
+	inset: -5px auto auto -5px;
+	z-index: 2;
+	display: block;
+	width: 10px;
+	height: 10px;
+	background-color: white;
+	border-bottom: 1px solid var(--color-black);
+	transform: rotate(-45deg);
+	transition: border-color var(--duration);
+	content: '';
+}
+.qty::after {inset: auto -5px -5px auto;transform: rotate(135deg);}
 .qty__select {
 	flex-shrink: 0;
 	width: var(--qty-size);
@@ -455,6 +467,7 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 }
 .qty__input::-webkit-inner-spin-button, 
 .qty__input::-webkit-outer-spin-button {-webkit-appearance: none;appearance: none;}
+.qty__select::before, .qty__select::after {display: none;}
 .qty__select:active {color: var(--color-secondary);background-color: transparent;}
 .qty__input:focus, .qty__input:active {border-color: var(--color-secondary);}
 @media (hover: hover) and (pointer: fine) {

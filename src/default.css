@@ -406,7 +406,7 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 .sticker {
 	position: relative;
 	display: inline-flex;
-	padding: 4px 8px;
+	padding: 3px 8px;
 	color: white;
 	font-size: var(--text-size-small);
 	line-height: var(--text-height-small);

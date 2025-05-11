@@ -42,71 +42,91 @@
 			<input type="hidden" name="{goods_filters.NAME}" value="{goods_filters.VALUE}">
 			{% ENDFOR %}
 
+			<!-- Сортировать по: (Поле сортировки товаров по умолчанию) -->
+			<div class="toolbar__sort">
+				<label class="toolbar__label" for="goods_order_fields_id">Сортировать по:</label>
+				<div class="toolbar__selects selects">
+					<select id="goods_order_fields_id" name="goods_search_field_id">
+						{% FOR goods_order_fields %}
+						{% IF goods_order_fields.ID = 1 || goods_order_fields.ID = 2 || goods_order_fields.ID = 5 || goods_order_fields.ID = 11 || goods_order_fields.ID = 13 %}
+						<option value="{goods_order_fields.ID}" {% IF goods_order_fields.SELECTED %}selected{% ENDIF %}>
+							{% IF goods_order_fields.ID = 1 %}
+							Цена ↓
+							{% ELSEIF goods_order_fields.ID = 2 %}
+							Цена ↑
+							{% ELSEIF goods_order_fields.ID = 5 %}
+							Наличие
+							{% ELSEIF goods_order_fields.ID = 11 %}
+							Рейтинг
+							{% ELSEIF goods_order_fields.ID = 13 %}
+							Отзывы
+							{% ENDIF %}
+						</option>
+						{% ENDIF %}
+						{% ENDFOR %}
+					</select>
+				</div>
+			</div>
+
+			<!-- Показывать по: (Шаг для выбора пользователем лимита выдачи товаров на страницу от 1 до 100) -->
+			<div class="toolbar__show">
+				<label class="toolbar__label" for="goods_per_page_id">Показать по:</label>
+				<div class="toolbar__selects selects">
+					<select id="goods_per_page_id" name="per_page">
+						{% FOR goods_per_page_list %}
+						<option value="{goods_per_page_list.LIMIT}" {% IF goods_per_page_list.SELECTED %}selected{% ENDIF %}>{goods_per_page_list.LIMIT}</option>
+						{% ENDFOR %}
+					</select>
+				</div>
+			</div>
+
 			<!-- Вид Таблица/Список -->
 			<div class="toolbar__views">
 				{% IF GOODS_VIEW_TYPE=1 %}
 				<a class="views__icon is-active" title="Показать товары Таблицей" aria-label="Показать товары Таблицей" rel="nofollow">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
-						<path d="M987.426 0H36.572C16.355 0-.001 16.356-.001 36.573v950.858c0 20.215 16.356 36.574 36.573 36.574H987.43c20.215 0 36.574-16.358 36.574-36.574V36.573C1024 16.356 1007.641 0 987.426 0zM73.143 73.143h402.288v402.288H73.143V73.143zm0 877.714V548.57h402.288v402.287H73.143zm877.714 0H548.57V548.57h402.287v402.287zm0-475.427H548.57V73.142h402.287V475.43z" />
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="16" height="16" aria-hidden="true">
+						<path d="M819.2 819.2h204.8v204.8h-204.8v-204.8z"></path>
+						<path d="M0 819.2h204.8v204.8h-204.8v-204.8z"></path>
+						<path d="M409.6 819.2h204.8v204.8h-204.8v-204.8z"></path>
+						<path d="M819.2 409.6h204.8v204.8h-204.8v-204.8z"></path>
+						<path d="M0 409.6h204.8v204.8h-204.8v-204.8z"></path>
+						<path d="M409.6 409.6h204.8v204.8h-204.8v-204.8z"></path>
+						<path d="M819.2 0h204.8v204.8h-204.8v-204.8z"></path>
+						<path d="M409.6 0h204.8v204.8h-204.8v-204.8z"></path>
+						<path d="M0 0h204.8v204.8h-204.8v-204.8z"></path>
 					</svg>
 				</a>
 				<a class="views__icon" href="?goods_view_type=2" title="Показать товары Списоком" aria-label="Показать товары Списоком" rel="nofollow">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
-						<path d="M0 36.573v950.854c0 20.22 16.356 36.574 36.573 36.574h950.858c20.215 0 36.574-16.354 36.574-36.574V36.571c0-20.214-16.358-36.573-36.574-36.573H36.573C16.356.001 0 16.359 0 36.573zm73.143 914.284V548.57h877.714v402.287H73.143zM950.857 73.143v402.288H73.143V73.143h877.714z" />
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="16" height="16" aria-hidden="true">
+						<path d="M0 921.6h1024v102.4h-1024v-102.4z"></path>
+						<path d="M0 614.4h1024v102.4h-1024v-102.4z"></path>
+						<path d="M0 307.2h1024v102.4h-1024v-102.4z"></path>
+						<path d="M0 0h1024v102.4h-1024v-102.4z"></path>
 					</svg>
 				</a>
 				{% ELSE %}
 				<a class="views__icon" href="?goods_view_type=1" title="Показать товары Таблицей" aria-label="Показать товары Таблицей" rel="nofollow">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
-						<path d="M987.426 0H36.572C16.355 0-.001 16.356-.001 36.573v950.858c0 20.215 16.356 36.574 36.573 36.574H987.43c20.215 0 36.574-16.358 36.574-36.574V36.573C1024 16.356 1007.641 0 987.426 0zM73.143 73.143h402.288v402.288H73.143V73.143zm0 877.714V548.57h402.288v402.287H73.143zm877.714 0H548.57V548.57h402.287v402.287zm0-475.427H548.57V73.142h402.287V475.43z" />
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="16" height="16" aria-hidden="true">
+						<path d="M819.2 819.2h204.8v204.8h-204.8v-204.8z"></path>
+						<path d="M0 819.2h204.8v204.8h-204.8v-204.8z"></path>
+						<path d="M409.6 819.2h204.8v204.8h-204.8v-204.8z"></path>
+						<path d="M819.2 409.6h204.8v204.8h-204.8v-204.8z"></path>
+						<path d="M0 409.6h204.8v204.8h-204.8v-204.8z"></path>
+						<path d="M409.6 409.6h204.8v204.8h-204.8v-204.8z"></path>
+						<path d="M819.2 0h204.8v204.8h-204.8v-204.8z"></path>
+						<path d="M409.6 0h204.8v204.8h-204.8v-204.8z"></path>
+						<path d="M0 0h204.8v204.8h-204.8v-204.8z"></path>
 					</svg>
 				</a>
 				<a class="views__icon is-active" title="Показать товары Списоком" aria-label="Показать товары Списоком" rel="nofollow">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
-						<path d="M0 36.573v950.854c0 20.22 16.356 36.574 36.573 36.574h950.858c20.215 0 36.574-16.354 36.574-36.574V36.571c0-20.214-16.358-36.573-36.574-36.573H36.573C16.356.001 0 16.359 0 36.573zm73.143 914.284V548.57h877.714v402.287H73.143zM950.857 73.143v402.288H73.143V73.143h877.714z" />
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="16" height="16" aria-hidden="true">
+						<path d="M0 921.6h1024v102.4h-1024v-102.4z"></path>
+						<path d="M0 614.4h1024v102.4h-1024v-102.4z"></path>
+						<path d="M0 307.2h1024v102.4h-1024v-102.4z"></path>
+						<path d="M0 0h1024v102.4h-1024v-102.4z"></path>
 					</svg>
 				</a>
 				{% ENDIF %}
-			</div>
-
-			<div class="toolbar__sorts">
-				<!-- Сортировать по: (Поле сортировки товаров по умолчанию) -->
-				<div class="toolbar__sort">
-					<label class="toolbar__label" for="goods_order_fields_id">Сортировать по:</label>
-					<div class="toolbar__selects selects">
-						<select id="goods_order_fields_id" name="goods_search_field_id">
-							{% FOR goods_order_fields %}
-							{% IF goods_order_fields.ID = 1 || goods_order_fields.ID = 2 || goods_order_fields.ID = 5 || goods_order_fields.ID = 11 || goods_order_fields.ID = 13 %}
-							<option value="{goods_order_fields.ID}" {% IF goods_order_fields.SELECTED %}selected{% ENDIF %}>
-								{% IF goods_order_fields.ID = 1 %}
-								Цена ↓
-								{% ELSEIF goods_order_fields.ID = 2 %}
-								Цена ↑
-								{% ELSEIF goods_order_fields.ID = 5 %}
-								Наличие
-								{% ELSEIF goods_order_fields.ID = 11 %}
-								Рейтинг
-								{% ELSEIF goods_order_fields.ID = 13 %}
-								Отзывы
-								{% ENDIF %}
-							</option>
-							{% ENDIF %}
-							{% ENDFOR %}
-						</select>
-					</div>
-				</div>
-
-				<!-- Показывать по: (Шаг для выбора пользователем лимита выдачи товаров на страницу от 1 до 100) -->
-				<div class="toolbar__show">
-					<label class="toolbar__label" for="goods_per_page_id">Показать по:</label>
-					<div class="toolbar__selects selects">
-						<select id="goods_per_page_id" name="per_page">
-							{% FOR goods_per_page_list %}
-							<option value="{goods_per_page_list.LIMIT}" {% IF goods_per_page_list.SELECTED %}selected{% ENDIF %}>{goods_per_page_list.LIMIT}</option>
-							{% ENDFOR %}
-						</select>
-					</div>
-				</div>
 			</div>
 		</form>
 	</div>

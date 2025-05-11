@@ -1653,6 +1653,13 @@ function Compare() {
       nextEl: ".swiper-button-next",
       prevEl: ".swiper-button-prev",
     },
+    pagination: {
+      enabled: true,
+      el: ".compare__nav .swiper-pagination",
+      clickable: true,
+      type: "bullets",
+      dynamicBullets: true,
+    },
     breakpoints: {
       0: {
         slidesPerView: "1",

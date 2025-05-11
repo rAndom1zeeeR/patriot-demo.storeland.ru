@@ -8,24 +8,24 @@
 			<!-- Набор полей которые не видит пользователь, но видят боты. Когда они их заполняют мы точно знаем, что их прислал нам бот и мы не сохраняем подобный отзыв о товаре, а боту отправившему отзыв сообщаем, что отзыв добавлен успешно, но будет отображён здесь после прохождения модерации -->
 			{ANTISPAM_CODE}
 
-			<div class="form__field">
-				<label for="sites_client_name">Представьтесь, пожалуйста <small>(обязательно)</small></label>
+			<div class="form__field form__field--custom">
 				<input id="sites_client_name" type="text" name="form[{ANTISPAM_FORM_FIELD_NAME_SITES_CLIENT_NAME}]" value="{FORM_SITES_CLIENT_NAME}" maxlength="120" placeholder="Ваше имя" required>
+				<label for="sites_client_name">Представьтесь, пожалуйста <small>(обязательно)</small></label>
 			</div>
 
-			<div class="form__field">
-				<label for="sites_client_phone">Телефон для связи <small>(обязательно)</small></label>
+			<div class="form__field form__field--custom">
 				<input id="sites_client_phone" class="form__phone" type="tel" name="form[{ANTISPAM_FORM_FIELD_NAME_SITES_CLIENT_PHONE}]" value="{FORM_SITES_CLIENT_PHONE}" maxlength="120" placeholder="Телефон" required>
+				<label for="sites_client_phone">Телефон для связи <small>(обязательно)</small></label>
 			</div>
 
-			<div class="form__field">
-				<label for="sites_client_mail">Электронная почта <small>(обязательно)</small></label>
+			<div class="form__field form__field--custom">
 				<input id="sites_client_mail" class="form__email" type="email" name="form[{ANTISPAM_FORM_FIELD_NAME_SITES_CLIENT_MAIL}]" value="{FORM_SITES_CLIENT_MAIL}" maxlength="120" placeholder="Email" required>
+				<label for="sites_client_mail">Электронная почта <small>(обязательно)</small></label>
 			</div>
 
-			<div class="form__field password">
-				<label for="sites_client_pass">Придумайте пароль <small>(обязательно)</small></label>
+			<div class="form__field form__field--custom password">
 				<input id="sites_client_pass" class="password__input" type="password" name="form[{ANTISPAM_FORM_FIELD_NAME_SITES_CLIENT_PASS}]" value="{FORM_SITES_CLIENT_PASS}" maxlength="50" minlength="6" placeholder="Придумайте пароль" required>
+				<label for="sites_client_pass">Придумайте пароль <small>(обязательно)</small></label>
 
 				<button class="password__button button-icon" type="button" aria-pressed="false" aria-label="Показать пароль">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">

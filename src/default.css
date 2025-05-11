@@ -372,7 +372,7 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 	flex-wrap: wrap;
 	gap: 8px 32px;
 	align-items: center;
-	justify-content: center;
+	justify-content: flex-start;
 	margin-top: 16px;
 }
 
@@ -385,7 +385,7 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 /*
 ** Политика конфиденциальности
 */
-.form__pp {display: block;width: 100%;color: var(--color-gray);text-align: center;}
+.form__pp {display: block;width: 100%;color: var(--color-gray);}
 .form__pp a {color: currentcolor;text-decoration: underline;}
 .form__pp a:active {color: var(--color-secondary);}
 @media (hover: hover) and (pointer: fine) {
@@ -620,10 +620,10 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 .news-list__date, .news-show__date {
 	display: block;
 	margin-top: 12px;
-	font-weight: bold;
+	color: var(--color-gray);
+	font-weight: 600;
 	font-size: var(--text-size-regular);
 	font-style: italic;
-	opacity: 0.5;
 }
 
 /*
@@ -713,6 +713,7 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 ** Страница не найдена
 */
 .error__block ul {line-height: 1.25;}
+.error__block a {color: var(--color-text-primary);text-decoration: underline;}
 
 /*
 ** Страница: Сравнение
@@ -747,7 +748,7 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 .compare__mod {font-size: var(--text-size-regular);}
 .compare__mod dt {display: inline;font-weight: bold;}
 .compare__mod dd {display: inline;margin-left: 0;}
-.compare__price {display: flex;flex-wrap: wrap;gap: 8px;}
+.compare__price {display: flex;flex-wrap: wrap;gap: 8px;align-items: baseline;}
 .compare__switcher label {
 	position: relative;
 	display: flex;
@@ -761,6 +762,7 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 	background: white !important;
 	border-color: var(--color-border) !important;
 	border-radius: 24px;
+	cursor: pointer;
 }
 .compare__switcher input::before {
 	position: absolute;
@@ -804,6 +806,7 @@ dialog::backdrop {z-index: 3;}
 .dialog__close:active {color: var(--color-primary);background: none;}
 .dialog__list {display: grid;gap: 12px;margin: 0;padding: 0;list-style: none;}
 dialog .form__button {width: 100%;}
+dialog .form__pp {text-align: center;}
 @media (hover: hover) and (pointer: fine) {
 	.dialog__close:hover {color: var(--color-primary);background: none;}
 }

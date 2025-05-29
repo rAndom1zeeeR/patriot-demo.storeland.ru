@@ -1234,28 +1234,6 @@ function Goods(doc) {
       goodsQtyInput.max = 99999;
     }
 
-    // Покажем артикул модификации товара, если он указан
-    // console.log("[DEBUG]: modificationArtNumber", modificationArtNumber);
-    if (modificationArtNumber) {
-      goodsArtNumberBlock.removeAttribute("hidden");
-      goodsArtNumberBlock.parentElement.removeAttribute("hidden");
-      goodsArtNumberBlock.parentElement.classList.remove("is-hide");
-      goodsArtNumberBlock.querySelector("b").innerHTML = modificationArtNumber;
-    } else {
-      if (goodsArtNumberBlock) {
-        goodsArtNumberBlock.setAttribute("hidden", "");
-        goodsArtNumberBlock.parentElement.setAttribute("hidden", "");
-        goodsArtNumberBlock.parentElement.classList.add("is-hide");
-        goodsArtNumberBlock.querySelector("b").innerHTML = "";
-        if (document.querySelector(".productView__sticker")) {
-          goodsArtNumberBlock.parentElement.classList.remove("is-hide");
-          if (document.querySelector(".productView.fancybox__content")) {
-            goodsArtNumberBlock.parentElement.classList.add("is-hide");
-          }
-        }
-      }
-    }
-
     // Описание модификации товара. Покажем если оно есть, спрячем если его у модификации нет
     if (modificationDescription) {
       goodsModDescription.classList.remove("is-hide");
@@ -1270,13 +1248,13 @@ function Goods(doc) {
     goodsQtyInput.setAttribute("name", "form[goods_mod_id][" + modificationId + "]");
 
     // Обновляем изображние модификации товара, если оно указано
-    // handleModImage(modificationModImageId, goodsModView);
+    handleModImage(modificationModImageId, goodsModView);
   }
 
   // Меняет главное изображение товара на изображение с идентификатором
   function handleModImage(goodsModImageId, block) {
     // console.log("[DEBUG]: block", block);
-    if (true) return;
+    // if (true) return;
     // Если не указан идентификатор модификации товара, значит ничего менять не нужно.
     if (!goodsModImageId) return;
     if (block.classList.contains("fancybox__content")) return;
@@ -1347,13 +1325,13 @@ function Goods(doc) {
   function StickyView() {
     const productView = document.querySelector(".productView");
     const productViewFixed = document.querySelector(".productViewFixed");
-    console.log("[DEBUG]: productView", productView);
-    console.log("[DEBUG]: productViewFixed", productViewFixed);
+    // console.log("[DEBUG]: productView", productView);
+    // console.log("[DEBUG]: productViewFixed", productViewFixed);
 
     const observer = new IntersectionObserver(
       ([entry]) => {
-        console.log("[DEBUG]: entry", entry);
-        console.log("[DEBUG]: entry.isIntersecting", entry.isIntersecting);
+        // console.log("[DEBUG]: entry", entry);
+        // console.log("[DEBUG]: entry.isIntersecting", entry.isIntersecting);
         if (!entry.isIntersecting) {
           productViewFixed.hidden = false; // Показываем плашку
         } else {
@@ -1409,7 +1387,7 @@ function Goods(doc) {
  * Используется в функциях: на странице "Товар".
  */
 function Opinions() {
-  const container = document.getElementById("opinions");
+  const container = document.querySelector(".productView__opinion");
   if (!container) return;
 
   const opinions = container.querySelectorAll(".opinion__item");
@@ -1434,25 +1412,14 @@ function Opinions() {
     } else if (generally === "bad") {
       countBad += 1;
     }
-    handleOpinionAvatarName(opinion);
   });
-
-  // Добавления первой буквы Имени или Заголовка в Аватар
-  function handleOpinionAvatarName(opinion) {
-    const avatar = opinion.querySelector(".opinion__block-avatar");
-    const name = opinion.querySelector(".opinion__name");
-    if (avatar) {
-      avatar.innerText = name.innerText.charAt(0);
-    }
-    // console.log("[DEBUG]: name", name);
-    // console.log("[DEBUG]: avatar", avatar);
-    // console.log("[DEBUG]: name.charAt(0)", name.innerText.charAt(0));
-  }
 
   // Рейтинг при добавлении отзыва
   function initRating(container) {
-    const stars = container.querySelectorAll(".form__rating label");
+    const stars = container.querySelectorAll(".opinion__rating label");
     let starsActive;
+
+    // console.log("[DEBUG]: stars", stars);
 
     stars.forEach((element, index) => {
       element.addEventListener("mouseover", () => {
@@ -2720,7 +2687,7 @@ function swiperBanners(selector) {
  */
 function swiperNews(selector) {
   const related = document.querySelector(selector);
-  console.log("[DEBUG]: related", related);
+  // console.log("[DEBUG]: related", related);
   if (!related) return;
   const swiper = new Swiper(selector + " .swiper", {
     loop: true,
@@ -2772,12 +2739,13 @@ function swiperNews(selector) {
   });
 }
 
+
 /**
- * Слайдер Маленький.
- * Используется в функциях: на всех страницах
+ * Слайдер товаров на главной.
+ * Используется в функциях: на главной
  * Использует функции: Swiper
  */
-function swiperSmall(selector) {
+function swiperPdt(selector) {
   const related = document.querySelector(selector);
   // console.log("[DEBUG]: related", related);
 
@@ -2830,6 +2798,66 @@ function swiperSmall(selector) {
     },
   });
   // console.log("[DEBUG]: swiper", swiper);
+}
+
+/**
+ * Слайдер Маленький.
+ * Используется в функциях: на всех страницах
+ * Использует функции: Swiper
+ */
+function swiperSmall(selector) {
+  const related = document.querySelector(selector);
+  // console.log("[DEBUG]: related", related);
+
+  if (!related) return;
+  const swiper = new Swiper(selector + " .swiper", {
+    loop: false,
+    autoplay: false,
+    watchSlidesProgress: true,
+    simulateTouch: true,
+    grabCursor: true,
+    slidesPerView: 5,
+    spaceBetween: 16,
+    preloadImages: false,
+    navigation: {
+      nextEl: selector + " .swiper-button-next",
+      prevEl: selector + " .swiper-button-prev",
+    },
+    pagination: {
+      enabled: true,
+      el: selector + " .swiper-pagination",
+      clickable: true,
+      type: "bullets",
+      dynamicBullets: true,
+    },
+    breakpoints: {
+      0: {
+        slidesPerView: 1,
+      },
+      320: {
+        slidesPerView: 2,
+      },
+      375: {
+        slidesPerView: 2,
+      },
+      480: {
+        slidesPerView: 2,
+      },
+      640: {
+        slidesPerView: 3,
+      },
+      768: {
+        slidesPerView: 3,
+      },
+      1024: {
+        slidesPerView: 4,
+      },
+      1200: {
+        slidesPerView: 5,
+      }
+    },
+  });
+  console.log("[DEBUG]: swiper", swiper);
 }
 
 /**
@@ -2930,73 +2958,6 @@ function swiperShow() {
   });
 }
 
-
-/**
- * Слайдер Отзывов.
- * Используется в функциях: на странице Товар
- * Использует функции: Swiper
- */
-function swiperOpinions(selector) {
-  const related = document.querySelector(selector);
-  if (!related) return;
-  const swiper = new Swiper(selector + " .swiper", {
-    loop: false,
-    autoplay: false,
-    autoHeight: true,
-    watchSlidesProgress: true,
-    simulateTouch: true,
-    grabCursor: true,
-    slidesPerView: 3,
-    spaceBetween: 16,
-    preloadImages: false,
-    navigation: {
-      nextEl: selector + " .swiper-button-next",
-      prevEl: selector + " .swiper-button-prev",
-    },
-    pagination: {
-      enabled: true,
-      el: selector + " .swiper-pagination",
-      clickable: true,
-      type: "bullets",
-      dynamicBullets: true,
-    },
-    breakpoints: {
-      0: {
-        slidesPerView: 1,
-      },
-      320: {
-        slidesPerView: 1,
-      },
-      375: {
-        slidesPerView: 1,
-      },
-      480: {
-        slidesPerView: 2,
-      },
-      640: {
-        slidesPerView: 2,
-      },
-      768: {
-        slidesPerView: 2,
-      },
-      1024: {
-        slidesPerView: 2,
-      },
-      1200: {
-        slidesPerView: 3,
-        spaceBetween: 32,
-      },
-      1440: {
-        slidesPerView: 3,
-        spaceBetween: 32,
-      },
-      1920: {
-        slidesPerView: 3,
-        spaceBetween: 32,
-      },
-    },
-  });
-}
 
 /**
  * Слайдер Вы смотрели.

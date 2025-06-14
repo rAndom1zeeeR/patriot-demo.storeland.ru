@@ -6,7 +6,7 @@
 <div class="promotion__container">
 	<p class="promotion__text {% IF CURRENT_TIME > PROMOTIONAL_CAMPAIGN_EXPIRED_TIME %}promotion__text-expired{% ENDIF %}">
 		<span>Скидки </span>
-		<b>- {PROMOTIONAL_CAMPAIGN_DISCOUNT_PERCENTAGE}%</b>
+		<b>-{PROMOTIONAL_CAMPAIGN_DISCOUNT_PERCENTAGE}%</b>
 		<span>на все товары акции </span>
 		<strong>&laquo;{PROMOTIONAL_CAMPAIGN_NAME}&raquo;</strong>
 	</p>
@@ -456,13 +456,21 @@
 			</a>
 		</li>
 		<li class="pages__prev">
-			<a class="pages__link" href="{GOODS_PAGINATE_URL | url_amp}&page={GOODS_PAGES_PREVIOUS}" title="Предыдущая страница" aria-label="Предыдущая страница">{GOODS_PAGES_PREVIOUS}</a>
+			<a class="pages__link" href="{GOODS_PAGINATE_URL | url_amp}&page={GOODS_PAGES_PREVIOUS}" title="Предыдущая страница" aria-label="Предыдущая страница">
+				<span>{GOODS_PAGES_PREVIOUS}</span>
+			</a>
 		</li>
 		{% ENDIF %}
-		<li class="pages__current"><a class="pages__link is-active">{GOODS_PAGES_CURRENT}</a></li>
+		<li class="pages__current">
+			<a class="pages__link is-active">
+				<span>{GOODS_PAGES_CURRENT}</span>
+			</a>
+		</li>
 		{% IF GOODS_PAGES_SHOW_LAST %}
 		<li class="pages__next">
-			<a class="pages__link" href="{GOODS_PAGINATE_URL | url_amp}&page={GOODS_PAGES_NEXT}" title="Следующая страница" aria-label="Следующая страница">{GOODS_PAGES_NEXT}</a>
+			<a class="pages__link" href="{GOODS_PAGINATE_URL | url_amp}&page={GOODS_PAGES_NEXT}" title="Следующая страница" aria-label="Следующая страница">
+				<span>{GOODS_PAGES_NEXT}</span>
+			</a>
 		</li>
 		<li class="pages__last">
 			<a class="pages__link" href="{GOODS_PAGINATE_URL | url_amp}&page={GOODS_PAGES_LAST}" title="Последняя страница" aria-label="Последняя страница">

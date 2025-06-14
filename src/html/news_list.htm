@@ -34,13 +34,21 @@
       </a>
     </li>
     <li class="pages__prev">
-      <a class="pages__link" href="?sid={NEWS_SECTION_ID}&page={NEWS_PAGES_PREVIOUS}" title="Предыдущая страница">{NEWS_PAGES_PREVIOUS}</a>
+      <a class="pages__link" href="?sid={NEWS_SECTION_ID}&page={NEWS_PAGES_PREVIOUS}" title="Предыдущая страница">
+        <span>{NEWS_PAGES_PREVIOUS}</span>
+      </a>
     </li>
     {% ENDIF %}
-    <li class="pages__current"><a class="pages__link is-active">{NEWS_PAGES_CURRENT}</a></li>
+    <li class="pages__current">
+      <a class="pages__link is-active">
+        <span>{NEWS_PAGES_CURRENT}</span>
+      </a>
+    </li>
     {% IF NEWS_PAGES_SHOW_LAST %}
     <li class="pages__next">
-      <a class="pages__link" href="?sid={NEWS_SECTION_ID}&page={NEWS_PAGES_NEXT}" title="Следующая страница">{NEWS_PAGES_NEXT}</a>
+      <a class="pages__link" href="?sid={NEWS_SECTION_ID}&page={NEWS_PAGES_NEXT}" title="Следующая страница">
+        <span>{NEWS_PAGES_NEXT}</span>
+      </a>
     </li>
     <li class="pages__last">
       <a class="pages__link" href="?sid={NEWS_SECTION_ID}&page={NEWS_PAGES_LAST}" title="Последняя страница">

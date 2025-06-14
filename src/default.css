@@ -57,7 +57,7 @@ a:active, a.is-active {color: var(--color-primary);}
 	a:hover {color: var(--color-primary);cursor: pointer;}
 }
 p {margin-block: 16px;overflow: hidden;line-height: 1.375;word-wrap: break-word;}
-small {font-size: var(--text-size-small);}
+small {display: block;font-size: var(--text-size-small);}
 img {width: 100%;height: 100%;object-fit: contain;}
 main {margin-block: 20px;}
 @media all and (min-width: 768px) {

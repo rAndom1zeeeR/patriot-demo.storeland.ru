@@ -1321,31 +1321,6 @@ function Goods(doc) {
     // }
   }
 
-  // Функция отображения нижней плашки при скроле
-  function StickyView() {
-    const productView = document.querySelector(".productView");
-    const productViewFixed = document.querySelector(".productViewFixed");
-    // console.log("[DEBUG]: productView", productView);
-    // console.log("[DEBUG]: productViewFixed", productViewFixed);
-
-    const observer = new IntersectionObserver(
-      ([entry]) => {
-        // console.log("[DEBUG]: entry", entry);
-        // console.log("[DEBUG]: entry.isIntersecting", entry.isIntersecting);
-        if (!entry.isIntersecting) {
-          productViewFixed.hidden = false; // Показываем плашку
-        } else {
-          productViewFixed.hidden = true; // Скрываем плашку
-        }
-      },
-      { threshold: 0 }, // Срабатывает, когда `.productView` полностью уходит из области видимости
-    );
-    if (!productView.classList.contains("fancybox__content")) {
-      observer.observe(productView);
-    }
-  }
-  StickyView();
-
 
   /**
    * Форматирует дату из формата YYYY-MM-DD в формат "DD месяц"
@@ -2009,7 +1984,7 @@ function CartDiscountUppdate(elements, selector) {
  */
 function Orderfast(doc = document) {
   const container = doc.querySelector(".orderfast__container");
-  // console.log("[DEBUG]: container", container);
+  console.log("[DEBUG]: container", container);
   if (!container) return;
   // const form = container.querySelector("form");
   const deliverySelect = container.querySelector(".order-delivery__select");
@@ -2021,117 +1996,61 @@ function Orderfast(doc = document) {
   const deliveryZoneRules = container.querySelectorAll(".order-delivery__rules");
   const paymentSelects = container.querySelectorAll(".order-payments__selects");
   const paymentSelected = container.querySelector(".order-payments__selects:not(.is-hide) select");
-  const paymentItems = container.querySelectorAll(".order-payment__item");
   const paymentDescs = container.querySelectorAll(".order-payment__desc");
-  const deliveryInputs = container.querySelectorAll(".order-delivery__radio");
-  const deliveryZoneItems = container.querySelectorAll(".order-delivery-zone__radio");
-  const deliveryItem = container.querySelector(".order-delivery__item");
-  const deliveryItemZone = deliveryItem.querySelector(".order-delivery-zone__radio");
 
   // Запуск функций при загрузке страницы
-  // handleVisibility(deliveryZones, deliverySelect.value);
-  // handleVisibility(deliveryDescs, deliverySelect.value);
+  handleVisibility(deliveryZones, deliverySelect.value);
+  handleVisibility(deliveryDescs, deliverySelect.value);
   handleFormDeliveryZoneId(deliveryZoneSelected);
-  // handleVisibility(paymentItems, paymentItems[0].getAttribute("data-id"));
-  handleVisibility(paymentItems, paymentItems[0].getAttribute("data-id"));
-  // handleVisibility(paymentSelects, deliverySelect.value);
-  // handleVisibility(paymentSelects, deliverySelect.value);
-  // handleVisibility(paymentDescs, paymentSelectedItem.getAttribute("data-id"));
-  // handleFormPaymentId(paymentSelected);
-
-  paymentItems.forEach((item) => {
-    if (!item.classList.contains("is-hide")) {
-      item.querySelector("input").checked = true;
-    }
-  });
-
-  deliveryInputs.forEach((item) => {
-    item.addEventListener("click", (event) => {
-      deliveryZoneItems.forEach((item) => (item.checked = false));
-      handleDeliveryInputsClick(event.currentTarget, ".order-delivery-zone__radio");
-    });
-  });
-
-  deliveryZoneItems.forEach((item) => {
-    item.addEventListener("click", (event) => {
-      handleDeliveryInputsClick(event.currentTarget, ".order-delivery__radio");
-    });
-  });
-
-  // Обработчик клика на доставку
-  function handleDeliveryInputsClick(target, selector) {
-    const item = target.closest(".order-delivery__item");
-    // console.log("[DEBUG]: handleDeliveryInputsClick item", item);
-    const input = item.querySelector(selector);
-    if (input) input.checked = true;
-    handleDeliveryPrice(deliveryPrices, target.getAttribute("data-price"));
-    handleVisibility(paymentItems, item.getAttribute("data-id"));
-    paymentItems.forEach((item) => {
-      if (item.classList.contains("is-hide")) {
-        item.querySelector("input").checked = false;
-      } else {
-        item.querySelector("input").checked = true;
-      }
-    });
-  }
-
-  // Первый запуск функций
-  if (deliveryItemZone) {
-    handleDeliveryInputsClick(deliveryItem, ".order-delivery-zone__radio");
-    setTimeout(() => {
-      deliveryItemZone.click();
-    }, 100);
-  } else {
-    handleDeliveryInputsClick(deliveryItem, ".order-delivery__radio");
-  }
+  handleVisibility(paymentSelects, deliverySelect.value);
+  handleVisibility(paymentDescs, paymentSelected.value);
+  handleFormPaymentId(paymentSelected);
 
   // Способы доставки
-  if (deliverySelect) {
-    deliverySelect.addEventListener("change", (event) => {
-      const select = event.target;
-      handleVisibility(deliveryZones, select.value);
-      handleVisibility(deliveryDescs, select.value);
-      handleDeliveryPrice(deliveryPrices, select[select.selectedIndex].getAttribute("data-price"));
-      deliveryZoneSelects.forEach((selects) => handleDeliveryZone(selects));
-      handleVisibility(paymentSelects, deliverySelect.value);
-      const deliveryZoneSelected = document.querySelector(".order-delivery-zone__selects:not(.is-hide) .order-delivery-zone__select");
-      // console.log("[DEBUG]: deliveryZoneSelected", deliveryZoneSelected);
-      handleFormDeliveryZoneId(deliveryZoneSelected);
-    });
-  }
+  deliverySelect.addEventListener("change", (event) => {
+    const select = event.target;
+    handleVisibility(deliveryZones, select.value);
+    handleVisibility(deliveryDescs, select.value);
+    handleDeliveryPrice(deliveryPrices, select[select.selectedIndex].getAttribute("data-price"));
+    deliveryZoneSelects.forEach((selects) => handleDeliveryZone(selects));
+    handleVisibility(paymentSelects, deliverySelect.value);
+    const deliveryZoneSelected = document.querySelector(".order-delivery-zone__selects:not(.is-hide) .order-delivery-zone__select");
+    console.log("[DEBUG]: deliveryZoneSelected", deliveryZoneSelected);
+    console.log("[DEBUG]: deliveryZones", deliveryZones);
+    console.log("[DEBUG]: select.value", select.value);
+    console.log("[DEBUG]: deliveryPrices", deliveryPrices);
+    console.log("[DEBUG]: select.", select[select.selectedIndex].getAttribute("data-price"));
+    handleFormDeliveryZoneId(deliveryZoneSelected);
+  });
 
   // Зоны доставки
-  if (deliveryZoneSelects) {
-    deliveryZoneSelects.forEach((selects) => {
-      handleDeliveryZone(selects);
-      selects.addEventListener("change", (event) => {
-        const select = event.target;
-        console.log("[DEBUG]: select", select);
-        handleDeliveryPrice(deliveryPrices, select[select.selectedIndex].getAttribute("data-price"));
-        handleVisibility(deliveryZoneRules, select.value);
-        handleFormDeliveryZoneId(select);
-      });
+  deliveryZoneSelects.forEach((selects) => {
+    handleDeliveryZone(selects);
+    selects.addEventListener("change", (event) => {
+      const select = event.target;
+      console.log("[DEBUG]: select", select);
+      handleDeliveryPrice(deliveryPrices, select[select.selectedIndex].getAttribute("data-price"));
+      handleVisibility(deliveryZoneRules, select.value);
+      handleFormDeliveryZoneId(select);
     });
-  }
+  });
 
   // Способы оплаты
-  if (paymentSelects) {
-    paymentSelects.forEach((selects) => {
-      selects.addEventListener("change", (event) => {
-        handleFormPaymentId(event.target);
-        handleVisibility(paymentDescs, event.target.value);
-      });
+  paymentSelects.forEach((selects) => {
+    selects.addEventListener("change", (event) => {
+      handleFormPaymentId(event.target);
+      handleVisibility(paymentDescs, event.target.value);
     });
-  }
+  });
 
   function handleDeliveryZone(selects) {
-    // console.log("[DEBUG]: selects2", selects);
-    // console.log("[DEBUG]: selects3", selects.parentElement.classList.contains("is-hide"));
+    console.log("[DEBUG]: selects2", selects);
+    console.log("[DEBUG]: selects3", selects.parentElement.classList.contains("is-hide"));
     if (!selects.parentElement.classList.contains("is-hide")) {
       handleDeliveryPrice(deliveryPrices, selects.options[selects.selectedIndex].getAttribute("data-price"));
       handleVisibility(deliveryZoneRules, selects.value);
     } else {
-      handleDeliveryPrice(deliveryPrices, deliverySelect.options[selects.selectedIndex].getAttribute("data-price"));
+      // handleDeliveryPrice(deliveryPrices, deliverySelect.options[selects.selectedIndex].getAttribute("data-price"));
     }
   }
 
@@ -2143,6 +2062,7 @@ function Orderfast(doc = document) {
     price.append(getMoneyFormat(value));
     elements.forEach((element) => (element.innerHTML = price.outerHTML));
     console.log("[DEBUG]: price", price);
+
     // обновления цены доставки
     const cartDeliverys = document.querySelectorAll(".cart-delivery");
     cartDeliverys.forEach((delivery) => {
@@ -2177,6 +2097,7 @@ function Orderfast(doc = document) {
     });
   }
 }
+
 
 /**
  * Купоны

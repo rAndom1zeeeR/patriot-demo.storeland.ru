@@ -313,6 +313,7 @@ textarea.is-success {border-color: var(--color-primary-hover);}
 	content: '';
 	pointer-events: none;
 }
+.selects select {padding-right: 48px;}
 
 
 /*
@@ -865,12 +866,13 @@ dialog .form__pp {text-align: center;}
 /*
 ** Уведомления. Системные сообщения
 */
-.notice {margin-block: 0 24px;padding: 12px 24px;border-radius: var(--border-radius);}
+.notice {margin: 0;padding: 12px 24px;border-radius: var(--border-radius);}
 .notice a {color: inherit;font-weight: bold;text-decoration: underline;}
 .notice--success {color: #3c763d;background: #dff0d8;border-color: #d6e9c6;}
 .notice--error {color: #a94442;background: #f2dede;border-color: #ebccd1;}
 .notice--attention {color: #8a6d3b;background: #fcf8e3;border-color: #faebcc;}
 .notice--information {color: #31708f;background: #d9edf7;border-color: #bce8f1;}
+.notice + form {margin-top: 24px;}
 .swal2-icon-error .swal2-timer-progress-bar {background: #a94442 !important;}
 .swal2-icon-success .swal2-timer-progress-bar {background: var(--color-primary) !important;}
 

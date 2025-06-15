@@ -7,7 +7,7 @@
 		{% IF cart_count_empty %}
 		<p class="notice notice--attention">Ваша корзина пуста, пожалуйста, выберите другой товар для оформления заказа</p>
 		{% ELSE %}
-		<form id="orderform" class="orderfast__form" action="{ORDER_STAGE_CONFIRM_WITHOUT_DOMAIN_URL}" method="post">
+		<form id="orderform" class="orderfast__form {% IFNOT FORM_NOTICE_IS_GOOD %}is-hide{% ENDIF %}" action="{ORDER_STAGE_CONFIRM_WITHOUT_DOMAIN_URL}" method="post">
 			<input type="hidden" name="hash" value="{HASH}">
 			<input type="hidden" name="form[payment][id]" value="{ORDER_FORM_PAYMENT_ID}">
 			<input type="hidden" name="form[delivery][zone_id]" value="{ORDER_FORM_DELIVERY_ZONE_ID}">

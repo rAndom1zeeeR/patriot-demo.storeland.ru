@@ -1857,6 +1857,8 @@
 .cartTotal__button::before, .cartTotal__button::after {background-color: var(--color-background);}
 .cartTotal__button[data-action="closeOrder"] {display: none;}
 .cartTotal__button[data-action="completeOrder"] {display: none;}
+.is-started .cartTotal__button[data-action="closeOrder"] {display: flex;}
+.is-started .cartTotal__button[data-action="clearCart"] {display: none;}
 .cartTotal__pp {display: none;margin-top: 16px;text-align: center;}
 .cartTotal__discount data {color: var(--color-error);}
 .cartTotal__discount-info {
@@ -1899,14 +1901,14 @@
 .is-min .orderfast__block:not(.cartTotal__min) {display: none;}
 .cartTable__order .orderfast__block--total {display: none;}
 .cartTable__order {margin-top: 32px;}
-.orderfast__form {display: flex;flex-direction: column;}
+.is-started .orderfast__form {display: flex;flex-direction: column;}
 .orderfast__block {padding-block: 16px;border-bottom: 1px solid var(--color-border);}
 .orderfast__block:last-of-type {margin-bottom: 0;}
 .orderfast__block .form__fields + .form__fields {margin-top: 20px;}
 .orderfast__title {margin-bottom: 16px;}
 .form__fields--date {display: grid;grid-template-columns: repeat(2, 1fr);gap: 16px;align-items: flex-end;}
 .form__fields--date .form__field {margin: 0;}
-.form__fields--date label {display: none;}
+.form__fields--date .form__field:not(.form__field--custom) label {display: none;}
 .form__field--country label {display: none;}
 .form__field--goods {font-size: var(--text-size-large);}
 @media all and (min-width: 640px) {
@@ -1922,6 +1924,7 @@
 }
 @media all and (max-width: 639px) {
 	.form__fields--date .form__field:first-child {grid-column: span 2;}
+	.page-orderfast.fancybox__content {padding: 16px;}
 }
 
 /* Быстрый заказ. Селекты */
@@ -1960,7 +1963,7 @@
 .coupon {position: relative;}
 .coupon__input {padding-right: 80px;}
 .coupon__order {position: relative;width: 100%;}
-.coupon__reset {position: absolute;right: 60px;opacity: 0;pointer-events: none;}
+.coupon__reset {position: absolute;right: 60px;height: 100%;opacity: 0;pointer-events: none;}
 .coupon__button {
 	position: absolute;
 	top: 6px;

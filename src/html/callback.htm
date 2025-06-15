@@ -4,7 +4,7 @@
   {% ENDIF %}
 
   {% IFNOT FORM_NOTICE_IS_GOOD %}
-  <form class="form__callback" method="post" action="{CALLBACK_URL}" enctype="multipart/form-data">
+  <form id="formCallback" class="form__callback" method="post" action="{CALLBACK_URL}" enctype="multipart/form-data">
     <input type="hidden" name="hash" value="{HASH}">
     <input type="hidden" name="return_to" value="{CALLBACK_URL}">
     <!-- Набор полей которые не видит пользователь, но видят боты. Когда они их заполняют мы точно знаем, что их прислал нам бот и мы не сохраняем подобный отзыв о товаре, а боту отправившему отзыв сообщаем, что отзыв добавлен успешно, но будет отображён здесь после прохождения модерации -->
@@ -77,32 +77,31 @@
     </fieldset>
 
     <fieldset class="form__fields--date">
-      <div class="form__field">
+      <div class="form__field form__field--custom">
         <label for="callback_convenient_date">Удобная дата доставки dd.mm.yyyy</label>
-        <input id="callback_convenient_date" type="text" name="form[callback_convenient_date]" value="{FORM_CALLBACK_CONVENIENT_DATE}" maxlength="120" placeholder="dd.mm.yyyy" />
+        <input id="callback_convenient_date" type="text" name="form[callback_convenient_date]" value="{FORM_CALLBACK_CONVENIENT_DATE}" placeholder="dd.mm.yyyy" />
       </div>
       <div class="form__field">
         <label for="callback_convenient_hour_from">Время С:</label>
-        <input id="callback_convenient_hour_from" type="text" name="form[callback_convenient_hour_from]" value="{FORM_CALLBACK_CONVENIENT_HOUR_FROM}" maxlength="120" />
+        <input id="callback_convenient_hour_from" type="text" name="form[callback_convenient_hour_from]" value="{FORM_CALLBACK_CONVENIENT_HOUR_FROM}" />
       </div>
       <div class="form__field">
         <label for="callback_convenient_hour_to">Время По:</label>
-        <input id="callback_convenient_hour_to" type="text" name="form[callback_convenient_hour_to]" value="{FORM_CALLBACK_CONVENIENT_HOUR_TO}" maxlength="120" />
+        <input id="callback_convenient_hour_to" type="text" name="form[callback_convenient_hour_to]" value="{FORM_CALLBACK_CONVENIENT_HOUR_TO}" />
       </div>
-</div>
-</fieldset>
+    </fieldset>
+  </form>
 
-{% IFNOT FORM_SEND_OK %}
-<div class="form__buttons">
-  <button type="submit" title="Отправить">Отправить</button>
+  {% IFNOT FORM_SEND_OK %}
+  <div class="form__buttons">
+    <button type="submit" title="Отправить" form="formCallback">Отправить</button>
 
-  <small class="form__pp">
-    Я принимаю условия
-    <a href="#dialogPolicy" data-dialog="#dialogPolicy">политикой конфиденциальности</a>
-  </small>
-</div>
-{% ENDIF %}
+    <small class="form__pp">
+      Я принимаю условия
+      <a href="#dialogPolicy" data-dialog="#dialogPolicy">политикой конфиденциальности</a>
+    </small>
+  </div>
+  {% ENDIF %}
 
-</form>
-{% ENDIF %}
+  {% ENDIF %}
 </div>

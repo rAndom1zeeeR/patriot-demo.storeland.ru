@@ -207,11 +207,11 @@ function OverlayOpener(content, handler) {
  * Используется в функциях: handleAddtoPost, handleAddtoCartUpdate, handleValueMax
  */
 function СreateNoty(type, content) {
-  // console.log("[DEBUG]: type", type);
-  // console.log("[DEBUG]: content", content);
+  console.log("[DEBUG]: type", type);
+  console.log("[DEBUG]: content", parseNotyMessage(content));
   const Toast = Swal.mixin({
     toast: true,
-    position: "top-end",
+    position: "bottom",
     showConfirmButton: false,
     timer: 3000,
     timerProgressBar: true,
@@ -223,8 +223,32 @@ function СreateNoty(type, content) {
   });
   Toast.fire({
     icon: type,
-    html: content,
+    html: `<div class="noty__block">
+      <p class="noty__goods">${parseNotyMessage(content).goods}</p>
+      <p class="noty__message">${parseNotyMessage(content).message}</p>
+    </div>`,
   });
+}
+
+function parseNotyMessage(str) {
+  // Регулярное выражение для поиска названия товара в кавычках «...»
+  const regex = /&laquo;([^&raquo;]+)&raquo;/;
+  const match = str.match(regex);
+
+  // Если совпадение найдено
+  if (match) {
+    const goods = match[1]; // Название товара (первая группа захвата)
+    const message = str
+      .replace(regex, '') // Удаляем часть с кавычками из сообщения
+      .replace(/^Товар\s*/i, '') // Удаляем слово "Товар" в начале, если есть
+      .replace(/\s+/g, ' ') // Заменяем множественные пробелы на один
+      .trim(); // Удаляем пробелы в начале и конце
+
+    return { goods, message };
+  }
+
+  // Если кавычек нет, вернем исходную строку как message
+  return { goods: '', message: str };
 }
 
 /**
@@ -500,14 +524,40 @@ function Addto(doc = document) {
     button.addEventListener("click", handleAddtoClick);
   });
 
+
+  handleAddtoDelete(".compare");
+  handleAddtoDelete(".favorites");
+
   // Обработка клика
   function handleAddtoClick(event) {
     // console.log("[DEBUG]: handleAddtoClick event", event);
     event.preventDefault();
     const currentTarget = event.currentTarget;
     const goods_href = currentTarget.getAttribute("href");
+    const goods_form = currentTarget.closest("form");
+    const goods_id = goods_form.querySelector("[name='form[goods_id]']").value;
+    const goods_mod_id = goods_form.querySelector("[name='form[goods_mod_id]']").value;
+    const goods_url = goods_form.querySelector("[name='form[goods_url]']").value;
+    const goods_image = goods_form.querySelector("[name='form[goods_image]']").value;
+    const goods_name = goods_form.querySelector("[itemprop='name']").textContent;
+    const goods_price_old = goods_form.querySelector(".price__old").getAttribute("data-price");
+    const goods_price_now = goods_form.querySelector(".price__now").getAttribute("data-price");
+    const goods_compare_url = goods_form.querySelector(".add-compare").getAttribute("href");
+    const goods_favorites_url = goods_form.querySelector(".add-favorites").getAttribute("href");
     const formData = new FormData();
     formData.append("ajax_q", "1");
+
+    // Удаляет элемент с заданным data-id из коллекции элементов.
+    // Возвращает true, если элемент был найден и удалён, иначе false.
+    function RemoveElementById(items, id) {
+      for (let i = 0; i < items.length; i++) {
+        if (items[i].getAttribute("data-id") == id) {
+          items[i].remove();
+          return true;
+        }
+      }
+      return false;
+    }
 
     // Отправка запроса
     getJsonFromPost(goods_href, formData)
@@ -517,11 +567,29 @@ function Addto(doc = document) {
           СreateNoty("success", data.message);
           // console.log("[DEBUG]: data.status success", data.message);
           if (currentTarget.classList.contains("add-compare")) {
-            handleAddtoLink(currentTarget, "compare", "сравнения");
+            handleAddtoCartLink(currentTarget, "compare", "сравнения");
             handleAddtoCount(data.compare_goods_count, ".compare");
+            const addtoItems = document.querySelector(".compare .addto__items");
+            const addtoItem = document.querySelectorAll(".compare .addto__item");
+            let isRemoved = RemoveElementById(addtoItem, goods_id);
+            if (!isRemoved) {
+              addtoItems.insertAdjacentHTML('afterbegin', createAddtoItem(goods_id, goods_mod_id, goods_image, goods_name, goods_price_old, goods_price_now, goods_url, `/compare/delete`));
+              // Получаем только что добавленный элемент
+              const newItem = addtoItems.firstElementChild;
+              handleAddtoDelete(".compare", newItem);
+            }
           } else {
-            handleAddtoLink(currentTarget, "favorites", "избранного");
+            handleAddtoCartLink(currentTarget, "favorites", "избранного");
             handleAddtoCount(data.favorites_goods_count, ".favorites");
+            const addtoItems = document.querySelector(".favorites .addto__items");
+            const addtoItem = document.querySelectorAll(".favorites .addto__item");
+            let isRemoved = RemoveElementById(addtoItem, goods_id);
+            if (!isRemoved) {
+              addtoItems.insertAdjacentHTML('afterbegin', createAddtoItem(goods_id, goods_mod_id, goods_image, goods_name, goods_price_old, goods_price_now, goods_url, `/favorites/delete`));
+              // Получаем только что добавленный элемент
+              const newItem = addtoItems.firstElementChild;
+              handleAddtoDelete(".favorites", newItem);
+            }
           }
         } else {
           СreateNoty("error", data.message);
@@ -546,9 +614,9 @@ function Addto(doc = document) {
   }
 
   // Обновление ссылки
-  function handleAddtoLink(currentTarget, type, label) {
+  function handleAddtoCartLink(currentTarget, type, label) {
     const form = currentTarget.closest("form");
-    const name = form.querySelector("[name='form[goods_name]']").value;
+    const name = form.querySelector("[itemprop='name']").textContent;
     const id = form.querySelector("[name='form[goods_id]']").value;
     const modId = form.querySelector("[name='form[goods_mod_id]']").value;
     const urlAdd = `/${type}/add?id=${modId}`;
@@ -557,43 +625,159 @@ function Addto(doc = document) {
     const titleDelete = `Убрать «${name}» из списка ${label} с другими товарами`;
     const addType = `.add-${type}`;
     if (currentTarget.classList.contains("is-added")) {
-      handleAddtoLinkAdd(currentTarget, urlAdd, titleAdd);
+      handleAddtoCartLinkAdd(currentTarget, urlAdd, titleAdd);
       document.querySelectorAll(addType).forEach((element) => {
         const isEqualId = element.closest("form").querySelector("[name='form[goods_id]']").value === id;
         if (isEqualId) {
-          handleAddtoLinkAdd(element, urlAdd, titleAdd);
+          handleAddtoCartLinkAdd(element, urlAdd, titleAdd);
         }
       });
     } else {
-      handleAddtoLinkDelete(currentTarget, urlDelete, titleDelete);
+      handleAddtoCartLinkDelete(currentTarget, urlDelete, titleDelete);
       document.querySelectorAll(addType).forEach((element) => {
         const isEqualId = element.closest("form").querySelector("[name='form[goods_id]']").value === id;
         if (isEqualId) {
-          handleAddtoLinkDelete(element, urlDelete, titleDelete);
+          handleAddtoCartLinkDelete(element, urlDelete, titleDelete);
         }
       });
     }
   }
 
   // Обновление ссылки добавления
-  function handleAddtoLinkAdd(element, href, title) {
+  function handleAddtoCartLinkAdd(element, href, title) {
     element.classList.remove("is-added");
     element.setAttribute("href", href);
     element.setAttribute("title", title);
   }
 
   // Обновление ссылки удаления
-  function handleAddtoLinkDelete(element, href, title) {
+  function handleAddtoCartLinkDelete(element, href, title) {
     element.classList.add("is-added");
     element.setAttribute("href", href);
     element.setAttribute("title", title);
+  }
+
+  // Обновление ссылки удаления
+  function handleAddtoDelete(selector, context = document) {
+    const removeButtons = context.querySelectorAll(selector + ' .addto__remove');
+    removeButtons.forEach(button => {
+      // Чтобы не навешивать повторно, проверим наличие обработчика через свойство
+      if (!button._hasDeleteHandler) {
+        addDeleteHandler(button, selector);
+        button._hasDeleteHandler = true;
+      }
+    });
+  }
+
+  // Добавление обработчика удаления для одной кнопки
+  function addDeleteHandler(button, selector) {
+    button.addEventListener('click', handleButtonAddtoDelete);
+
+    async function handleButtonAddtoDelete(event) {
+      event.preventDefault();
+      if (!confirm("Вы точно хотите удалить товар?")) return;
+      const formData = new FormData();
+      formData.append("ajax_q", "1");
+      const counts = document.querySelectorAll(selector + " .addto__count");
+      const url = event.currentTarget.getAttribute("href");
+      const item = event.currentTarget.closest(".addto__item");
+      const modId = item.getAttribute("data-mod-id");
+      const newCount = parseInt(counts[0].value) - 1;
+      try {
+        const data = await getJsonFromPost(url, formData);
+        if (data.status !== "ok") {
+          console.error("[ERROR]: Error data.status", data.status);
+          return;
+        }
+        item.remove();
+        if (data.compare_goods_count) {
+          CountUppdate(counts, data.compare_goods_count);
+        } else if (data.favorites_goods_count) {
+          CountUppdate(counts, data.favorites_goods_count);
+        }
+        if (newCount === 0) {
+          document.querySelectorAll(selector).forEach(container => {
+            container.classList.add("is-empty");
+          });
+        }
+        handleAddtoLink(selector, data.message, modId);
+      } catch (error) {
+        console.error("[ERROR]: Error при удалении товара", error);
+      }
+    }
+  }
+
+  // Обновление ссылки
+  function handleAddtoLink(selector, title, modId) {
+    const type = selector.slice(1);
+    const elements = document.querySelectorAll(".add-" + type);
+    const urlAdd = `/${type}/add?id=${modId}`;
+    elements.forEach(element => {
+      const item = element.closest("[data-id]");
+      const itemMod = item.querySelector("[name='form[goods_mod_id]']");
+      const itemModId = itemMod.value;
+
+      // console.log("[DEBUG]: itemModId", itemModId == modId, itemModId,modId);
+      if (itemModId == modId) {
+        handleAddtoCartLinkAdd(element, urlAdd, title)
+        // console.log("[DEBUG]: itemModId", itemModId);
+        // console.log("[DEBUG]: id", modId);
+      }
+    });
+  };
+
+  // Создание старой цены
+  function createPriceOld(priceOld) {
+    if (priceOld === '0') return '';
+    return `<s class="price__old" data-price="${priceOld}">
+      <span title="${priceOld} российских рублей">
+        <span class="num">${getMoneyFormat(priceOld)}</span>
+        <span>р.</span>
+      </span>
+    </s>`
+  }
+
+  // Создание новой цены
+  function createPriceNow(priceNow) {
+    return `<b class="price__now" data-price="${priceNow}">
+      <span title="${priceNow} российских рублей">
+        <span class="num">${getMoneyFormat(priceNow)}</span>
+        <span>р.</span>
+      </span>
+    </b>`
+  }
+
+  // Создание элемента списка
+  function createAddtoItem(goodsID, goodsModID, goodsImage, goodsName, goodsPriceOld, goodsPriceNow, goodsURL, delUrl) {
+    const CURRENCY_CHAR_CODE = 'RUB';
+    return `
+      <div class="addto__item" data-id="${goodsID}" data-mod-id="${goodsModID}">
+        <div class="addto__image">
+          <img src="${goodsImage}" alt="${goodsName}" loading="lazy" />
+        </div>
+
+        <div class="addto__content">
+          <a class="addto__name" href="${goodsURL}" title="Перейти на страницу товара">${goodsName}</a>
+          <div class="addto__price ${CURRENCY_CHAR_CODE}">
+            ${createPriceOld(goodsPriceOld)}
+            ${createPriceNow(goodsPriceNow)}
+          </div>
+        </div>
+
+        <a class="addto__remove button-icon" href="${delUrl}?id=${goodsModID}" title="Удалить позицию ${goodsName}">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="24" height="24" aria-hidden="true">
+            <path d="M256 810.667c0 46.933 38.4 85.333 85.333 85.333h341.333c46.933 0 85.333-38.4 85.333-85.333v-512h-512v512zM341.333 384h341.333v426.667h-341.333v-426.667zM661.333 170.667l-42.667-42.667h-213.333l-42.667 42.667h-149.333v85.333h597.333v-85.333h-149.333z"></path>
+          </svg>
+        </a>
+      </div>
+    `
   }
 }
 
 /**
  * Функция добавления товара в Корзину.
  * Используется в функциях: handleAddtoModOpen, на всех страницах.
- * Использует функции: CartRemove, CartClear, CartCountUppdate, CartDiscountUppdate, СreateNoty
+ * Использует функции: CartRemove, CartClear, CountUppdate, CartDiscountUppdate, СreateNoty
  */
 function AddtoCart(doc = document) {
   const buttons = doc.querySelectorAll(".add-cart");
@@ -609,6 +793,7 @@ function AddtoCart(doc = document) {
     const currentTarget = event.currentTarget;
     const form = currentTarget.closest("form");
     const url = form.getAttribute("action");
+    const goodsID = form.querySelector("[name='form[goods_mod_id]']").value;
     const formData = new FormData(form);
     formData.append("ajax_q", "1");
     // Отправка запроса
@@ -620,6 +805,21 @@ function AddtoCart(doc = document) {
     });
     // console.log("[DEBUG]: event", event.currentTarget);
     event.currentTarget.parentElement.classList.add("has-in-cart");
+
+    document.querySelectorAll(".add-cart").forEach((button) => {
+      handleAddtoCartAdded(button, goodsID);
+    });
+    document.querySelectorAll(".add-mod").forEach((button) => {
+      handleAddtoCartAdded(button, goodsID);
+    });
+
+    function handleAddtoCartAdded(button, goodsID) {
+      const form = button.closest("form");
+      const buttonID = form.querySelector("[name='form[goods_mod_id]']").value;
+      if (buttonID === goodsID) {
+        button.classList.add("is-added");
+      }
+    }
   }
 
   // Обновление корзины
@@ -635,7 +835,8 @@ function AddtoCart(doc = document) {
     const cartDiscountData = data.querySelector(".cartTotal__discount");
     // Обновление данных
     cartAddto.innerHTML = cartAddtoData.innerHTML;
-    CartCountUppdate(cartCounts, cartCountDataValue);
+    CountUppdate(cartCounts, cartCountDataValue);
+    CartEmptyUpdate(cartCountDataValue);
     CartDiscountUppdate(cartSumDiscounts, cartSumDiscountData);
     if (cartDiscountData && addtoDiscounts.length > 0) {
       CartDiscountUppdate(addtoDiscounts, cartDiscountData);
@@ -697,8 +898,6 @@ function AddtoMod(doc = document) {
             AddtoOrder(content);
             Goods(content);
             Dialogs(content);
-            console.log("content", content);
-            console.log("content", content.querySelector(".productView__add"));
             content.querySelector(".productView__add").focus();
           },
         },
@@ -711,7 +910,7 @@ function AddtoMod(doc = document) {
  * Функция Быстрый заказ.
  * Используется в функциях: handleAddtoModOpen, на всех страницах с товарами.
  * Использует функции: getHtmlFromPost, handleAddtoOrderOpen, handleAddtoOrderUpdate, CartRemove, CartClear,
- * Использует функции: Fancybox, Orderfast, Passwords, OrderCoupons, CartMinSum, ValidateRequired, CartCountUppdate, CartDiscountUppdate
+ * Использует функции: Fancybox, Orderfast, Passwords, OrderCoupons, CartMinSum, ValidateRequired, CountUppdate, CartDiscountUppdate
  */
 function AddtoOrder(doc = document) {
   const buttons = doc.querySelectorAll(".add-order");
@@ -766,6 +965,7 @@ function AddtoOrder(doc = document) {
             Passwords();
             OrderCoupons();
             CartMinSum();
+            $(".form__phone").mask("+7 (999) 999-9999");
             const form = document.querySelector(".orderfast__form");
             ValidateRequired(form);
             new AirDatepicker("#order_delivery_convenient_date", {
@@ -792,7 +992,8 @@ function AddtoOrder(doc = document) {
     const cartDiscountData = data.querySelector(".cartTotal__discount");
     // Обновление данных
     cartAddto.innerHTML = cartAddtoData.innerHTML;
-    CartCountUppdate(cartCounts, cartCountDataValue);
+    CountUppdate(cartCounts, cartCountDataValue);
+    CartEmptyUpdate(cartCountDataValue);
     CartDiscountUppdate(cartSumDiscounts, cartSumDiscountData);
     CartDiscountUppdate(addtoDiscounts, cartDiscountData);
   }
@@ -1034,6 +1235,7 @@ function Products() {
     // Запуск функции стикера цены.
     StickerSales(product);
     Attrs(product);
+    Quantity(product);
     // swiperProductImages('.swiper-' + product.getAttribute('data-id'))
   });
 
@@ -1780,6 +1982,7 @@ function Cart() {
         Orderfast();
         Passwords();
         OrderCoupons();
+        $(".form__phone").mask("+7 (999) 999-9999");
         container.classList.remove("is-loading");
         contrainerAjax.removeAttribute("hidden");
         new AirDatepicker("#order_delivery_convenient_date", {
@@ -1877,10 +2080,10 @@ function CartClear() {
 /**
  * Функция удаления товара из корзины.
  * Используется в функциях: handleAddtoCartClick, handleAddtoOrderClick, на всех страницах.
- * Использует функции: getUrlBody, getHtmlFromUrl, CartCountUppdate, CartCountendUppdate, CartDiscountUppdate
+ * Использует функции: getUrlBody, getHtmlFromUrl, CountUppdate, CartCountendUppdate, CartDiscountUppdate
  */
 function CartRemove() {
-  const buttons = document.querySelectorAll(".addto__remove");
+  const buttons = document.querySelectorAll(".cart.addto__remove");
   if (buttons.length === 0) return;
 
   buttons.forEach((button) => {
@@ -1917,7 +2120,8 @@ function CartRemove() {
           if (productView && productView.getAttribute("data-mod-id") === modId) {
             productView.querySelector(".productView__cart").classList.remove("has-in-cart");
           }
-          CartCountUppdate(cartCounts, newCount);
+          CountUppdate(cartCounts, newCount);
+          CartEmptyUpdate(newCount);
           CartCountendUppdate(cartCountends, data.querySelector(".cart-countend"));
           CartDiscountUppdate(cartSumDiscounts, data.querySelector(".cart-sum-discount"));
           CartDiscountUppdate(addtoDiscounts, data.querySelector(".cartTotal__discount"));
@@ -1932,18 +2136,17 @@ function CartRemove() {
  * Используется в функциях: CartRemove, handleAddtoCartUpdate, handleAddtoOrderUpdate
  * Использует функции: CartEmptyUpdate
  */
-function CartCountUppdate(elements, count) {
+function CountUppdate(elements, count) {
   if (elements.length === 0) return;
   elements.forEach((element) => {
     element.value = count;
     element.innerHTML = count;
   });
-  CartEmptyUpdate(count);
 }
 
 /*
  * Функция определения добавленных товаров в корзине.
- * Используется в функциях: CartCountUppdate
+ * Используется в функциях: CountUppdate
  */
 function CartEmptyUpdate(count) {
   const carts = document.querySelectorAll(".cart");
@@ -2728,7 +2931,7 @@ function swiperPdt(selector) {
  */
 function swiperSmall(selector) {
   const related = document.querySelector(selector);
-  // console.log("[DEBUG]: related", related);
+  console.log("[DEBUG]: swiperSmall", related);
 
   if (!related) return;
   const swiper = new Swiper(selector + " .swiper", {
@@ -2778,7 +2981,6 @@ function swiperSmall(selector) {
       }
     },
   });
-  console.log("[DEBUG]: swiper", swiper);
 }
 
 /**

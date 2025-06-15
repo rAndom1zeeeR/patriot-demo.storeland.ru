@@ -1897,6 +1897,8 @@
 /*
 ** Быстрый заказ
 */
+.fancybox__container {--fancybox-zIndex: 100;}
+.air-datepicker-global-container {z-index: 101;}
 .page-orderfast.fancybox__content {max-width: 680px;}
 .is-min .orderfast__block:not(.cartTotal__min) {display: none;}
 .cartTable__order .orderfast__block--total {display: none;}

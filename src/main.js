@@ -967,13 +967,18 @@ function AddtoOrder(doc = document) {
             CartMinSum();
             $(".form__phone").mask("+7 (999) 999-9999");
             const form = document.querySelector(".orderfast__form");
+            console.log("form1", form);
             ValidateRequired(form);
-            new AirDatepicker("#order_delivery_convenient_date", {
-              autoClose: true,
-              onSelect: function ({ datepicker }) {
-                ValidateInput(datepicker.$el);
-              },
-            });
+            setTimeout(() => {
+              const datepi = new AirDatepicker("#order_delivery_convenient_date", {
+                autoClose: true,
+                onSelect: function ({ datepicker }) {
+                  ValidateInput(datepicker.$el);
+                  console.log("datepicker1", datepicker);
+                },
+              });
+              console.log("form2", datepi);
+            }, 1000);
           },
         },
       },
@@ -1455,29 +1460,28 @@ function Goods(doc) {
 
   // Меняет главное изображение товара на изображение с идентификатором
   function handleModImage(goodsModImageId, block) {
-    // console.log("[DEBUG]: block", block);
-    // if (true) return;
+    console.log("[DEBUG]: block", block);
+    console.log("[DEBUG]: goodsModImageId", goodsModImageId);
+    if (!block || !goodsModImageId) return;
     // Если не указан идентификатор модификации товара, значит ничего менять не нужно.
-    if (!goodsModImageId) return;
     if (block.classList.contains("fancybox__content")) return;
     // Блок с изображением выбранной модификации товара
     const goodsModImageBlock = block.querySelector('.thumblist [data-id="' + goodsModImageId + '"');
+    if (!goodsModImageBlock) return;
     // Изображение модификации товара, на которое нужно будет изменить главное изображение товара.
-    const mediumImageUrl = goodsModImageBlock.querySelector("a").getAttribute("href");
+    const mediumImageUrl = goodsModImageBlock.getAttribute("href");
     // Блок, в котором находится главное изображение товара
     const mainImageBlock = block.querySelector(".productView__image");
     // Главное изображение, в которое будем вставлять новое изображение
     const mainImage = mainImageBlock.querySelector("img");
-    const mainImageSource = mainImageBlock.querySelector("source");
     // Если изображение модификации товара найдено - изменяем главное изображение
     mainImage.setAttribute("src", mediumImageUrl);
     mainImage.parentElement.setAttribute("data-src", mediumImageUrl);
-    mainImageSource.setAttribute("srcset", mediumImageUrl);
     // Изменяем идентификатор главного изображения
     mainImageBlock.setAttribute("data-id", goodsModImageId);
     block.querySelectorAll(".thumblist__item").forEach((item) => item.classList.remove("is-active"));
     goodsModImageBlock.classList.add("is-active");
-    swiper.slideTo(goodsModImageBlock.getAttribute("data-swiper-slide-index"));
+    // swiper.slideTo(goodsModImageBlock.getAttribute("data-swiper-slide-index"));
   }
 
   // Функции Дополнительных изображений.
@@ -1983,6 +1987,7 @@ function Cart() {
         Passwords();
         OrderCoupons();
         $(".form__phone").mask("+7 (999) 999-9999");
+        console.log("form2");
         container.classList.remove("is-loading");
         contrainerAjax.removeAttribute("hidden");
         new AirDatepicker("#order_delivery_convenient_date", {
@@ -2187,7 +2192,7 @@ function CartDiscountUppdate(elements, selector) {
  */
 function Orderfast(doc = document) {
   const container = doc.querySelector(".orderfast__container");
-  console.log("[DEBUG]: container", container);
+  // console.log("[DEBUG]: container", container);
   if (!container) return;
   // const form = container.querySelector("form");
   const deliverySelect = container.querySelector(".order-delivery__select");
@@ -2218,11 +2223,6 @@ function Orderfast(doc = document) {
     deliveryZoneSelects.forEach((selects) => handleDeliveryZone(selects));
     handleVisibility(paymentSelects, deliverySelect.value);
     const deliveryZoneSelected = document.querySelector(".order-delivery-zone__selects:not(.is-hide) .order-delivery-zone__select");
-    console.log("[DEBUG]: deliveryZoneSelected", deliveryZoneSelected);
-    console.log("[DEBUG]: deliveryZones", deliveryZones);
-    console.log("[DEBUG]: select.value", select.value);
-    console.log("[DEBUG]: deliveryPrices", deliveryPrices);
-    console.log("[DEBUG]: select.", select[select.selectedIndex].getAttribute("data-price"));
     handleFormDeliveryZoneId(deliveryZoneSelected);
   });
 
@@ -2231,7 +2231,7 @@ function Orderfast(doc = document) {
     handleDeliveryZone(selects);
     selects.addEventListener("change", (event) => {
       const select = event.target;
-      console.log("[DEBUG]: select", select);
+      // console.log("[DEBUG]: select", select);
       handleDeliveryPrice(deliveryPrices, select[select.selectedIndex].getAttribute("data-price"));
       handleVisibility(deliveryZoneRules, select.value);
       handleFormDeliveryZoneId(select);
@@ -2247,24 +2247,19 @@ function Orderfast(doc = document) {
   });
 
   function handleDeliveryZone(selects) {
-    console.log("[DEBUG]: selects2", selects);
-    console.log("[DEBUG]: selects3", selects.parentElement.classList.contains("is-hide"));
     if (!selects.parentElement.classList.contains("is-hide")) {
       handleDeliveryPrice(deliveryPrices, selects.options[selects.selectedIndex].getAttribute("data-price"));
       handleVisibility(deliveryZoneRules, selects.value);
-    } else {
-      // handleDeliveryPrice(deliveryPrices, deliverySelect.options[selects.selectedIndex].getAttribute("data-price"));
     }
   }
 
   function handleDeliveryPrice(elements, value) {
-    console.log("[DEBUG]: element", elements);
-    console.log("[DEBUG]: value", value);
+    // console.log("[DEBUG]: element", elements);
+    // console.log("[DEBUG]: value", value);
     const price = document.createElement("span");
     price.classList.add("num");
     price.append(getMoneyFormat(value));
     elements.forEach((element) => (element.innerHTML = price.outerHTML));
-    console.log("[DEBUG]: price", price);
 
     // обновления цены доставки
     const cartDeliverys = document.querySelectorAll(".cart-delivery");

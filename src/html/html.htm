@@ -417,6 +417,8 @@
 									<input type="hidden" name="form[goods_name]" value="{index_page_favorites_goods.NAME}">
 									<input type="hidden" name="form[goods_desc]" value="{index_page_favorites_goods.DESCRIPTION_SHORT}" itemprop="description">
 									<input type="hidden" name="form[goods_sku]" value="{index_page_favorites_goods.ART_NUMBER}" itemprop="sku">
+									<input type="hidden" name="form[goods_url]" value="{index_page_favorites_goods.URL_MIN_PRICE_NOW | url_amp}" itemprop="url">
+									<input type="hidden" name="form[goods_image]" value="{% IF index_page_favorites_goods.IMAGE_EMPTY %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ELSE %}{index_page_favorites_goods.IMAGE_MEDIUM}{% ENDIF %}">
 
 									<!-- Изображение -->
 									<div class="product__images">
@@ -502,7 +504,7 @@
 									<!-- Информация товара -->
 									<div class="product__shop">
 										<!-- Название товара -->
-										<a class="product__name" href="{index_page_favorites_goods.URL_MIN_PRICE_NOW | url_amp}" title="{index_page_favorites_goods.NAME}" itemprop="url">
+										<a class="product__name" href="{index_page_favorites_goods.URL_MIN_PRICE_NOW | url_amp}" title="{index_page_favorites_goods.NAME}">
 											<span itemprop="name">{index_page_favorites_goods.NAME}</span>
 										</a>
 
@@ -596,6 +598,8 @@
 										<input type="hidden" name="form[goods_name]" value="{index_page_sale_goods.NAME}">
 										<input type="hidden" name="form[goods_desc]" value="{index_page_sale_goods.DESCRIPTION_SHORT}" itemprop="description">
 										<input type="hidden" name="form[goods_sku]" value="{index_page_sale_goods.ART_NUMBER}" itemprop="sku">
+										<input type="hidden" name="form[goods_url]" value="{index_page_sale_goods.URL_MIN_PRICE_NOW | url_amp}" itemprop="url">
+										<input type="hidden" name="form[goods_image]" value="{% IF index_page_sale_goods.IMAGE_EMPTY %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ELSE %}{index_page_sale_goods.IMAGE_MEDIUM}{% ENDIF %}">
 
 										<!-- Изображение -->
 										<div class="product__images">
@@ -693,7 +697,7 @@
 												<time datetime="{index_page_sale_goods.MAX_DISCOUNT_EXPIRED_AT | date('Y-m-d')}">{index_page_sale_goods.MAX_DISCOUNT_EXPIRED_AT | date('m.d.Y')}</time>
 											</div>
 											<!-- Название товара -->
-											<a class="product__name" href="{index_page_sale_goods.URL_MIN_PRICE_NOW | url_amp}" title="{index_page_sale_goods.NAME}" itemprop="url">
+											<a class="product__name" href="{index_page_sale_goods.URL_MIN_PRICE_NOW | url_amp}" title="{index_page_sale_goods.NAME}">
 												<span itemprop="name">{index_page_sale_goods.NAME}</span>
 											</a>
 
@@ -843,6 +847,8 @@
 									<input type="hidden" name="form[goods_name]" value="{index_page_new_goods.NAME}">
 									<input type="hidden" name="form[goods_desc]" value="{index_page_new_goods.DESCRIPTION_SHORT}" itemprop="description">
 									<input type="hidden" name="form[goods_sku]" value="{index_page_new_goods.ART_NUMBER}" itemprop="sku">
+									<input type="hidden" name="form[goods_url]" value="{index_page_new_goods.URL_MIN_PRICE_NOW | url_amp}" itemprop="url">
+									<input type="hidden" name="form[goods_image]" value="{% IF index_page_new_goods.IMAGE_EMPTY %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ELSE %}{index_page_new_goods.IMAGE_MEDIUM}{% ENDIF %}">
 
 									<!-- Изображение -->
 									<div class="product__images">
@@ -928,7 +934,7 @@
 									<!-- Информация товара -->
 									<div class="product__shop">
 										<!-- Название товара -->
-										<a class="product__name" href="{index_page_new_goods.URL_MIN_PRICE_NOW | url_amp}" title="{index_page_new_goods.NAME}" itemprop="url">
+										<a class="product__name" href="{index_page_new_goods.URL_MIN_PRICE_NOW | url_amp}" title="{index_page_new_goods.NAME}">
 											<span itemprop="name">{index_page_new_goods.NAME}</span>
 										</a>
 
@@ -1012,6 +1018,8 @@
 							<input type="hidden" name="form[goods_name]" value="{index_page_goods.NAME}">
 							<input type="hidden" name="form[goods_desc]" value="{index_page_goods.DESCRIPTION_SHORT}" itemprop="description">
 							<input type="hidden" name="form[goods_sku]" value="{index_page_goods.ART_NUMBER}" itemprop="sku">
+							<input type="hidden" name="form[goods_url]" value="{index_page_goods.URL_MIN_PRICE_NOW | url_amp}" itemprop="url">
+							<input type="hidden" name="form[goods_image]" value="{% IF index_page_goods.IMAGE_EMPTY %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ELSE %}{index_page_goods.IMAGE_MEDIUM}{% ENDIF %}">
 
 							<!-- Изображение -->
 							<div class="product__images">
@@ -1097,7 +1105,7 @@
 							<!-- Информация товара -->
 							<div class="product__shop">
 								<!-- Название товара -->
-								<a class="product__name" href="{index_page_goods.URL_MIN_PRICE_NOW | url_amp}" title="{index_page_goods.NAME}" itemprop="url">
+								<a class="product__name" href="{index_page_goods.URL_MIN_PRICE_NOW | url_amp}" title="{index_page_goods.NAME}">
 									<span itemprop="name">{index_page_goods.NAME}</span>
 								</a>
 

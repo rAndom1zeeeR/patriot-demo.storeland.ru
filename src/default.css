@@ -873,6 +873,7 @@ dialog .form__pp {text-align: center;}
 .notice--attention {color: #8a6d3b;background: #fcf8e3;border-color: #faebcc;}
 .notice--information {color: #31708f;background: #d9edf7;border-color: #bce8f1;}
 .notice + form {margin-top: 24px;}
+.notice + .button {margin-top: 24px;}
 .swal2-icon-error .swal2-timer-progress-bar {background: #a94442 !important;}
 .swal2-icon-success .swal2-timer-progress-bar {background: var(--color-primary) !important;}
 

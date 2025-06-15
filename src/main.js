@@ -207,8 +207,8 @@ function OverlayOpener(content, handler) {
  * Используется в функциях: handleAddtoPost, handleAddtoCartUpdate, handleValueMax
  */
 function СreateNoty(type, content) {
-  console.log("[DEBUG]: type", type);
-  console.log("[DEBUG]: content", parseNotyMessage(content));
+  // console.log("[DEBUG]: type", type);
+  // console.log("[DEBUG]: content", parseNotyMessage(content));
   const Toast = Swal.mixin({
     toast: true,
     position: "bottom",
@@ -540,8 +540,8 @@ function Addto(doc = document) {
     const goods_url = goods_form.querySelector("[name='form[goods_url]']").value;
     const goods_image = goods_form.querySelector("[name='form[goods_image]']").value;
     const goods_name = goods_form.querySelector("[itemprop='name']").textContent;
-    const goods_price_old = goods_form.querySelector(".price__old").getAttribute("data-price");
-    const goods_price_now = goods_form.querySelector(".price__now").getAttribute("data-price");
+    const goods_price_old = goods_form.querySelector(".price__old");
+    const goods_price_now = goods_form.querySelector(".price__now");
     const goods_compare_url = goods_form.querySelector(".add-compare").getAttribute("href");
     const goods_favorites_url = goods_form.querySelector(".add-favorites").getAttribute("href");
     const formData = new FormData();
@@ -573,7 +573,7 @@ function Addto(doc = document) {
             const addtoItem = document.querySelectorAll(".compare .addto__item");
             let isRemoved = RemoveElementById(addtoItem, goods_id);
             if (!isRemoved) {
-              addtoItems.insertAdjacentHTML('afterbegin', createAddtoItem(goods_id, goods_mod_id, goods_image, goods_name, goods_price_old, goods_price_now, goods_url, `/compare/delete`));
+              addtoItems.insertAdjacentHTML('afterbegin', createAddtoItem(goods_id, goods_mod_id, goods_image, goods_name, goods_price_old?.getAttribute("data-price"), goods_price_now, goods_url, `/compare/delete`));
               // Получаем только что добавленный элемент
               const newItem = addtoItems.firstElementChild;
               handleAddtoDelete(".compare", newItem);
@@ -585,7 +585,7 @@ function Addto(doc = document) {
             const addtoItem = document.querySelectorAll(".favorites .addto__item");
             let isRemoved = RemoveElementById(addtoItem, goods_id);
             if (!isRemoved) {
-              addtoItems.insertAdjacentHTML('afterbegin', createAddtoItem(goods_id, goods_mod_id, goods_image, goods_name, goods_price_old, goods_price_now, goods_url, `/favorites/delete`));
+              addtoItems.insertAdjacentHTML('afterbegin', createAddtoItem(goods_id, goods_mod_id, goods_image, goods_name, goods_price_old?.getAttribute("data-price"), goods_price_now, goods_url, `/favorites/delete`));
               // Получаем только что добавленный элемент
               const newItem = addtoItems.firstElementChild;
               handleAddtoDelete(".favorites", newItem);
@@ -728,7 +728,7 @@ function Addto(doc = document) {
 
   // Создание старой цены
   function createPriceOld(priceOld) {
-    if (priceOld === '0') return '';
+    if (priceOld === '0' || !priceOld) return '';
     return `<s class="price__old" data-price="${priceOld}">
       <span title="${priceOld} российских рублей">
         <span class="num">${getMoneyFormat(priceOld)}</span>

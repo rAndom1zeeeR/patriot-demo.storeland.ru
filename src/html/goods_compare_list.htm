@@ -74,11 +74,11 @@
               <input type="hidden" name="form[goods_name]" value="{goods_mod_info.NAME}">
               <input type="hidden" name="form[goods_desc]" value="{goods_mod_info.DESCRIPTION_SHORT}" itemprop="description">
               <input type="hidden" name="form[goods_sku]" value="{goods_mod_info.ART_NUMBER}" itemprop="sku">
+              <input type="hidden" name="form[goods_url]" value="{goods_mod_info.GOODS_MOD_URL}" itemprop="url">
+              <input type="hidden" name="form[goods_image]" value="{% IF goods_mod_info.GOODS_IMAGE_EMPTY %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ELSE %}{goods_mod_info.GOODS_IMAGE_SMALL}{% ENDIF %}">
               <!-- <input type="hidden" name="form[goods_from]" value="{goods_mod_info.GOODS_FROM}">
               <input type="hidden" name="form[goods_count]" value="1" class="goodsDataCount">
-              <input type="hidden" name="form[goods_min_rest]" value="{goods.MIN_REST_VALUE}">
-              <input type="hidden" name="form[goods_url]" value="{goods_mod_info.GOODS_MOD_URL}">
-              <input type="hidden" name="form[goods_image]" value="{% IF goods_mod_info.GOODS_IMAGE_EMPTY %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ELSE %}{goods_mod_info.GOODS_IMAGE_SMALL}{% ENDIF %}"> -->
+              <input type="hidden" name="form[goods_min_rest]" value="{goods.MIN_REST_VALUE}"> -->
 
               <!-- Добавление товара в корзину -->
               <div class="compare__cart">

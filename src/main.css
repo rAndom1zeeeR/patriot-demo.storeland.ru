@@ -714,6 +714,7 @@
 	position: relative;
 	display: flex;
 	flex-direction: column;
+	gap: 8px;
 	align-items: center;
 	justify-content: center;
 	padding: 16px 8px 8px;
@@ -1841,6 +1842,8 @@
 .cartTable__price .price__one span + span {margin-left: -4px;}
 .cartTable__remove svg {fill: var(--color-gray);}
 .cartTable__remove:hover svg {fill: var(--color-text-primary);}
+.is-started .cartTable__remove {display: none;}
+.is-started .qty__select svg {opacity: 0;}
 .cartTotal {width: 100%;}
 .cartTotal__items {padding-bottom: 12px;background-color: var(--color-background);border-radius: var(--border-radius);}
 .cartTotal__title {padding: 20px;font-weight: bold;font-size: var(--heading-06);text-transform: uppercase;}

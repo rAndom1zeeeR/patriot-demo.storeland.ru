@@ -13,6 +13,8 @@
 				<input type="hidden" name="form[goods_name]" value="{favorites_goods.NAME}">
 				<input type="hidden" name="form[goods_desc]" value="{favorites_goods.DESCRIPTION_SHORT}" itemprop="description">
 				<input type="hidden" name="form[goods_sku]" value="{favorites_goods.ART_NUMBER}" itemprop="sku">
+				<input type="hidden" name="form[goods_url]" value="{favorites_goods.URL_MIN_PRICE_NOW | url_amp}" itemprop="url">
+				<input type="hidden" name="form[goods_image]" value="{% IF favorites_goods.IMAGE_EMPTY %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ELSE %}{favorites_goods.IMAGE_MEDIUM}{% ENDIF %}">
 
 				<!-- Изображение -->
 				<div class="product__images">
@@ -98,7 +100,7 @@
 				<!-- Информация товара -->
 				<div class="product__shop">
 					<!-- Название товара -->
-					<a class="product__name" href="{favorites_goods.URL_MIN_PRICE_NOW | url_amp}" title="{favorites_goods.NAME}" itemprop="url">
+					<a class="product__name" href="{favorites_goods.URL_MIN_PRICE_NOW | url_amp}" title="{favorites_goods.NAME}">
 						<span itemprop="name">{favorites_goods.NAME}</span>
 					</a>
 

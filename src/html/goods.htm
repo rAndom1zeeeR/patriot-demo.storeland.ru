@@ -758,6 +758,8 @@
 					<input type="hidden" name="form[goods_name]" value="{related_views_goods.NAME}">
 					<input type="hidden" name="form[goods_desc]" value="{related_views_goods.DESCRIPTION_SHORT}" itemprop="description">
 					<input type="hidden" name="form[goods_sku]" value="{related_views_goods.ART_NUMBER}" itemprop="sku">
+					<input type="hidden" name="form[goods_url]" value="{related_views_goods.URL_MIN_PRICE_NOW | url_amp}" itemprop="url">
+					<input type="hidden" name="form[goods_image]" value="{% IF related_views_goods.IMAGE_EMPTY %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ELSE %}{related_views_goods.IMAGE_MEDIUM}{% ENDIF %}">
 
 					<!-- Изображение -->
 					<div class="product__images">
@@ -843,7 +845,7 @@
 					<!-- Информация товара -->
 					<div class="product__shop">
 						<!-- Название товара -->
-						<a class="product__name" href="{related_views_goods.URL_MIN_PRICE_NOW | url_amp}" title="{related_views_goods.NAME}" itemprop="url">
+						<a class="product__name" href="{related_views_goods.URL_MIN_PRICE_NOW | url_amp}" title="{related_views_goods.NAME}">
 							<span itemprop="name">{related_views_goods.NAME}</span>
 						</a>
 
@@ -931,6 +933,8 @@
 					<input type="hidden" name="form[goods_name]" value="{related_goods.NAME}">
 					<input type="hidden" name="form[goods_desc]" value="{related_goods.DESCRIPTION_SHORT}" itemprop="description">
 					<input type="hidden" name="form[goods_sku]" value="{related_goods.ART_NUMBER}" itemprop="sku">
+					<input type="hidden" name="form[goods_url]" value="{related_goods.URL_MIN_PRICE_NOW | url_amp}" itemprop="url">
+					<input type="hidden" name="form[goods_image]" value="{% IF related_goods.IMAGE_EMPTY %}{ASSETS_IMAGES_PATH}no-photo.png?design=THEMENAME{% ELSE %}{related_goods.IMAGE_MEDIUM}{% ENDIF %}">
 
 					<!-- Изображение -->
 					<div class="product__images">
@@ -1016,7 +1020,7 @@
 					<!-- Информация товара -->
 					<div class="product__shop">
 						<!-- Название товара -->
-						<a class="product__name" href="{related_goods.URL_MIN_PRICE_NOW | url_amp}" title="{related_goods.NAME}" itemprop="url">
+						<a class="product__name" href="{related_goods.URL_MIN_PRICE_NOW | url_amp}" title="{related_goods.NAME}">
 							<span itemprop="name">{related_goods.NAME}</span>
 						</a>
 

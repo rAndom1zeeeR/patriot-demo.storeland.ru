@@ -264,6 +264,9 @@
 	background-color: var(--color-background);
 }
 @media all and (min-width: 640px) {
+	.search__results {margin-top: 40px;}
+}
+@media all and (min-width: 1024px) {
 	.search__results {margin-top: 8px;}
 }
 
@@ -1406,7 +1409,7 @@
 	transform: skew(-15deg);
 }
 .promotion__percent span {transform: skew(15deg);}
-.promotion__inner {display: flex;gap: 12px;align-items: center;margin-bottom: 12px;}
+.promotion__inner {display: flex;gap: 8px;align-items: center;margin-bottom: 12px;}
 .promotion__title {font-weight: 600;font-size: var(--text-size-large);line-height: var(--text-height-large);}
 .promotion__title::before {position: absolute;content: '';inset: 0;}
 .promotion__desc {margin-block: 4px 0;}
@@ -1902,6 +1905,7 @@
 */
 .fancybox__container {--fancybox-zIndex: 100;}
 .air-datepicker-global-container {z-index: 101;}
+.page-orderfast .orderfast__form {padding-inline: 24px;}
 .page-orderfast.fancybox__content {max-width: 680px;}
 .is-min .orderfast__block:not(.cartTotal__min) {display: none;}
 .cartTable__order .orderfast__block--total {display: none;}

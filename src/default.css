@@ -111,6 +111,7 @@ button, .button, .paymentFormSubmitLink, .paymentFormTbodySubmitButton {
 	transition: color var(--duration), background-color var(--duration), border-color var(--duration);
 	fill: currentcolor;
 	padding-inline: 32px;
+	outline: none;
 }
 button:active, .button:active, .paymentFormSubmitLink:active, .paymentFormTbodySubmitButton:active {color: white;background-color: var(--color-black);border-color: var(--color-black);}
 @media (hover: hover) and (pointer: fine) {

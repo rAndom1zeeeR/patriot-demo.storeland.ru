@@ -90,6 +90,24 @@ function getClientWidth() {
 }
 
 /**
+ * Форматирует дату из формата YYYY-MM-DD в формат "DD месяц"
+ * @param {string} dateString - Дата в формате YYYY-MM-DD
+ * @returns {string} Отформатированная дата в формате "DD месяц"
+ */
+function getDateMonthsName(dateString) {
+  const months = [
+    'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
+    'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
+  ];
+
+  const date = new Date(dateString);
+  const day = date.getDate();
+  const month = months[date.getMonth()];
+
+  return `${day} ${month}`;
+}
+
+/**
  * Функция формирования ссылки с атрибутом only_body.
  * Используется в функциях: CartClear, CartRemove, handleAddtoModClick
  * @param {string} url - Ссылка
@@ -104,7 +122,6 @@ function getUrlBody(url) {
  * Используется в функциях: CartClear, CartRemove, handleAddtoModClick, handleCartRemoveItem, handleCartClear, handleCartOrderClose
  */
 async function getHtmlFromUrl(url) {
-  // console.log('[DEBUG]: url', url);
   return await fetch(url)
     // Получаем ответ
     .then((response) => response.text())
@@ -112,7 +129,6 @@ async function getHtmlFromUrl(url) {
     .then((text) => {
       const parser = new DOMParser();
       const html = parser.parseFromString(text, "text/html");
-      // console.log('[DEBUG]: html', html);
       return html;
     })
     // Если получили ошибку
@@ -192,8 +208,6 @@ function OverlayCloser(event, selector, handler) {
  * Использует функции:
  */
 function OverlayOpener(content, handler) {
-  // console.log("[DEBUG]: handler", handler);
-  // console.log("[DEBUG]: content", content);
   content.classList.toggle("is-opened");
   if (content.classList.contains("is-opened")) {
     document.body.addEventListener("click", handler);
@@ -207,8 +221,6 @@ function OverlayOpener(content, handler) {
  * Используется в функциях: handleAddtoPost, handleAddtoCartUpdate, handleValueMax
  */
 function СreateNoty(type, content) {
-  // console.log("[DEBUG]: type", type);
-  // console.log("[DEBUG]: content", parseNotyMessage(content));
   const Toast = Swal.mixin({
     toast: true,
     position: "bottom",
@@ -265,8 +277,6 @@ function Dialogs(doc = document) {
   dialogs.forEach((dialog) => {
     const dialogName = dialog.getAttribute("data-dialog");
     const dialogContent = document.querySelector(dialogName);
-    // console.log("[DEBUG]: dialogName", dialogName);
-    // console.log("[DEBUG]: dialogContent", dialogContent);
     if (!dialogContent) {
       console.info("[INFO]: 'Модальное окно' не найдено", dialogContent);
       return;
@@ -303,59 +313,58 @@ function Dialogs(doc = document) {
  * Обработать диалоговое окно.
  * Используется в функциях: handleAddtoModOpen, handleAddtoOrderOpen
  */
-// function DialogsHandler(dialog, dialogClose, show = false) {
-//   if (show) {
-//     dialog.show();
-//   } else {
-//     dialog.showModal();
-//   }
-//   document.body.classList.add("is-bodylock");
+function DialogsHandler(dialog, dialogClose, show = false) {
+  if (show) {
+    dialog.show();
+  } else {
+    dialog?.showModal();
+  }
+  document.body.classList.add("is-bodylock");
 
-//   dialog.addEventListener("close", () => {
-//     document.body.classList.remove("is-bodylock");
-//     dialog.remove();
-//   });
+  dialog.addEventListener("close", () => {
+    document.body.classList.remove("is-bodylock");
+    dialog.remove();
+  });
 
-//   dialog.addEventListener("click", (event) => {
-//     const dialogTarget = event.currentTarget;
-//     const isClickedOnBackDrop = event.target === dialogTarget;
-//     if (isClickedOnBackDrop) {
-//       dialogTarget.close();
-//       dialog.remove();
-//     }
-//   });
+  dialog.addEventListener("click", (event) => {
+    const dialogTarget = event.currentTarget;
+    const isClickedOnBackDrop = event.target === dialogTarget;
+    if (isClickedOnBackDrop) {
+      dialogTarget.close();
+      dialog.remove();
+    }
+  });
 
-//   dialogClose.addEventListener("click", () => {
-//     dialog.close();
-//     dialog.remove();
-//   });
-// }
+  dialogClose.addEventListener("click", () => {
+    dialog.close();
+    dialog.remove();
+  });
+}
 
 /**
  * Создать диалоговое окно.
  * Используется в функциях: handleAddtoModOpen, handleAddtoOrderOpen
  */
-// function DialogsCreate(id, label, content) {
-//   const dialog = document.createElement("div");
-//   dialog.setAttribute("id", id);
-//   dialog.setAttribute("aria-label", label);
-//   dialog.setAttribute("aria-modal", "true");
-//   dialog.setAttribute("role", "dialog");
-//   dialog.append(content);
-//   document.body.append(dialog);
-//   return dialog;
-// }
+function DialogsCreate(id, label, content) {
+  const dialog = document.createElement("dialog");
+  dialog.setAttribute("id", id);
+  dialog.setAttribute("aria-label", label);
+  dialog.setAttribute("aria-modal", "true");
+  dialog.setAttribute("role", "dialog");
+  dialog.append(content);
+  document.body.append(dialog);
+  return dialog;
+}
 
 /**
  * Создать кнопку закрыть диалоговое окно.
  * Используется в функциях: Dialogs, handleAddtoModOpen, handleAddtoOrderOpen
  */
 function DialogsCloser(dialog) {
-  // console.log("[DEBUG]: createDialogCloser", dialog);
   if (dialog.querySelector(".dialog__close")) return;
   const button = document.createElement("button");
   button.setAttribute("type", "button");
-  button.classList.add("dialog__close");
+  button.classList.add("dialog__close", "button-icon");
   button.setAttribute("aria-label", "Закрыть модальное окно");
   button.setAttribute("data-dialog-close", "");
   button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="18" height="18" aria-hidden="true"><path d="m568.571 512.003 443.715-443.715c15.622-15.622 15.622-40.95 0-56.57s-40.954-15.622-56.57 0L511.999 455.433 68.286 11.718c-15.622-15.622-40.95-15.622-56.57 0s-15.622 40.95 0 56.57l443.713 443.713L11.716 955.716c-15.622 15.622-15.622 40.949 0 56.57a39.925 39.925 0 0 0 12.974 8.681 39.939 39.939 0 0 0 15.312 3.032 39.939 39.939 0 0 0 15.312-3.032 39.94 39.94 0 0 0 12.974-8.681l443.711-443.713 443.711 443.713c7.811 7.811 18.051 11.713 28.285 11.713 10.24 0 20.474-3.903 28.291-11.713 15.622-15.622 15.622-40.949 0-56.57L568.571 512.003z"/></svg>`;
@@ -370,14 +379,11 @@ function DialogsCloser(dialog) {
  */
 function Passwords() {
   const passwords = document.querySelectorAll(".password");
-  // console.log("[DEBUG]: Поле пароля не найдено", passwords);
   if (passwords.length === 0) return;
 
   passwords.forEach((password) => {
     const button = password.querySelector("button");
     const input = password.querySelector("input");
-    // console.log("[DEBUG]: password button", button);
-    // console.log("[DEBUG]: password input", input);
     button.addEventListener("click", () => {
       // Если не ввели пароль
       if (input.value.length < 1) return;
@@ -390,7 +396,6 @@ function Passwords() {
 
     // Действие при вводе в поле пароля
     input.addEventListener("keyup", function (event) {
-      // console.log("[DEBUG]: Действие при вводе в поле пароля keyup", event);
       capslockHandler(event);
     });
   });
@@ -400,9 +405,6 @@ function Passwords() {
     const status = event.getModifierState && event.getModifierState("CapsLock");
     const caps = event.target.closest("form").querySelector(".capslock");
     status ? caps.removeAttribute("hidden") : caps.setAttribute("hidden", "");
-
-    console.log("[DEBUG]: capslockHandler status", status);
-    console.log("[DEBUG]: capslockHandler caps", caps);
     return status;
   }
 
@@ -415,8 +417,6 @@ function Passwords() {
     const input = form.querySelector(".password__input");
     const email = form.querySelector("input[type='email']");
     const capslock = form.querySelector(".capslock");
-    // console.log("event.currentTarget.checked", event.currentTarget.checked);
-    // console.log("capslock", capslock);
     if (event.currentTarget.checked) {
       event.currentTarget.checked = true;
       input.parentElement.removeAttribute("hidden");
@@ -462,7 +462,7 @@ function createSvgIcon(pathData, width = 12, height = 12) {
 }
 
 /**
- * Функция переноса пунктов меню. Data
+ * Функция переноса пунктов меню.
  * Используется в функциях: на всех страницах.
  * Использует функции: getClientWidth
  */
@@ -478,7 +478,6 @@ function Mainnav(selector = document) {
     let mainnavItemsWidth = mainnavMore.clientWidth;
     mainnavItems.forEach((item) => {
       mainnavItemsWidth += item.clientWidth;
-      // console.log("[DEBUG]: mainnavItemsWidth", mainnavItemsWidth);
       if (mainnavItemsWidth > mainnavList.clientWidth) {
         mainnavDropdown.append(item);
       } else {
@@ -530,7 +529,6 @@ function Addto(doc = document) {
 
   // Обработка клика
   function handleAddtoClick(event) {
-    // console.log("[DEBUG]: handleAddtoClick event", event);
     event.preventDefault();
     const currentTarget = event.currentTarget;
     const goods_href = currentTarget.getAttribute("href");
@@ -540,8 +538,8 @@ function Addto(doc = document) {
     const goods_url = goods_form.querySelector("[name='form[goods_url]']").value;
     const goods_image = goods_form.querySelector("[name='form[goods_image]']").value;
     const goods_name = goods_form.querySelector("[itemprop='name']").textContent;
-    const goods_price_old = goods_form.querySelector(".price__old");
-    const goods_price_now = goods_form.querySelector(".price__now");
+    const goods_price_old = goods_form.querySelector(".price__old").getAttribute("data-price");
+    const goods_price_now = goods_form.querySelector(".price__now").getAttribute("data-price");
     const goods_compare_url = goods_form.querySelector(".add-compare").getAttribute("href");
     const goods_favorites_url = goods_form.querySelector(".add-favorites").getAttribute("href");
     const formData = new FormData();
@@ -562,10 +560,8 @@ function Addto(doc = document) {
     // Отправка запроса
     getJsonFromPost(goods_href, formData)
       .then((data) => {
-        // console.log("[DEBUG]: handleAddtoPost data", data);
         if (data.status === "ok") {
           СreateNoty("success", data.message);
-          // console.log("[DEBUG]: data.status success", data.message);
           if (currentTarget.classList.contains("add-compare")) {
             handleAddtoCartLink(currentTarget, "compare", "сравнения");
             handleAddtoCount(data.compare_goods_count, ".compare");
@@ -573,7 +569,7 @@ function Addto(doc = document) {
             const addtoItem = document.querySelectorAll(".compare .addto__item");
             let isRemoved = RemoveElementById(addtoItem, goods_id);
             if (!isRemoved) {
-              addtoItems.insertAdjacentHTML('afterbegin', createAddtoItem(goods_id, goods_mod_id, goods_image, goods_name, goods_price_old?.getAttribute("data-price"), goods_price_now, goods_url, `/compare/delete`));
+              addtoItems.insertAdjacentHTML('afterbegin', createAddtoItem(goods_id, goods_mod_id, goods_image, goods_name, goods_price_old, goods_price_now, goods_url, `/compare/delete`));
               // Получаем только что добавленный элемент
               const newItem = addtoItems.firstElementChild;
               handleAddtoDelete(".compare", newItem);
@@ -585,7 +581,7 @@ function Addto(doc = document) {
             const addtoItem = document.querySelectorAll(".favorites .addto__item");
             let isRemoved = RemoveElementById(addtoItem, goods_id);
             if (!isRemoved) {
-              addtoItems.insertAdjacentHTML('afterbegin', createAddtoItem(goods_id, goods_mod_id, goods_image, goods_name, goods_price_old?.getAttribute("data-price"), goods_price_now, goods_url, `/favorites/delete`));
+              addtoItems.insertAdjacentHTML('afterbegin', createAddtoItem(goods_id, goods_mod_id, goods_image, goods_name, goods_price_old, goods_price_now, goods_url, `/favorites/delete`));
               // Получаем только что добавленный элемент
               const newItem = addtoItems.firstElementChild;
               handleAddtoDelete(".favorites", newItem);
@@ -593,7 +589,6 @@ function Addto(doc = document) {
           }
         } else {
           СreateNoty("error", data.message);
-          // console.log("[DEBUG]: data.status error", data.message);
         }
       })
       .catch((error) => console.error(error));
@@ -602,7 +597,6 @@ function Addto(doc = document) {
   // Обновление количества
   function handleAddtoCount(count, selector) {
     const elements = document.querySelectorAll(selector);
-    // console.log("[DEBUG]: elements", elements);
     elements.forEach((element) => {
       const data = element.querySelector("data");
       count === 0 ? element.classList.add("is-empty") : element.classList.remove("is-empty");
@@ -717,11 +711,8 @@ function Addto(doc = document) {
       const itemMod = item.querySelector("[name='form[goods_mod_id]']");
       const itemModId = itemMod.value;
 
-      // console.log("[DEBUG]: itemModId", itemModId == modId, itemModId,modId);
       if (itemModId == modId) {
         handleAddtoCartLinkAdd(element, urlAdd, title)
-        // console.log("[DEBUG]: itemModId", itemModId);
-        // console.log("[DEBUG]: id", modId);
       }
     });
   };
@@ -789,7 +780,6 @@ function AddtoCart(doc = document) {
 
   function handleAddtoCartClick(event) {
     event.preventDefault();
-    // console.log("[DEBUG]: handleAddtoCartClick event", event);
     const currentTarget = event.currentTarget;
     const form = currentTarget.closest("form");
     const url = form.getAttribute("action");
@@ -803,8 +793,7 @@ function AddtoCart(doc = document) {
       CartRemove();
       CartClear();
     });
-    // console.log("[DEBUG]: event", event.currentTarget);
-    event.currentTarget.parentElement.classList.add("has-in-cart");
+    event.currentTarget.parentElement.classList.add("is-added");
 
     document.querySelectorAll(".add-cart").forEach((button) => {
       handleAddtoCartAdded(button, goodsID);
@@ -818,13 +807,16 @@ function AddtoCart(doc = document) {
       const buttonID = form.querySelector("[name='form[goods_mod_id]']").value;
       if (buttonID === goodsID) {
         button.classList.add("is-added");
+        const slot = button.querySelector("[slot]");
+        if (slot) {
+          slot.innerHTML = "В корзине";
+        }
       }
     }
   }
 
   // Обновление корзины
   function handleAddtoCartUpdate(data) {
-    // console.log("[DEBUG]: handleAddtoCartUpdate data", data);
     const cartAddto = document.querySelector(".addto__cart");
     const cartAddtoData = data.querySelector("#newCartData");
     const cartSumDiscounts = document.querySelectorAll(".cart-sum-discount");
@@ -846,7 +838,6 @@ function AddtoCart(doc = document) {
     }
     // Сообщение с уведомлением действия
     const notice = data.querySelector(".cartItems__modal > p");
-    // console.log("[DEBUG]: handleAddtoCartUpdate notice", notice);
     const type = notice?.getAttribute("class").slice(15);
     СreateNoty(type, notice.innerHTML);
   }
@@ -867,18 +858,14 @@ function AddtoMod(doc = document) {
 
   function handleAddtoModClick(event) {
     event.preventDefault();
-    // console.log("[DEBUG]: handleAddtoModClick event", event);
     const currentTarget = event.currentTarget;
     const url = getUrlBody(currentTarget.getAttribute("href"));
-    // console.log("[DEBUG]: handleAddtoModClick url", url);
     getHtmlFromUrl(url).then((data) => {
-      // console.log("[DEBUG]: handleAddtoModClick data", data);
       handleAddtoModOpen(data);
     });
   }
 
   function handleAddtoModOpen(data) {
-    // console.log("[DEBUG]: handleAddtoModOpen data", data);
     const content = data.querySelector(".productView");
     new Fancybox(
       [
@@ -922,16 +909,12 @@ function AddtoOrder(doc = document) {
 
   function handleAddtoOrderClick(event) {
     event.preventDefault();
-    // console.log("[DEBUG]: handleAddtoModClick event", event);
     const currentTarget = event.currentTarget;
     const form = currentTarget.closest("form");
     const url = form.getAttribute("action");
     const formData = new FormData(form);
     formData.append("ajax_q", "1");
     formData.append("fast_order", "1");
-    // console.log("[DEBUG]: handleAddtoModClick event", event);
-    // console.log("[DEBUG]: form", form);
-    // console.log("[DEBUG]: url", url);
 
     getHtmlFromPost(url, formData).then((data) => {
       handleAddtoOrderOpen(data);
@@ -943,50 +926,28 @@ function AddtoOrder(doc = document) {
   }
 
   function handleAddtoOrderOpen(data) {
-    // console.log("[DEBUG]: handleAddtoModOpen data", data);
     const content = data.querySelector(".page-orderfast");
-    // const dialog = DialogsCreate("productViewMod", "Карточка товара", content);
-    // const dialogClose = DialogsCloser(dialog);
-    // // Запуск функций
-    // DialogsHandler(dialog, dialogClose);
-    new Fancybox(
-      [
-        {
-          src: content,
-          type: "html",
-        },
-      ],
-      {
-        mainClass: "productViewOrder",
-        hideScrollbar: false,
-        on: {
-          done: () => {
-            Orderfast();
-            Passwords();
-            OrderCoupons();
-            CartMinSum();
-            $(".form__phone").mask("+7 (999) 999-9999");
-            const form = document.querySelector(".orderfast__form");
-            console.log("form1", form);
-            ValidateRequired(form);
-            setTimeout(() => {
-              const datepi = new AirDatepicker("#order_delivery_convenient_date", {
-                autoClose: true,
-                onSelect: function ({ datepicker }) {
-                  ValidateInput(datepicker.$el);
-                  console.log("datepicker1", datepicker);
-                },
-              });
-              console.log("form2", datepi);
-            }, 1000);
-          },
-        },
+    const dialog = DialogsCreate("productViewMod", "Карточка товара", content);
+    const dialogClose = DialogsCloser(dialog);
+    // Запуск функций
+    DialogsHandler(dialog, dialogClose);
+    Dialogs(content);
+    Orderfast();
+    Passwords();
+    OrderCoupons();
+    CartMinSum();
+    $(".form__phone").mask("+7 (999) 999-9999");
+    const form = document.querySelector(".orderfast__form");
+    ValidateRequired(form);
+    new AirDatepicker("#order_delivery_convenient_date", {
+      autoClose: true,
+      onSelect: function ({ datepicker }) {
+        ValidateInput(datepicker.$el);
       },
-    );
+    });
   }
 
   function handleAddtoOrderUpdate(data) {
-    // console.log("[DEBUG]: handleAddtoOrderUpdate data", data);
     const cartAddto = document.querySelector(".addto__cart");
     const cartAddtoData = data.querySelector("#newCartData");
     const cartSumDiscounts = document.querySelectorAll(".cart-sum-discount");
@@ -1000,7 +961,12 @@ function AddtoOrder(doc = document) {
     CountUppdate(cartCounts, cartCountDataValue);
     CartEmptyUpdate(cartCountDataValue);
     CartDiscountUppdate(cartSumDiscounts, cartSumDiscountData);
-    CartDiscountUppdate(addtoDiscounts, cartDiscountData);
+    if (cartDiscountData && addtoDiscounts.length > 0) {
+      CartDiscountUppdate(addtoDiscounts, cartDiscountData);
+      addtoDiscounts.forEach(item => {
+        cartDiscountData ? item.classList.remove('is-hide') : item.classList.add('is-hide');
+      });
+    }
   }
 }
 
@@ -1017,7 +983,6 @@ function AddtoNotify(doc = document) {
   });
 
   function handleAddtoNotifyClick(event) {
-    console.log("event1", event);
     const currentTarget = event.currentTarget;
     const goodsForm = currentTarget.closest("form");
     const goodsModId = goodsForm.querySelector("[name='form[goods_mod_id]']");
@@ -1058,7 +1023,6 @@ function StickerSales(selector, type = "percent") {
 function Filters() {
   // Выбора фильтра
   const filters = document.querySelector(".filters");
-  // console.log("[DEBUG]: filters", filters);
   if (!filters) return;
   const filterLists = filters.querySelectorAll(".filter__list");
   if (filterLists.length !== 0) {
@@ -1066,7 +1030,6 @@ function Filters() {
     filterLists.forEach((list) => {
       let filterChecked = 0;
       list.querySelectorAll("input[type=checkbox]").forEach((input) => {
-        // console.log("[DEBUG]: input", input);
         input.addEventListener("click", (event) => {
           event.target.form.submit();
         });
@@ -1083,7 +1046,6 @@ function Filters() {
       });
 
       const filterListCount = list.querySelector(".filter__title b");
-      // console.log("[DEBUG]: filterChecked", filterChecked);
       if (filterListCount) {
         filterListCount.innerHTML = filterChecked > 0 ? filterChecked : "";
       }
@@ -1177,15 +1139,12 @@ function Filters() {
       event.preventDefault();
       const url = form.getAttribute("action");
       const formData = new FormData(form);
-      console.log("active", button.classList.contains("is-active"));
       if (button.classList.contains("is-active")) {
         button.classList.remove("is-active");
         formData.set("form[filter_only_with_rest]", "0");
-        console.log("formData1", formData.get("form[filter_only_with_rest]"));
       } else {
         button.classList.add("is-active");
         formData.set("form[filter_only_with_rest]", "1");
-        console.log("formData2", formData.get("form[filter_only_with_rest]"));
       }
       updateProductsContainer(url, formData);
     });
@@ -1197,7 +1156,6 @@ function Filters() {
           const container = document.querySelector(".products__container");
           const containerData = data.querySelector(".products__container");
           container.innerHTML = containerData.innerHTML;
-          console.log("formData30", formData);
           Filters();
         })
         .catch((error) => {
@@ -1222,8 +1180,6 @@ function Toolbar() {
   });
 
   function handleToolbarSelectChange(event) {
-    // console.log("[DEBUG]: handleToolbarSelectChange", event.target.value);
-    // console.log("[DEBUG]: form", event.target.closest("form"));
     event.target.closest("form").submit();
   }
 }
@@ -1241,7 +1197,7 @@ function Products() {
     StickerSales(product);
     Attrs(product);
     Quantity(product);
-    // swiperProductImages('.swiper-' + product.getAttribute('data-id'))
+    formatDate(product);
   });
 
   // Показать/скрыть характеристики товара
@@ -1258,6 +1214,16 @@ function Products() {
       });
     }
   }
+
+  // Форматирование даты
+  function formatDate(product) {
+    const dateTime = product.querySelector(".product__date time");
+    if (dateTime) {
+      dateTime.innerHTML = getDateMonthsName(dateTime.getAttribute("datetime"));
+    }
+  }
+
+  
 }
 
 /**
@@ -1267,7 +1233,6 @@ function Products() {
  */
 function Goods(doc) {
   const productViewBlock = doc || document.querySelector(".productView");
-  // console.log("[DEBUG]: productViewBlock", productViewBlock);
   if (!productViewBlock) return;
 
   const productViewSlugs = productViewBlock.querySelectorAll(".modifications-slugs");
@@ -1407,6 +1372,7 @@ function Goods(doc) {
     } else {
       if (goodsPriceOld) {
         goodsPriceOld.style.display = "none";
+        goodsPriceOld.innerHTML = "";
       }
     }
 
@@ -1434,11 +1400,31 @@ function Goods(doc) {
     }
 
     // Если включено в настройках 'Отключить возможность класть в корзину больше товара, чем есть в наличии'
-    // console.log('[DEBUG]: goodsQty.classList.contains("has-max")', goodsQty.classList.contains("has-max"));
     if (goodsQty.classList.contains("has-max")) {
       goodsQtyInput.max = modificationRestValue;
     } else {
       goodsQtyInput.max = 99999;
+    }
+
+    // Покажем артикул модификации товара, если он указан
+    if (modificationArtNumber) {
+      goodsArtNumberBlock.removeAttribute("hidden");
+      goodsArtNumberBlock.parentElement.removeAttribute("hidden");
+      goodsArtNumberBlock.parentElement.classList.remove("is-hide");
+      goodsArtNumberBlock.querySelector("b").innerHTML = modificationArtNumber;
+    } else {
+      if (goodsArtNumberBlock) {
+        goodsArtNumberBlock.setAttribute("hidden", "");
+        goodsArtNumberBlock.parentElement.setAttribute("hidden", "");
+        goodsArtNumberBlock.parentElement.classList.add("is-hide");
+        goodsArtNumberBlock.querySelector("b").innerHTML = "";
+        if (document.querySelector(".productView__sticker")) {
+          goodsArtNumberBlock.parentElement.classList.remove("is-hide");
+          if (document.querySelector(".productView.fancybox__content")) {
+            goodsArtNumberBlock.parentElement.classList.add("is-hide");
+          }
+        }
+      }
     }
 
     // Описание модификации товара. Покажем если оно есть, спрячем если его у модификации нет
@@ -1460,10 +1446,9 @@ function Goods(doc) {
 
   // Меняет главное изображение товара на изображение с идентификатором
   function handleModImage(goodsModImageId, block) {
-    console.log("[DEBUG]: block", block);
-    console.log("[DEBUG]: goodsModImageId", goodsModImageId);
     if (!block || !goodsModImageId) return;
     // Если не указан идентификатор модификации товара, значит ничего менять не нужно.
+    if (!goodsModImageId) return;
     if (block.classList.contains("fancybox__content")) return;
     // Блок с изображением выбранной модификации товара
     const goodsModImageBlock = block.querySelector('.thumblist [data-id="' + goodsModImageId + '"');
@@ -1481,7 +1466,7 @@ function Goods(doc) {
     mainImageBlock.setAttribute("data-id", goodsModImageId);
     block.querySelectorAll(".thumblist__item").forEach((item) => item.classList.remove("is-active"));
     goodsModImageBlock.classList.add("is-active");
-    // swiper.slideTo(goodsModImageBlock.getAttribute("data-swiper-slide-index"));
+    swiper.slideTo(goodsModImageBlock.getAttribute("data-swiper-slide-index"));
   }
 
   // Функции Дополнительных изображений.
@@ -1520,30 +1505,7 @@ function Goods(doc) {
     //   // mainImageSource.setAttribute("srcset", href);
     //   thumbsImages.forEach((image) => image.parentElement.classList.remove("is-active"));
     //   target.parentElement.classList.add("is-active");
-    //   // console.log("[DEBUG]: handleMainImages event", event);
-    //   // console.log("[DEBUG]: handleMainImages target", target);
-    //   // console.log("[DEBUG]: handleMainImages href", href);
-    //   // console.log("[DEBUG]: handleMainImages mainImage", mainImage);
     // }
-  }
-
-
-  /**
-   * Форматирует дату из формата YYYY-MM-DD в формат "DD месяц"
-   * @param {string} dateString - Дата в формате YYYY-MM-DD
-   * @returns {string} Отформатированная дата в формате "DD месяц"
-   */
-  function getDateMonthsName(dateString) {
-    const months = [
-      'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
-      'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
-    ];
-
-    const date = new Date(dateString);
-    const day = date.getDate();
-    const month = months[date.getMonth()];
-
-    return `${day} ${month}`;
   }
 
   // Запуск функции стикера цены.
@@ -1559,7 +1521,6 @@ function Goods(doc) {
   if (campaignDate) {
     campaignDate.innerHTML = getDateMonthsName(campaignDate.getAttribute("datetime"));
   }
-  // console.log("[DEBUG]: campaignDate", campaignDate);
 }
 
 
@@ -1573,7 +1534,6 @@ function Opinions() {
 
   const opinions = container.querySelectorAll(".opinion__item");
   // const opinionsLength = opinions.length;
-  // console.log("[DEBUG]: opinions", opinions);
 
   // Добавить отзыв
   const opinionAdd = container.querySelector(".opinion__score-button");
@@ -1593,14 +1553,22 @@ function Opinions() {
     } else if (generally === "bad") {
       countBad += 1;
     }
+    handleOpinionAvatarName(opinion);
   });
+
+  // Добавления первой буквы Имени или Заголовка в Аватар
+  function handleOpinionAvatarName(opinion) {
+    const avatar = opinion.querySelector(".opinion__block-avatar");
+    const name = opinion.querySelector(".opinion__name");
+    if (avatar) {
+      avatar.innerText = name.innerText.charAt(0);
+    }
+  }
 
   // Рейтинг при добавлении отзыва
   function initRating(container) {
     const stars = container.querySelectorAll(".opinion__rating label");
     let starsActive;
-
-    // console.log("[DEBUG]: stars", stars);
 
     stars.forEach((element, index) => {
       element.addEventListener("mouseover", () => {
@@ -1632,7 +1600,6 @@ function Opinions() {
   // Капча
   function initCaptcha() {
     const captcha = document.querySelector(".captcha");
-    // console.log("[DEBUG]: captcha", captcha);
     if (!captcha) return false;
     const captchaButton = captcha.querySelector(".captcha__refresh");
     const captchaImage = captcha.querySelector(".captcha__image");
@@ -1643,7 +1610,6 @@ function Opinions() {
     // Функции при клике
     function handleCaptchaClick(event) {
       event.preventDefault();
-      // console.log("[DEBUG]: handleCaptchaClick", event);
       handleCaptchaRefresh(event.target, 1, 1);
       captchaImage.setAttribute("src", captchaImage.getAttribute("src") + "&rand" + Math.random(0, 10000));
     }
@@ -1695,10 +1661,9 @@ function Opinions() {
 /**
  * Количество
  * Используется в функциях: handleCartInit, Goodsб на странице "Товар", "Корзина"
- * Использует функции: СreateNoty, getMoneyFormat
+ * Использует функции: СreateNoty
  */
 function Quantity(doc = document) {
-  // console.log("[DEBUG]: Quantity doc", doc);
   const qtys = doc.querySelector(".qty");
   if (!qtys) return;
   const minus = qtys.querySelector(".qty__select--minus");
@@ -1716,13 +1681,11 @@ function Quantity(doc = document) {
   });
 
   input.addEventListener("input", (event) => {
-    // console.log("[DEBUG]: input event", event);
     const val = parseInt(input.value);
     handleValueMin(val, input);
     handleValueMax(val, input);
 
     if (event.target.closest(".productView")) {
-      // console.log("[DEBUG]: input event2", val);
       handleQuantityProductView(val, input);
     }
   });
@@ -1741,8 +1704,6 @@ function Quantity(doc = document) {
   }
 
   function handleValueMax(val, input) {
-    // console.log("[DEBUG]: val", val);
-    // console.log("[DEBUG]: input.max", input.max);
     if (val > input.max) {
       input.value = input.max;
       input.setAttribute("value", input.max);
@@ -1752,7 +1713,6 @@ function Quantity(doc = document) {
   }
 
   function handleQuantityProductView(val, input) {
-    // console.log("[DEBUG]: input", input);
     if (val < 1) val = 1;
     if (val > input.max) val = input.max;
     const productView = input.closest(".productView");
@@ -1764,11 +1724,6 @@ function Quantity(doc = document) {
     if (priceOldValue > 0) {
       priceOld.querySelector(".num").innerHTML = getMoneyFormat(priceOldValue);
     }
-    // console.log("[DEBUG]: productView", productView);
-    // console.log("[DEBUG]: priceNow", priceNow);
-    // console.log("[DEBUG]: priceOld", priceOld);
-    // console.log("[DEBUG]: priceNowValue", priceNowValue);
-    // console.log("[DEBUG]: priceOldValue", priceOldValue);
   }
 }
 
@@ -1858,7 +1813,6 @@ function Compare() {
   }
 
   function handleCompareButtonShow(event) {
-    // console.log("handleCompareButtonShow", event.currentTarget);
     event.currentTarget.classList.add("is-hide");
     switcherInput.checked = false;
     compareLines.forEach((element) => (element.style.display = ""));
@@ -1883,7 +1837,6 @@ function Cart() {
   function handleCartInit() {
     const container = document.querySelector(".page-cart");
     const cartInner = container.querySelector(".cartInner");
-    // console.log("cartInner", cartInner);
     if (!cartInner) return;
     const cartRemoves = cartInner.querySelectorAll("[data-action=removeCartItem]");
     const cartClear = cartInner.querySelector("[data-action=clearCart]");
@@ -1907,8 +1860,6 @@ function Cart() {
     // event.currentTarget.closest(".cartTable__item").style.display = "none";
     const url = event.currentTarget.getAttribute("href");
     getHtmlFromUrl(url).then((html) => {
-      // console.log("[DEBUG]: handleCartRemove html", html);
-      // console.log("[DEBUG]: handleCartRemove url", url);
       document.querySelector(".page-cart").innerHTML = html.querySelector(".page-cart").innerHTML;
       handleCartInit();
       Dialogs();
@@ -1928,7 +1879,6 @@ function Cart() {
 
   // Изменение количества в корзине
   function handleCartQtyInput(event) {
-    // console.log("[DEBUG]: handleCartQtyInput event", event);
     event.preventDefault();
     const currentTarget = event.currentTarget;
     const cartForm = currentTarget.closest("form");
@@ -1959,37 +1909,41 @@ function Cart() {
   //
   function handleCartOrder() {
     const container = document.querySelector(".page-cart");
-    // console.log("container", container);
     if (!container) return;
     const cartButtonStart = container.querySelector("[data-action=startOrder]");
     const cartButtonClose = container.querySelector("[data-action=closeOrder]");
     const cartButtonComplete = container.querySelector("[data-action=completeOrder]");
     const contrainerAjax = container.querySelector(".cartTable__ajax");
+    const contraineCouponInput = container.querySelector(".cartTotal .coupon__input");
+
     cartButtonStart?.addEventListener("click", handleCartOrderStart);
     cartButtonClose?.addEventListener("click", handleCartOrderClose);
     cartButtonComplete?.addEventListener("click", handleCartOrderComplete);
 
     function handleCartOrderStart(event) {
-      // console.log("[DEBUG]: event2", event);
       event.preventDefault();
       container.classList.add("is-loading");
       const url = "/cart/add";
       const formData = new FormData();
       formData.append("ajax_q", "1");
       formData.append("fast_order", "1");
+      formData.append("form[coupon_code]", contraineCouponInput.value);
       container.classList.add("is-started");
       getHtmlFromPost(url, formData).then((data) => {
-        // console.log("[DEBUG]: formData", formData);
-        // console.log("[DEBUG]: data", data);
         contrainerAjax.innerHTML = data.querySelector(".page-orderfast").innerHTML;
         scrollTop(contrainerAjax.offsetTop);
         Orderfast();
         Passwords();
         OrderCoupons();
         $(".form__phone").mask("+7 (999) 999-9999");
-        console.log("form2");
         container.classList.remove("is-loading");
         contrainerAjax.removeAttribute("hidden");
+        // Заполняем все поля промокода для синхронизации
+        const couponInputs = document.querySelectorAll(".coupon__input");
+        couponInputs.forEach((input) => {
+          input.value = contraineCouponInput.value;
+          input.dispatchEvent(new Event("input"));
+        });
         new AirDatepicker("#order_delivery_convenient_date", {
           autoClose: true,
           onSelect: function ({ datepicker }) {
@@ -2037,8 +1991,6 @@ function CartMinSum() {
     const price = cartMin.querySelector("data");
     const minPrice = parseInt(price.value);
     const totalSum = parseInt(price.getAttribute("data-total"));
-    console.log("[DEBUG]: minPrice", minPrice);
-    console.log("[DEBUG]: totalSum", totalSum);
     if (minPrice > totalSum) {
       const diff = minPrice - totalSum;
       price.querySelector(".num").innerHTML = getMoneyFormat(diff);
@@ -2069,11 +2021,9 @@ function CartClear() {
     const url = getUrlBody(button.getAttribute("href"));
     if (confirm("Вы точно хотите очистить корзину?")) {
       getHtmlFromUrl(url).then((data) => {
-        // console.log("[DEBUG]: getHtmlFromUrl data", data);
         document.querySelectorAll(".cart").forEach((element) => element.classList.add("is-empty"));
         document.querySelectorAll(".cart .addto__item").forEach((element) => element.remove());
         const productViewCart = document.querySelector(".productView__cart");
-        // console.log("[DEBUG]: productView2", productView);
         if (productViewCart) {
           productViewCart.classList.remove("has-in-cart");
         }
@@ -2088,7 +2038,7 @@ function CartClear() {
  * Использует функции: getUrlBody, getHtmlFromUrl, CountUppdate, CartCountendUppdate, CartDiscountUppdate
  */
 function CartRemove() {
-  const buttons = document.querySelectorAll(".cart.addto__remove");
+  const buttons = document.querySelectorAll(".cart .addto__remove");
   if (buttons.length === 0) return;
 
   buttons.forEach((button) => {
@@ -2100,28 +2050,36 @@ function CartRemove() {
         const cartSumDiscounts = document.querySelectorAll(".cart-sum-discount");
         const addtoDiscounts = document.querySelectorAll(".addto__discount");
         const url = getUrlBody(button.getAttribute("href"));
-        const modId = button.closest("[data-mod-id]").getAttribute("data-mod-id");
+        const form = button.closest(".addto__item");
+        const modId = form.getAttribute("data-mod-id");
+        const id = form.getAttribute("data-id");
         const qty = button.getAttribute("data-qty");
         const oldCount = cartCounts[0].value;
         const newCount = parseInt(oldCount) - parseInt(qty);
-        // console.log("[DEBUG]: CartRemove url", url);
-        // console.log("[DEBUG]: CartRemove modId", modId);
-        // console.log("[DEBUG]: CartRemove oldCount", oldCount);
-        // console.log("[DEBUG]: CartRemove qty", qty);
         getHtmlFromUrl(url).then((data) => {
-          // console.log("[DEBUG]: getHtmlFromUrl data", data);
           if (newCount > 0) {
             const cartItems = document.querySelectorAll(".cart .addto__item");
             cartItems.forEach((element) => {
-              // console.log("[DEBUG]: data-mod-id", element.getAttribute("data-mod-id"));
               if (element.getAttribute("data-mod-id") === modId) {
-                // console.log("[DEBUG]: element", element);
                 element.remove();
               }
             });
+
+            // Обновление ссылки добавления в корзину на странице товара
+            const products = document.querySelectorAll(".product__item");
+            if (products) {
+              products.forEach((product) => {
+                if (product.getAttribute("data-id") === id) {
+                  const slot = product.querySelector(".product__cart [slot]");
+                  if (slot) {
+                    slot.innerHTML = "В корзину";
+                    slot.parentElement.classList.remove("is-added");
+                  }
+                }
+              });
+            }
           }
           const productView = document.querySelector(".productView");
-          // console.log("[DEBUG]: productView2", productView);
           if (productView && productView.getAttribute("data-mod-id") === modId) {
             productView.querySelector(".productView__cart").classList.remove("has-in-cart");
           }
@@ -2129,7 +2087,9 @@ function CartRemove() {
           CartEmptyUpdate(newCount);
           CartCountendUppdate(cartCountends, data.querySelector(".cart-countend"));
           CartDiscountUppdate(cartSumDiscounts, data.querySelector(".cart-sum-discount"));
-          CartDiscountUppdate(addtoDiscounts, data.querySelector(".cartTotal__discount"));
+          if (data.querySelector(".cartTotal__discount")) {
+            CartDiscountUppdate(addtoDiscounts, data.querySelector(".cartTotal__discount"));
+          }
         });
       }
     });
@@ -2188,101 +2148,107 @@ function CartDiscountUppdate(elements, selector) {
 /**
  * Оформление быстрого заказа
  * Используется в функциях: handleAddtoOrderOpen, handleCartOrderStart
- * Использует функции: getMoneyFormat
  */
 function Orderfast(doc = document) {
   const container = doc.querySelector(".orderfast__container");
-  // console.log("[DEBUG]: container", container);
   if (!container) return;
-  // const form = container.querySelector("form");
-  const deliverySelect = container.querySelector(".order-delivery__select");
-  const deliveryZones = container.querySelectorAll(".order-delivery-zone__selects");
-  const deliveryZoneSelects = container.querySelectorAll(".order-delivery-zone__select");
-  const deliveryZoneSelected = container.querySelector(".order-delivery-zone__selects:not(.is-hide) .order-delivery-zone__select");
-  const deliveryPrices = container.querySelectorAll(".order-delivery__total b");
-  const deliveryDescs = container.querySelectorAll(".order-delivery__description");
-  const deliveryZoneRules = container.querySelectorAll(".order-delivery__rules");
-  const paymentSelects = container.querySelectorAll(".order-payments__selects");
-  const paymentSelected = container.querySelector(".order-payments__selects:not(.is-hide) select");
-  const paymentDescs = container.querySelectorAll(".order-payment__desc");
+  const PAYMENTS_ITEMS = container.querySelectorAll(".order-payments__item");
+  const DELIVERY_ITEMS = container.querySelectorAll(".order-delivery__radio");
+  const DELIVERY_ITEMS_SELECTED = container.querySelector(".order-delivery__radio:checked");
+  const DELIVERY_ZONES = container.querySelectorAll(".order-delivery-zone__radio");
+  const DELIVERY_ZONES_SELECTED = container.querySelector(".order-delivery-zone__radio:checked");
 
-  // Запуск функций при загрузке страницы
-  handleVisibility(deliveryZones, deliverySelect.value);
-  handleVisibility(deliveryDescs, deliverySelect.value);
-  handleFormDeliveryZoneId(deliveryZoneSelected);
-  handleVisibility(paymentSelects, deliverySelect.value);
-  handleVisibility(paymentDescs, paymentSelected.value);
-  handleFormPaymentId(paymentSelected);
+  if (DELIVERY_ZONES_SELECTED) {
+    setTimeout(() => {
+      DELIVERY_ZONES_SELECTED.click();
+    }, 100);
+  }
+  if (DELIVERY_ITEMS_SELECTED) {
+    setTimeout(() => {
+      DELIVERY_ITEMS_SELECTED.click();
+    }, 100);
+  }
 
-  // Способы доставки
-  deliverySelect.addEventListener("change", (event) => {
-    const select = event.target;
-    handleVisibility(deliveryZones, select.value);
-    handleVisibility(deliveryDescs, select.value);
-    handleDeliveryPrice(deliveryPrices, select[select.selectedIndex].getAttribute("data-price"));
-    deliveryZoneSelects.forEach((selects) => handleDeliveryZone(selects));
-    handleVisibility(paymentSelects, deliverySelect.value);
-    const deliveryZoneSelected = document.querySelector(".order-delivery-zone__selects:not(.is-hide) .order-delivery-zone__select");
-    handleFormDeliveryZoneId(deliveryZoneSelected);
-  });
-
-  // Зоны доставки
-  deliveryZoneSelects.forEach((selects) => {
-    handleDeliveryZone(selects);
-    selects.addEventListener("change", (event) => {
-      const select = event.target;
-      // console.log("[DEBUG]: select", select);
-      handleDeliveryPrice(deliveryPrices, select[select.selectedIndex].getAttribute("data-price"));
-      handleVisibility(deliveryZoneRules, select.value);
-      handleFormDeliveryZoneId(select);
+  if (DELIVERY_ITEMS) {
+    DELIVERY_ITEMS.forEach((item) => {
+      item.addEventListener("click", handleDeliveryClick);
     });
-  });
-
-  // Способы оплаты
-  paymentSelects.forEach((selects) => {
-    selects.addEventListener("change", (event) => {
-      handleFormPaymentId(event.target);
-      handleVisibility(paymentDescs, event.target.value);
+  }
+  if (DELIVERY_ZONES) {
+    DELIVERY_ZONES.forEach((item) => {
+      item.addEventListener("click", handleDeliveryClick);
     });
-  });
+  }
 
-  function handleDeliveryZone(selects) {
-    if (!selects.parentElement.classList.contains("is-hide")) {
-      handleDeliveryPrice(deliveryPrices, selects.options[selects.selectedIndex].getAttribute("data-price"));
-      handleVisibility(deliveryZoneRules, selects.value);
+  function handleDeliveryClick(event){
+    const CART_DELIVERIES = document.querySelectorAll(".cart-delivery");
+    const CART_TOTALS = document.querySelectorAll(".cart-total");
+    const PAYMENTS_RADIO_CHECKED = document.querySelector('.order-payments__radio:checked');
+    const target = event.currentTarget;
+    const targetPrice = target.getAttribute("data-price");
+    const targetItem = target.closest(".order-delivery__item");
+    const targetRadio = targetItem.querySelector(".order-delivery__radio");
+    const targetRadioZone = targetItem.querySelector(".order-delivery-zone__radio");
+    const targetDeliveryPrice = targetItem.querySelector(".order-delivery__price .num");
+    handleDataPrice(CART_DELIVERIES, targetPrice);
+
+    const couponValue = document.querySelector(".coupon__input").value;
+    const url = "/order/stage/confirm";
+    const formData = new FormData();
+    formData.append("ajax_q", "1");
+    formData.append("only_body", "1");
+    formData.append("form[coupon_code]", couponValue);
+    formData.append("form[delivery][id]", targetRadio.value);
+    formData.append("form[payment][id]", PAYMENTS_RADIO_CHECKED.value);
+    document.querySelector('.orderfast__form > input[name="form[payment][id]"]').value = PAYMENTS_RADIO_CHECKED.value;
+    
+    if (targetRadioZone) {
+      formData.append("form[delivery][zone_id]", target.value);
     }
-  }
 
-  function handleDeliveryPrice(elements, value) {
-    // console.log("[DEBUG]: element", elements);
-    // console.log("[DEBUG]: value", value);
-    const price = document.createElement("span");
-    price.classList.add("num");
-    price.append(getMoneyFormat(value));
-    elements.forEach((element) => (element.innerHTML = price.outerHTML));
-
-    // обновления цены доставки
-    const cartDeliverys = document.querySelectorAll(".cart-delivery");
-    cartDeliverys.forEach((delivery) => {
-      delivery.innerHTML = price.outerHTML;
-      delivery.value = value;
+    handleVisibility(PAYMENTS_ITEMS, target.getAttribute("data-id"));
+    PAYMENTS_ITEMS.forEach((item) => {
+      if (item.classList.contains("is-hide")) {
+        item.querySelector("input").checked = false;
+      } else {
+        item.querySelector("input").checked = true;
+      }
     });
 
-    // обновления итоговой цены
-    const cartTotals = document.querySelectorAll(".cart-total");
-    const priceTotal = parseInt(cartTotals[0].value) + parseInt(cartDeliverys[0].value);
-    cartTotals.forEach((total) => {
-      total.querySelector(".num").innerHTML = getMoneyFormat(priceTotal);
+    // При клике на зону доставки нужно выбрать родительский элемент и выбрать радио кнопку
+    if (targetRadioZone) {
+      targetRadio.checked = true;
+      targetDeliveryPrice.innerHTML = getMoneyFormat(targetPrice);
+      formData.append("form[delivery][zone_id]", target.value);
+      if (target.classList.contains("order-delivery__radio")) {
+        targetRadioZone.checked = true;
+        setTimeout(() => {
+          targetRadioZone.click();
+        }, 100);
+      }
+    } else {
+      DELIVERY_ZONES.forEach((item) => item.checked = false);
+    }
+    
+    getHtmlFromPost(url, formData).then((data) => {
+      const price =  parseInt(data.querySelector(".order-total__price").getAttribute("data-price-delivery"));
+      handleDataPrice(CART_TOTALS, price);
     });
   }
+  
+  // Запуск функций при загрузке страницы
+  handleVisibility(PAYMENTS_ITEMS, PAYMENTS_ITEMS[0].getAttribute("data-id"));
+  PAYMENTS_ITEMS.forEach((item) => {
+    if (!item.classList.contains("is-hide")) {
+      item.querySelector("input").checked = true;
+    }
+  });
 
-  function handleFormDeliveryZoneId(selected) {
-    // console.log("[DEBUG]: selected", selected);
-    document.querySelector("[name='form[delivery][zone_id]']").value = selected ? selected.value : "";
-  }
-
-  function handleFormPaymentId(selected) {
-    document.querySelector("[name='form[payment][id]']").value = selected.value;
+  function handleDataPrice(elements, price){
+    elements.forEach((element) => {
+      element.querySelector(".num").innerHTML = getMoneyFormat(price);
+      element.value = price;
+    });
   }
 
   function handleVisibility(elements, value) {
@@ -2296,38 +2262,38 @@ function Orderfast(doc = document) {
   }
 }
 
-
 /**
  * Купоны
  * Используется в функциях: handleCartOrderStart
  * Использует функции: getHtmlFromPost
  */
 function OrderCoupons() {
-  const coupons = document.querySelectorAll(".coupon");
+  const coupons = document.querySelectorAll(".coupon__order");
   if (coupons.length === 0) return;
   coupons.forEach((coupon) => {
     const couponInput = coupon.querySelector(".coupon__input");
     const couponReset = coupon.querySelector(".coupon__reset");
     const couponSubmit = coupon.querySelector(".coupon__button");
-    handleCouponVisibility(coupon, couponInput.value, "is-reset");
 
     couponSubmit.addEventListener("click", handleCouponSubmit);
     couponInput.addEventListener("input", handleCouponChange);
     couponReset.addEventListener("click", handleCouponReset);
 
     function handleCouponSubmit() {
-      coupon.classList.add("is-loading");
       const value = couponInput.value;
       const url = "/order/stage/confirm";
       const formData = new FormData();
-      const deliveryZoneId = document.querySelector("[name='form[delivery][zone_id]']");
-      const deliveryId = document.querySelector("[name='form[delivery][id]']");
+      const deliveryZoneId = document.querySelector(".order-delivery-zone__radio:checked");
+      const deliveryId = document.querySelector(".order-delivery__radio:checked");
       formData.append("ajax_q", "1");
       formData.append("only_body", "1");
       formData.append("form[coupon_code]", value);
-      formData.append("form[delivery][zone_id]", deliveryZoneId.value);
-      formData.append("form[delivery][id]", deliveryId.value);
-      console.log("[DEBUG]: formData", formData);
+      if (deliveryId) {
+        formData.append("form[delivery][id]", deliveryId.value);
+      }
+      if (deliveryZoneId) {
+        formData.append("form[delivery][zone_id]", deliveryZoneId.value);
+      }
 
       getHtmlFromPost(url, formData).then((data) => {
         handleCouponUpdate(data, coupon);
@@ -2335,13 +2301,13 @@ function OrderCoupons() {
     }
 
     function handleCouponChange(event) {
-      // event.target.setAttribute("value", event.target.value);
+      event.target.setAttribute("value", event.target.value);
       document.querySelectorAll(".coupon__input").forEach((input) => input.setAttribute("value", event.target.value));
       handleCouponVisibility(coupon, event.target.value, "is-reset");
     }
 
     function handleCouponReset() {
-      const cartSum = document.querySelector(".cart-sum");
+      const cartSum = document.querySelector(".cart-sum-discount");
       const cartTotals = document.querySelectorAll(".cart-total");
       const cartCoupons = document.querySelectorAll(".coupon__input");
       couponInput.value = "";
@@ -2349,38 +2315,35 @@ function OrderCoupons() {
       cartCoupons.forEach((input) => {
         input.setAttribute("value", "");
         input.classList.remove("is-reset", "is-error", "is-success");
-        console.log("[DEBUG]: input", input);
       });
       coupon.classList.remove("is-reset", "is-error", "is-success");
-      console.log("[DEBUG]: cartCoupons", cartCoupons);
-      console.log("[DEBUG]: coupon", coupon);
       cartTotals.forEach((total) => {
         total.innerHTML = cartSum.innerHTML;
         total.value = cartSum.value;
       });
     }
   });
-
+    
   function handleCouponUpdate(data, coupon) {
     const cartDiscounts = document.querySelectorAll(".cartTotal__discount");
     const cartCoupons = document.querySelectorAll(".cartTotal__coupons");
     const cartTotals = document.querySelectorAll(".cartTotal__total");
     const discountPrice = data.querySelector(".order-total__price");
-    const cartTotalPriceSum = parseInt(discountPrice.getAttribute("data-price"));
-    const cartTotalPriceSumDelivery = parseInt(discountPrice.getAttribute("data-price-delivery"));
-    console.log("[DEBUG]: cartTotalPriceSumDelivery", cartTotalPriceSumDelivery);
+    const cartTotalPriceSum = Math.floor(discountPrice.getAttribute("data-price"));
+    const cartTotalPriceSumDelivery = Math.floor(discountPrice.getAttribute("data-price-delivery"));
+    console.log('cartTotalPriceSumDelivery', cartTotalPriceSumDelivery);
     cartTotals.forEach((total) => {
-      total.querySelector(".cart-total").innerHTML = discountPrice.innerHTML;
-      total.querySelector(".cart-total").value = cartTotalPriceSum;
-      total.querySelector(".cart-sum-discount").innerHTML = discountPrice.innerHTML;
-      total.querySelector(".cart-sum-discount").value = cartTotalPriceSum;
+      console.log('total', total);
+      total.querySelector(".cart-total .num").innerHTML = getMoneyFormat(cartTotalPriceSumDelivery);
+      total.querySelector(".cart-total").value = cartTotalPriceSumDelivery;
+      total.querySelector(".cart-sum-discount").value = cartTotalPriceSumDelivery;
+      total.querySelector(".cart-sum-discount .num").innerHTML = getMoneyFormat(cartTotalPriceSumDelivery);
+      
     });
 
     const discount = data.querySelector(".order-discount");
-    // const delivery = data.querySelector(".order-delivery");
     const input = coupon.querySelector(".coupon__input");
 
-    console.log("[DEBUG]: discount", discount);
     if (discount) {
       const discountName = discount.querySelector(".order-discount__label");
       const discountValue = discount.querySelector(".order-discount__value");
@@ -2398,7 +2361,6 @@ function OrderCoupons() {
       input.classList.remove("is-success");
       handleCouponVisibility(input, input.value, "is-error");
     }
-    coupon.classList.remove("is-loading");
   }
 
   function handleCouponVisibility(coupon, value, className) {
@@ -2411,52 +2373,30 @@ function OrderCoupons() {
 }
 
 /**
- * Валидация обязательных полей форм
- * 
- * Инициализирует проверку всех полей с атрибутом [required] в указанном контейнере,
- * добавляет слушатели событий для обновления состояния ошибок в реальном времени.
- * 
- * @param {HTMLElement|Document} doc - Родительский элемент для поиска обязательных полей
- * 
- * @example
- * // Инициализация валидации формы
- * ValidateRequired(document.querySelector('form'));
- */
+ * Валидация форм
+ * Используется в функциях: Passwords, handleAddtoOrderOpen, handleCartOrderStart
+ *  * @param {HTMLElement|Document} doc - Родительский элемент для поиска обязательных полей
+ *  */
 function ValidateRequired(doc = document) {
-  // Находим все обязательные поля
   const requireds = doc.querySelectorAll("[required]");
-  
-  // Для каждого поля добавляем обработчик и выполняем начальную проверку
   requireds.forEach((item) => {
     item.addEventListener("input", () => {
       ValidateInput(item);
     });
-    // Выполняем начальную валидацию
     ValidateInput(item);
   });
 }
 
 /**
- * Проверяет заполнение поля формы и устанавливает соответствующий класс ошибки
- * 
- * Функция анализирует значение поля и добавляет/удаляет класс ошибки.
- * Используется для визуальной валидации полей форм в реальном времени.
- * 
- * @param {HTMLInputElement|HTMLSelectElement|HTMLTextAreaElement} item - Проверяемый элемент формы
- * 
- * @example
- * // Проверка поля при вводе
- * document.querySelector('input').addEventListener('input', function() {
- *   ValidateInput(this);
- * });
- * 
- * @example
- * // Проверка всех обязательных полей формы
- * document.querySelectorAll('[required]').forEach(ValidateInput);
+ * Валидация поля
+ * Используется в функциях: ValidateRequired, handleAddtoOrderOpen, handleCartOrderStart
  */
 function ValidateInput(item) {
-  // Проверяем наличие значения в поле и применяем соответствующий класс
-  item.classList.toggle('is-error', item.value === '');
+  if (item.value === "") {
+    item.classList.add("is-error");
+  } else {
+    item.classList.remove("is-error");
+  }
 }
 
 /**
@@ -2518,30 +2458,30 @@ function Opener() {
     }
   }
 
-  // Открытие мобильного меню
-  const mobileMenu = document.querySelector("[data-mobile-menu=open]");
-  const mobileContent = document.querySelector("[data-mobile-menu=content]");
-  const mobileСlose = document.querySelector("[data-mobile-menu=close]");
-  if (mobileMenu) {
-    mobileMenu.addEventListener("click", (event) => {
-      event.preventDefault();
-      event.currentTarget.classList.toggle("is-opened");
-      if (mobileContent.classList.contains("is-opened")) {
-        mobileContent.setAttribute("hidden", "");
-        document.body.classList.remove("is-bodylock");
-      } else {
-        mobileContent.removeAttribute("hidden");
-        document.body.classList.add("is-bodylock");
-      }
-      mobileContent.classList.toggle("is-opened");
-    });
-    mobileСlose.addEventListener("click", () => {
-      mobileMenu.classList.remove("is-opened");
-      mobileContent.classList.remove("is-opened");
-      mobileContent.setAttribute("hidden", "");
-      document.body.classList.remove("is-bodylock");
-    });
-  }
+  // const mobileMenu = document.querySelector("[data-mobile-menu=open]");
+  // const mobileContent = document.querySelector("[data-mobile-menu=content]");
+  // const mobileСlose = document.querySelector("[data-mobile-menu=close]");
+  // if (mobileMenu) {
+  //   mobileMenu.addEventListener("click", (event) => {
+  //     event.preventDefault();
+  //     event.currentTarget.classList.toggle("is-opened");
+  //     console.log('mobileContent', mobileContent);
+  //     if (mobileContent.classList.contains("is-opened")) {
+  //       mobileContent.setAttribute("hidden", "");
+  //       document.body.classList.remove("is-bodylock");
+  //     } else {
+  //       mobileContent.removeAttribute("hidden");
+  //       document.body.classList.add("is-bodylock");
+  //     }
+  //     mobileContent.classList.toggle("is-opened");
+  //   });
+  //   mobileСlose.addEventListener("click", () => {
+  //     mobileMenu.classList.remove("is-opened");
+  //     mobileContent.classList.remove("is-opened");
+  //     mobileContent.setAttribute("hidden", "");
+  //     document.body.classList.remove("is-bodylock");
+  //   });
+  // }
 
   // Открытие каталога с сохранением вложенности
   const catalogOpens = document.querySelectorAll("[data-catalog-parent-button]");
@@ -2570,6 +2510,11 @@ function Opener() {
     link.addEventListener("click", (event) => {
       event.preventDefault();
       const element = event.currentTarget.getAttribute("data-mobile-open");
+      console.log('element', element);
+      const sidebar = document.querySelectorAll(".sidebar");
+      sidebar.forEach(item => {
+        item.setAttribute("hidden", "hidden");
+      });
       if (element === "compare") {
         document.querySelector("#addtoCompare").removeAttribute("hidden");
       } else if (element === "favorites") {
@@ -2601,8 +2546,6 @@ function Opener() {
  */
 function SidebarOpener(selector, opener) {
   const content = document.querySelector(selector);
-  // console.log("[DEBUG]: content", content);
-  // console.log("[DEBUG]: opener", opener);
   if (!content) return;
   const button = document.querySelector(opener);
   const header = content.querySelector(".sidebar__header");
@@ -2614,9 +2557,6 @@ function SidebarOpener(selector, opener) {
   function handleCloseOutside(event) {
     const target = event.currentTarget;
     const isClickedOutside = event.target === target;
-    console.log("[DEBUG]: event", event);
-    console.log("[DEBUG]: target", target);
-    console.log("[DEBUG]: isClickedOutside", isClickedOutside);
     if (isClickedOutside) {
       handleClosed();
     }
@@ -2624,7 +2564,7 @@ function SidebarOpener(selector, opener) {
 
   function handleOpen(event) {
     event.preventDefault();
-    console.log("[DEBUG]: event", event);
+    console.log('button', button)
     if (button.classList.contains("is-active")) {
       handleClosed();
     } else {
@@ -2633,28 +2573,20 @@ function SidebarOpener(selector, opener) {
   }
 
   function handleOpened() {
-    console.log("[DEBUG]: handleOpened");
-    button.classList.add("is-active");
+    // button.classList.add("is-active");
     content.removeAttribute("hidden");
     document.body.classList.add("is-bodylock");
   }
 
   function handleClosed() {
-    button.classList.remove("is-active");
+    // button.classList.remove("is-active");
     content.setAttribute("hidden", "");
     document.body.classList.remove("is-bodylock");
   }
 }
 
 /**
- * Управляет отображением элементов "показать больше/скрыть" для выбранного блока
- * 
- * Функция находит блок по селектору, определяет видимые и скрытые элементы,
- * управляет отображением кнопки "показать/скрыть" и добавляет обработчики событий.
- * 
- * @param {string} selector - CSS-селектор для поиска контейнера с элементами и кнопкой
- * 
- * VisibleItems('.pdt__visible');
+ * Функция Показать все/Скрыть.
  */
 function VisibleItems(selector) {
   // Находим основной блок
@@ -3254,7 +3186,7 @@ function Autorization() {
 
   // Проверяем наличие необходимых элементов
   if (!dialogBlock || !authForm) {
-    console.log("[WARNING]: Authorization elements not found");
+    console.warn("[WARNING]: Authorization elements not found");
     return;
   }
 
@@ -3289,6 +3221,9 @@ function Autorization() {
     const loginLink = document.querySelector(SELECTORS.loginLink);
     const newLoginLink = responseData.querySelector(SELECTORS.loginLink);
 
+    console.log('loginLink', loginLink);
+    console.log('newLoginLink', newLoginLink);
+
     if (loginLink && newLoginLink) {
       loginLink.innerHTML = newLoginLink.innerHTML;
     }
@@ -3312,13 +3247,21 @@ function Autorization() {
       // Отправляем запрос на сервер
       const responseData = await getHtmlFromPost(authForm.action, formData);
 
+      // Показываем уведомление об успехе/ошибке
+      const noticeError = responseData.querySelector('.notice--error')
+      const noticeSuccess = responseData.querySelector('.notice--success')
+
+      if (noticeError) {
+        СreateNoty("error", noticeError.textContent);
+      }
+
+      if (noticeSuccess) {
+        СreateNoty("success", noticeSuccess.textContent);
+      }
+
       // Обновляем UI
       updateDialogContent(responseData);
       updateLoginLink(responseData);
-
-      // Показываем уведомление об успехе
-      СreateNoty("success", MESSAGES.success);
-
     } catch (error) {
       console.error("[ERROR]: Authorization failed", error);
       СreateNoty("error", MESSAGES.error);
@@ -3515,7 +3458,7 @@ function ScrollToTop() {
   const button = document.querySelector('.mobile-nav__link--go');
   const buttonText = button.querySelector('.mobile-nav__label');
   const SCROLL_THRESHOLD = 200;
-  
+
   // Функция для плавного скролла
   function smoothScrollTop() {
     window.scrollTo({
@@ -3527,7 +3470,7 @@ function ScrollToTop() {
   // Обработчик клика
   function handleClick(event) {
     event.preventDefault();
-    
+
     if (window.scrollY > 0) {
       smoothScrollTop();
     } else {
@@ -3546,10 +3489,10 @@ function ScrollToTop() {
   // Обновление состояния кнопки
   function updateButtonState() {
     const isScrolled = window.scrollY > SCROLL_THRESHOLD;
-    
+
     button.classList.toggle('is-visible', isScrolled);
     buttonText.textContent = isScrolled ? 'Наверх' : 'Главная';
-    button.setAttribute('aria-label', 
+    button.setAttribute('aria-label',
       isScrolled ? 'Прокрутить наверх' : 'Перейти на главную страницу'
     );
   }
@@ -3557,11 +3500,11 @@ function ScrollToTop() {
   // Оптимизированный обработчик скролла
   const throttledScroll = () => {
     let isWaiting = false;
-    
+
     return () => {
       if (!isWaiting) {
         isWaiting = true;
-        
+
         requestAnimationFrame(() => {
           updateButtonState();
           isWaiting = false;
@@ -3573,11 +3516,11 @@ function ScrollToTop() {
   // Инициализация
   function init() {
     if (!button) return;
-    
+
     window.addEventListener('scroll', throttledScroll());
     button.addEventListener('click', handleClick);
     button.addEventListener('keydown', handleKeyDown);
-    
+
     // Начальное состояние
     updateButtonState();
   }
@@ -3585,7 +3528,7 @@ function ScrollToTop() {
   // Очистка обработчиков при необходимости
   function destroy() {
     if (!button) return;
-    
+
     window.removeEventListener('scroll', throttledScroll());
     button.removeEventListener('click', handleClick);
     button.removeEventListener('keydown', handleKeyDown);

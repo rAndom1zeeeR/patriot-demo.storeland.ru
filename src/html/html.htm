@@ -2492,6 +2492,17 @@
 		{% ENDIF %}
 
 		<!-- Запуск основных скриптов для страницы "Сравнение" -->
+		{% IF MOD_LNAME = discount %}
+		<script>
+			document.addEventListener('DOMContentLoaded', function () {
+				document.querySelectorAll(".promotion__date time").forEach(function (dateTime) {
+					dateTime.innerHTML = getDateMonthsName(dateTime.getAttribute("datetime"));
+				});
+			});
+		</script>
+		{% ENDIF %}
+
+		<!-- Запуск основных скриптов для страницы "Сравнение" -->
 		{% IF MOD_LNAME = compare %}
 		<script>
 			document.addEventListener('DOMContentLoaded', function () {

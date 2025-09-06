@@ -244,7 +244,7 @@ function СreateNoty(type, content) {
 
 function parseNotyMessage(str) {
   // Регулярное выражение для поиска названия товара в кавычках «...»
-  const regex = /&laquo;([^&raquo;]+)&raquo;/;
+  const regex = /&laquo;([^&]+)&raquo;/;
   const match = str.match(regex);
 
   // Если совпадение найдено

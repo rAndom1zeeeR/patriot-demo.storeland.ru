@@ -961,6 +961,7 @@
 	gap: 12px;
 	justify-content: center;
 	width: 200px;
+	height: 140px;
 	padding: 24px 12px;
 	text-align: center;
 	background-color: var(--color-background);
@@ -1990,3 +1991,29 @@
 */
 .swal2-popup.swal2-toast .swal2-close::before,
 .swal2-popup.swal2-toast .swal2-close::after {display: none;}
+body.swal2-toast-shown .swal2-container.swal2-backdrop-show {width: 440px;}
+.noty__block {display: flex;flex-direction: column;gap: 4px;}
+.noty__goods {margin: 0;}
+.noty__message {margin: 0;text-transform: lowercase;}
+.noty__message::first-letter {text-transform: uppercase;}
+.swal2-icon-success .noty__message {color: var(--color-primary);}
+.swal2-icon-error .noty__message {color: var(--color-error);}
+
+/*
+** Наверх
+*/
+.toTop {
+	position: fixed;
+	right: 16px;
+	bottom: 16px;
+	z-index: 10;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	width: 44px;
+	height: 44px;
+	background-color: var(--color-background);
+	border: 1px solid var(--color-border);
+	border-radius: var(--border-radius);
+}
+.toTop:hover {color: var(--color-primary);}

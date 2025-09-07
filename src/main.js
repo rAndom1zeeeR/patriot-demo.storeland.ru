@@ -242,6 +242,26 @@ function СreateNoty(type, content) {
   });
 }
 
+function СreateNotyCookies() {
+  let isCookies = localStorage.getItem("cookiesAccept");
+  if (isCookies) return;
+  const body = document.querySelector("body");
+  const contentHtml = `<div class="container">
+      <b>Cookies</b>
+      <p>Этот сайт использует cookie-файлы и другие технологии, чтобы помочь Вам в навигации, а также для предоставления лучшего пользовательского опыта и анализа использования наших продуктов и услуг.</p>
+      <button type="button">Принять все</button>
+    </div>`;
+  const content = document.createElement("div");
+  content.classList.add("cookies");
+  content.innerHTML = contentHtml;
+  body.append(content);
+  content.querySelector("button").addEventListener("click", () => {
+    localStorage.setItem("cookiesAccept", "true");
+    content.remove();
+  });
+}
+СreateNotyCookies()
+
 function parseNotyMessage(str) {
   // Регулярное выражение для поиска названия товара в кавычках «...»
   const regex = /&laquo;([^&]+)&raquo;/;

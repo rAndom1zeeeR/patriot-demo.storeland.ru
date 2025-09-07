@@ -495,6 +495,7 @@
 	line-height: 1.2;
 	text-transform: uppercase;
 	text-overflow: ellipsis;
+	line-clamp: 2;
 	-webkit-line-clamp: 2;
 	-webkit-box-orient: vertical;
 }
@@ -515,7 +516,7 @@
 .is-loading #news .swiper-slide {display: none;}
 .is-loading #news .swiper-slide:nth-child(-n+1) {display: flex;}
 @media all and (min-width: 640px) {
-	.news__title {-webkit-line-clamp: 3;}
+	.news__title {line-clamp: 3;-webkit-line-clamp: 3;}
 	.is-loading .news__item:nth-child(-n+2) {display: flex;}
 	.is-loading #news .swiper-wrapper {display: grid;grid-template-columns: repeat(2, 1fr);gap: 16px;}
 	.is-loading #news .swiper-slide:nth-child(-n+2) {display: flex;}
@@ -528,6 +529,7 @@
 		display: -webkit-box;
 		overflow: hidden;
 		text-overflow: ellipsis;
+		line-clamp: 4;
 		-webkit-line-clamp: 4;
 		-webkit-box-orient: vertical;
 	}
@@ -752,6 +754,7 @@
 	text-overflow: ellipsis;
 	overflow-wrap: anywhere;
 	hyphens: auto;
+	line-clamp: 2;
 	-webkit-line-clamp: 2;
 	-webkit-box-orient: vertical;
 }
@@ -822,6 +825,7 @@
 	text-overflow: ellipsis;
 	overflow-wrap: anywhere;
 	hyphens: auto;
+	line-clamp: 3;
 	-webkit-line-clamp: 3;
 	-webkit-box-orient: vertical;
 }
@@ -1737,15 +1741,25 @@
 .goods-delivery__name {margin-right: 8px;}
 
 /* Карточка товара. Отзывы */
+.opinion__items.swiper-wrapper {align-items: stretch;}
+.opinion__item.swiper-slide {height: auto;display: flex;}
 .opinion__items {margin: 0;padding: 0;list-style: none;}
-.opinion__item {position: relative;margin-bottom: 16px;padding: 20px;background-color: var(--color-background);}
-.opinion__ratings {margin-bottom: 16px;}
+.opinion__item {
+	position: relative;
+	padding: 20px;
+	background-color: var(--color-background);
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+}
 .opinion__name {font-weight: 600;text-transform: capitalize;}
+.opinion__title {font-weight: 600;}
 .opinion__date {color: var(--color-gray);font-weight: 600;font-size: var(--text-size-regular);}
-.opinion__footer {display: flex;justify-content: space-between;margin-top: 16px;padding-top: 12px;border-top: 1px solid var(--color-border);}
-.opinion__text {margin: 16px 0;}
+.opinion__footer {display: flex;justify-content: space-between;padding-top: 12px;border-top: 1px solid var(--color-border);}
+.opinion__text {flex-grow: 1;}
 .opinion__text label {display: none;}
-.opinion__text label + p {margin: 0;}
+.opinion__text p {margin: 0;}
+.opinion__text p + p {margin-top: 16px;}
 .opinion__delete {position: absolute;top: 20px;right: 20px;}
 .opinion__score {
 	display: flex;
@@ -1766,6 +1780,23 @@
 @media all and (min-width: 1024px) {
 	.opinion__info {display: grid;grid-template-columns: 1fr 1fr;gap: 16px;}
 }
+
+/* Товар. Капча */
+.captcha {position: relative;}
+.captcha__input {padding-right: 120px;}
+.captcha__image {
+	position: absolute;
+	top: 0;
+	right: 0;
+	width: 74px;
+	border-radius: 0 var(--border-radius) var(--border-radius) 0;
+}
+.captcha__refresh {position: absolute;right: 80px;height: 100%;color: var(--color-gray);}
+.captcha__refresh:active {color: var(--color-text-primary);}
+@media (hover: hover) and (pointer: fine) {
+	.captcha__refresh:hover {color: var(--color-text-primary);}
+}
+
 
 /* Товар. Добавить отзыв */
 .opinion__addForm-title {margin-bottom: 24px;text-transform: uppercase;}
@@ -1838,6 +1869,7 @@
 	text-overflow: ellipsis;
 	overflow-wrap: anywhere;
 	hyphens: auto;
+	line-clamp: 3;
 	-webkit-line-clamp: 3;
 	-webkit-box-orient: vertical;
 }

@@ -31,14 +31,17 @@
 				<label for="feedback_file">Прикрепить файл</label>
 				<input id="feedback_file" type="file" name="form[assets_file]">
 			</div>
+			<div class="form__field form__field--checkbox">
+				<input class="form__checkbox square" type="checkbox" name="form[обработки_данных]" id="form_policy_feedback" required>
+				<label for="form_policy_feedback">Я согласен с <a href="#dialogPolicy" data-dialog="#dialogPolicy">правилами обработки данных</a></label>
+			</div>
+			<div class="form__field form__field--checkbox">
+				<input class="form__checkbox square" type="checkbox" name="form[получение_рассылок]" id="form_ads_feedback">
+				<label for="form_ads_feedback">Я согласен с получением рассылок</label>
+			</div>
 
 			<div class="form__buttons">
 				<button type="submit" title="Отправить">Отправить</button>
-
-				<small class="form__pp">
-					Я принимаю условия
-					<a href="#dialogPolicy" data-dialog="#dialogPolicy">политики конфиденциальности</a>
-				</small>
 			</div>
 		</form>
 	</div>

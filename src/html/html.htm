@@ -2345,7 +2345,6 @@
 				</button>
 			</div>
 			<div class="sidebar__content compare addto__compare {% IF COMPARE_GOODS_COUNT = 0 %}is-empty{% ENDIF %}">
-				{% IFNOT compare_goods_empty %}
 				<div class="addto__items">
 					{% FOR compare_goods %}
 					<div class="addto__item" data-id="{compare_goods.ID}">
@@ -2380,10 +2379,9 @@
 						<span>Очистить</span>
 					</a>
 				</div>
-				{% ENDIF compare_goods_empty %}
 
 				<!-- Пустая корзина -->
-				<div class="addto__empty">В корзине пока ничего нет</div>
+				<div class="addto__empty">В сравнении пока ничего нет</div>
 			</div>
 		</div>
 	</div>
@@ -2401,7 +2399,6 @@
 				</button>
 			</div>
 			<div class="sidebar__content favorites addto__favorites {% IF FAVORITES_GOODS_COUNT = 0 %}is-empty{% ENDIF %}">
-				{% IFNOT favorites_goods_empty %}
 				<div class="addto__items">
 					{% FOR favorites_goods %}
 					<div class="addto__item" data-id="{favorites_goods.ID}">
@@ -2436,10 +2433,9 @@
 						<span>Очистить</span>
 					</a>
 				</div>
-				{% ENDIF favorites_goods_empty %}
 
 				<!-- Пустая корзина -->
-				<div class="addto__empty">В корзине пока ничего нет</div>
+				<div class="addto__empty">В избранном пока ничего нет</div>
 			</div>
 		</div>
 	</div>
@@ -2496,12 +2492,12 @@
 					<label for="form[{ANTISPAM_FORM_FIELD_NAME_CALLBACK_PHONE}]">Ваш телефон</label>
 				</div>
 				<div class="form__field form__field--checkbox">
-					<input class="form__checkbox square" type="checkbox" name="form[обработки_данных]" id="form[policy]">
-					<label for="form[policy]">Я согласен с <a href="#dialogPolicy" data-dialog="#dialogPolicy">правилами обработки данных</a></label>
+					<input class="form__checkbox square" type="checkbox" name="form[обработки_данных]" id="form_policy_notify" required>
+					<label for="form_policy_notify">Я согласен с <a href="#dialogPolicy" data-dialog="#dialogPolicy">правилами обработки данных</a></label>
 				</div>
 				<div class="form__field form__field--checkbox">
-					<input class="form__checkbox square" type="checkbox" name="form[получение_рассылок]" id="form[ads]">
-					<label for="form[ads]">Я согласен с получением рассылок</label>
+					<input class="form__checkbox square" type="checkbox" name="form[получение_рассылок]" id="form_ads_notify">
+					<label for="form_ads_notify">Я согласен с получением рассылок</label>
 				</div>
 
 				<div class="form__buttons">
@@ -2532,12 +2528,12 @@
 					<label for="form[{ANTISPAM_FORM_FIELD_NAME_CALLBACK_PHONE}]">Ваш телефон</label>
 				</div>
 				<div class="form__field form__field--checkbox">
-					<input class="form__checkbox square" type="checkbox" name="form[обработки_данных]" id="form[policy]">
-					<label for="form[policy]">Я согласен с <a href="#dialogPolicy" data-dialog="#dialogPolicy">правилами обработки данных</a></label>
+					<input class="form__checkbox square" type="checkbox" name="form[обработки_данных]" id="form_policy_callback" required>
+					<label for="form_policy_callback">Я согласен с <a href="#dialogPolicy" data-dialog="#dialogPolicy">правилами обработки данных</a></label>
 				</div>
 				<div class="form__field form__field--checkbox">
-					<input class="form__checkbox square" type="checkbox" name="form[получение_рассылок]" id="form[ads]">
-					<label for="form[ads]">Я согласен с получением рассылок</label>
+					<input class="form__checkbox square" type="checkbox" name="form[получение_рассылок]" id="form_ads_callback">
+					<label for="form_ads_callback">Я согласен с получением рассылок</label>
 				</div>
 
 				<div class="form__buttons">
@@ -2719,7 +2715,7 @@
 					swiperMedium("#pdtSales");
 					swiperPdt('#pdtBest');
 					swiperPdt('#pdtNew');
-					swiperPdt('#opinions');
+					swiperOpinions('#opinions');
 					VisibleItems('#pdtSale');
 					VisibleItems('footer [data-visible-list]');
 				}, 100);

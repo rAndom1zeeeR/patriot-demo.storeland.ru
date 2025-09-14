@@ -249,14 +249,19 @@ function СreateNotyCookies() {
   const contentHtml = `<div class="container">
       <b>Cookies</b>
       <p>Этот сайт использует cookie-файлы и другие технологии, чтобы помочь Вам в навигации, а также для предоставления лучшего пользовательского опыта и анализа использования наших продуктов и услуг.</p>
-      <button type="button">Принять все</button>
+      <button class="button-primary" type="button">Принять все</button>
+      <button class="button-secondary" type="button">Отклонить</button>
     </div>`;
   const content = document.createElement("div");
   content.classList.add("cookies");
   content.innerHTML = contentHtml;
   body.append(content);
-  content.querySelector("button").addEventListener("click", () => {
+  content.querySelector(".button-primary").addEventListener("click", () => {
     localStorage.setItem("cookiesAccept", "true");
+    content.remove();
+  });
+  content.querySelector(".button-secondary").addEventListener("click", () => {
+    localStorage.setItem("cookiesAccept", "false");
     content.remove();
   });
 }
@@ -546,6 +551,8 @@ function Addto(doc = document) {
 
   handleAddtoDelete(".compare");
   handleAddtoDelete(".favorites");
+  handleAddtoClear(".compare");
+  handleAddtoClear(".favorites");
 
   // Обработка клика
   function handleAddtoClick(event) {
@@ -719,6 +726,26 @@ function Addto(doc = document) {
         console.error("[ERROR]: Error при удалении товара", error);
       }
     }
+  }
+
+  // Очистка избранного и сравнения
+  function handleAddtoClear(selector) {
+    const button = document.querySelector(selector + " .addto__clear");
+    if (!button) return;
+    button.addEventListener("click", (event) => {
+      event.preventDefault();
+      const url = getUrlBody(button.getAttribute("href"));
+      if (confirm("Вы точно хотите очистить список?")) {
+        getHtmlFromUrl(url).then((data) => {
+          document.querySelectorAll(selector).forEach((element) => element.classList.add("is-empty"));
+          document.querySelectorAll(selector + " .addto__item").forEach((element) => {
+            const title = element.querySelector(".addto__remove").getAttribute("title");
+            handleAddtoLink(selector, title, element.getAttribute('data-mod-id'));
+            element.remove()
+          });
+        });
+      }
+    });
   }
 
   // Обновление ссылки
@@ -3084,6 +3111,67 @@ function swiperViewed(selector) {
       1920: {
         slidesPerView: 6,
       },
+    },
+  });
+  // console.log("[DEBUG]: swiper", swiper);
+}
+
+
+/**
+ * Слайдер товаров на главной.
+ * Используется в функциях: на главной
+ * Использует функции: Swiper
+ */
+function swiperOpinions(selector) {
+  const related = document.querySelector(selector);
+  // console.log("[DEBUG]: related", related);
+
+  if (!related) return;
+  const swiper = new Swiper(selector + " .swiper", {
+    loop: false,
+    autoplay: false,
+    watchSlidesProgress: true,
+    simulateTouch: true,
+    grabCursor: true,
+    slidesPerView: 4,
+    spaceBetween: 16,
+    preloadImages: false,
+    navigation: {
+      nextEl: selector + " .swiper-button-next",
+      prevEl: selector + " .swiper-button-prev",
+    },
+    pagination: {
+      enabled: true,
+      el: selector + " .swiper-pagination",
+      clickable: true,
+      type: "bullets",
+      dynamicBullets: true,
+    },
+    breakpoints: {
+      0: {
+        slidesPerView: 1,
+      },
+      320: {
+        slidesPerView: 1,
+      },
+      375: {
+        slidesPerView: 1,
+      },
+      480: {
+        slidesPerView: 2,
+      },
+      640: {
+        slidesPerView: 3,
+      },
+      768: {
+        slidesPerView: 3,
+      },
+      1024: {
+        slidesPerView: 3,
+      },
+      1200: {
+        slidesPerView: 4,
+      }
     },
   });
   // console.log("[DEBUG]: swiper", swiper);

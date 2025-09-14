@@ -1260,6 +1260,7 @@
 .addto__discount:empty {display: none;}
 .addto__empty {display: none;}
 .is-empty .addto__empty {display: block;padding: 24px;}
+.is-empty .addto__items {display: none;}
 .is-empty .addto__header {display: none;}
 .is-empty .addto__form {display: none;}
 .is-empty .addto__buttons {display: none;}

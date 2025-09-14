@@ -758,8 +758,8 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 	text-overflow: ellipsis;
 	overflow-wrap: anywhere;
 	hyphens: auto;
-	line-clamp: 5;
 	-webkit-line-clamp: 5;
+	line-clamp: 5;
 	-webkit-box-orient: vertical;
 }
 .compare__mod {font-size: var(--text-size-regular);}

@@ -1744,6 +1744,7 @@
 						<small class="subscribe__pp">
 							Я принимаю условия
 							<a href="#dialogPolicy" data-dialog="#dialogPolicy">политики конфиденциальности</a>
+							и получение рассылок
 						</small>
 					</form>
 				</div>
@@ -2494,13 +2495,17 @@
 					<input class="form__phone" type="tel" name="form[{ANTISPAM_FORM_FIELD_NAME_CALLBACK_PHONE}]" value="{FORM_CALLBACK_PHONE}" placeholder="+7 (987) 654-3210" autocomplete="tel" required>
 					<label for="form[{ANTISPAM_FORM_FIELD_NAME_CALLBACK_PHONE}]">Ваш телефон</label>
 				</div>
+				<div class="form__field form__field--checkbox">
+					<input class="form__checkbox square" type="checkbox" name="form[обработки_данных]" id="form[policy]">
+					<label for="form[policy]">Я согласен с <a href="#dialogPolicy" data-dialog="#dialogPolicy">правилами обработки данных</a></label>
+				</div>
+				<div class="form__field form__field--checkbox">
+					<input class="form__checkbox square" type="checkbox" name="form[получение_рассылок]" id="form[ads]">
+					<label for="form[ads]">Я согласен с получением рассылок</label>
+				</div>
 
 				<div class="form__buttons">
 					<button class="form__button" type="submit" title="Уведомить о поступлении"><span>Отправить</span></button>
-					<small class="form__pp">
-						Нажимая на кнопку, я соглашаюсь с условиями
-						<a href="#dialogPolicy" data-dialog="#dialogPolicy">пользовательского соглашения</a>
-					</small>
 				</div>
 
 			</form>
@@ -2526,13 +2531,17 @@
 					<input class="form__phone" type="tel" name="form[{ANTISPAM_FORM_FIELD_NAME_CALLBACK_PHONE}]" value="{FORM_CALLBACK_PHONE}" placeholder="+7 (987) 654-3210" autocomplete="tel" inputmode="tel" required>
 					<label for="form[{ANTISPAM_FORM_FIELD_NAME_CALLBACK_PHONE}]">Ваш телефон</label>
 				</div>
+				<div class="form__field form__field--checkbox">
+					<input class="form__checkbox square" type="checkbox" name="form[обработки_данных]" id="form[policy]">
+					<label for="form[policy]">Я согласен с <a href="#dialogPolicy" data-dialog="#dialogPolicy">правилами обработки данных</a></label>
+				</div>
+				<div class="form__field form__field--checkbox">
+					<input class="form__checkbox square" type="checkbox" name="form[получение_рассылок]" id="form[ads]">
+					<label for="form[ads]">Я согласен с получением рассылок</label>
+				</div>
 
 				<div class="form__buttons">
 					<button class="form__button button-secondary button-large" type="submit" title="Заказать звонок">Заказать звонок</button>
-					<small class="form__pp">
-						Я принимаю условия
-						<a href="#dialogPolicy" data-dialog="#dialogPolicy">политики конфиденциальности</a>
-					</small>
 				</div>
 			</form>
 		</div>

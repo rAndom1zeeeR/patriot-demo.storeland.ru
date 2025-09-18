@@ -1916,7 +1916,7 @@ function Cart() {
   // Очистка товаров из корзины
   function handleCartClear(event) {
     event.preventDefault();
-    const yep = confirm("Вы точно хотите очистить корзину1?");
+    const yep = confirm("Вы точно хотите очистить корзину?");
     if (yep === false) return;
     const url = event.currentTarget.getAttribute("href");
     getHtmlFromUrl(url).then((data) => {

@@ -381,7 +381,7 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 ** Поле формы с регистрацией
 */
 .form__registration {display: flex;align-items: center;margin-top: 12px;}
-.form__registration label {order: 2;padding-top: 2px;padding-left: 8px;cursor: pointer;}
+.form__registration label {order: 2;cursor: pointer;}
 
 /*
 ** Политика конфиденциальности

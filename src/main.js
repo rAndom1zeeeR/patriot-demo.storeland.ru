@@ -1916,7 +1916,7 @@ function Cart() {
   // Очистка товаров из корзины
   function handleCartClear(event) {
     event.preventDefault();
-    const yep = confirm("Вы точно хотите очистить корзину?");
+    const yep = confirm("Вы точно хотите очистить корзину1?");
     if (yep === false) return;
     const url = event.currentTarget.getAttribute("href");
     getHtmlFromUrl(url).then((data) => {
@@ -1961,7 +1961,7 @@ function Cart() {
     const cartButtonClose = container.querySelector("[data-action=closeOrder]");
     const cartButtonComplete = container.querySelector("[data-action=completeOrder]");
     const contrainerAjax = container.querySelector(".cartTable__ajax");
-    const contraineCouponInput = container.querySelector(".cartTotal .coupon__input");
+    const contraineCouponInput = container.querySelector(".coupon__input");
 
     cartButtonStart?.addEventListener("click", handleCartOrderStart);
     cartButtonClose?.addEventListener("click", handleCartOrderClose);
@@ -1974,7 +1974,7 @@ function Cart() {
       const formData = new FormData();
       formData.append("ajax_q", "1");
       formData.append("fast_order", "1");
-      formData.append("form[coupon_code]", contraineCouponInput.value);
+      formData.append("form[coupon_code]", contraineCouponInput?.value);
       container.classList.add("is-started");
       getHtmlFromPost(url, formData).then((data) => {
         contrainerAjax.innerHTML = data.querySelector(".page-orderfast").innerHTML;
@@ -2060,13 +2060,13 @@ function CartMinSum() {
  * Использует функции: getUrlBody, getHtmlFromUrl
  */
 function CartClear() {
-  const button = document.querySelector(".addto__clear");
+  const button = document.querySelector(".cart .addto__clear");
   if (!button) return;
 
   button.addEventListener("click", (event) => {
     event.preventDefault();
     const url = getUrlBody(button.getAttribute("href"));
-    if (confirm("Вы точно хотите очистить корзину?")) {
+    if (confirm("Вы точно хотите очистить корзину2?")) {
       getHtmlFromUrl(url).then((data) => {
         document.querySelectorAll(".cart").forEach((element) => element.classList.add("is-empty"));
         document.querySelectorAll(".cart .addto__item").forEach((element) => element.remove());

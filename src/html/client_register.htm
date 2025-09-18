@@ -38,6 +38,15 @@
 					</svg>
 				</button>
 			</div>
+			
+			<div class="form__field form__field--checkbox">
+				<input class="form__checkbox square" type="checkbox" name="form[обработки_данных]" id="form_policy_register" required>
+				<label for="form_policy_register">Я согласен с <a href="#dialogPolicy" data-dialog="#dialogPolicy">правилами обработки данных</a></label>
+			</div>
+			<div class="form__field form__field--checkbox">
+				<input class="form__checkbox square" type="checkbox" name="form[получение_рассылок]" id="form_ads_register">
+				<label for="form_ads_register">Я согласен с получением рассылок</label>
+			</div>
 
 			<blockquote class="capslock" hidden>
 				<div class="capslock__icon">
@@ -52,11 +61,6 @@
 
 			<div class="client__buttons">
 				<button type="submit" name="send" title="Зарегистрироваться">Зарегистрироваться</button>
-
-				<small class="form__pp">
-					Я принимаю условия
-					<a href="#dialogPolicy" data-dialog="#dialogPolicy">политики конфиденциальности</a>
-				</small>
 			</div>
 		</form>
 	</div>

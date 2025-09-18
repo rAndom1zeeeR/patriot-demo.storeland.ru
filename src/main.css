@@ -1896,7 +1896,7 @@
 .cartTotal__total .cartTotal__price {font-size: var(--text-size-large);}
 .cartTotal__min-price {color: var(--color-error);}
 .cartTotal__min.is-hide {display: none;}
-.cartTotal__buttons {gap: 16px;margin-top: 0;padding: 20px;}
+.cartTotal__buttons {gap: 16px;margin: 0;padding: 20px;}
 .cartTotal__button {justify-content: center;width: 100%;font-size: var(--text-size-large);font-family: var(--font-primary);}
 .cartTotal__button::before, .cartTotal__button::after {background-color: var(--color-background);}
 .cartTotal__button[data-action="closeOrder"] {display: none;}

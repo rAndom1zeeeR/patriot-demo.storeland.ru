@@ -64,7 +64,9 @@
 								<small>(обязательно)</small>
 							</label>
 						</div>
-						
+					</fieldset>
+
+					<fieldset class="form__fields">
 						<div class="form__field form__field--custom">
 							<input id="order_contact_email"
 										 class="form__email"
@@ -193,7 +195,7 @@
 					<!-- Cпособ доставки. Кнопки -->
 					<!-- <div class="order-delivery__items">
 						{% FOR order_delivery %}
-						<div class="order-delivery__item {% IF order_delivery.NAME = Самовывоз %}is-hide{% ENDIF %}" data-id="{order_delivery.ID}">
+						<div class="order-delivery__item" data-id="{order_delivery.ID}">
 							<div class="order-delivery__title">
 								<input class="order-delivery__radio square"
 											 type="radio"
@@ -213,12 +215,11 @@
 								<label class="order-delivery__name" for="deliveryId{order_delivery.ID}">{order_delivery.NAME}</label>
 							</div>
 
-							<div class="order-delivery__desc">{order_delivery.DESC}</div>
-
-							<div class="order-delivery__price {CURRENCY_CHAR_CODE}">
-								<label>Стоимость доставки:</label>
+							<div class="order-delivery__price {CURRENCY_CHAR_CODE}" data-price="{order_delivery.END_PRICE}">
 								<b>{% IF order_delivery.END_PRICE = 0 %}Бесплатно{% ELSE %}{order_delivery.END_PRICE | money_format}{% ENDIF %}</b>
 							</div>
+
+							<div class="order-delivery__desc">{order_delivery.DESC}</div>
 
 							{% IFNOT order_delivery.zone_list_empty %}
 							<div class="order-delivery-zone__list delivery__zones">
@@ -233,7 +234,7 @@
 												 data-id="{order_delivery.ID}"
 												 data-price="{order_delivery.zone_list.END_PRICE}"
 												 {% IF order_delivery.zone_list.ID=ORDER_FORM_DELIVERY_ZONE_ID %}
-												 checked="checked"
+												 checked="checked" rel="true"
 												 {% ENDIF %} />
 									<label class="order-delivery-zone__name" for="deliveryZoneId{order_delivery.zone_list.ID}">{order_delivery.zone_list.NAME}</label>
 									<span class="order-delivery-zone__price">{order_delivery.zone_list.END_PRICE | money_format}</span>
@@ -264,31 +265,31 @@
 							</select>
 						</div>
 						{% FOR available_payment_list %}
-						<div class="order-payment__desc is-hide" data-id="{order_delivery.available_payment_list.ID}">{order_delivery.available_payment_list.MESSAGE}</div>
+						<div class="order-payments__desc is-hide" data-id="{order_delivery.available_payment_list.ID}">{order_delivery.available_payment_list.MESSAGE}</div>
 						{% ENDFOR %}
 					</div>
 					{% ENDIF %}
 					{% ENDFOR %}
 
-					<!-- Селекты способ оплаты -->
-					<!-- <div class="order-payment__items">
+					<!-- Инпут способ оплаты -->
+					<!-- <div class="order-payments__items">
 						{% FOR order_delivery %}
 						{% IFNOT order_delivery.available_payment_list_empty %}
-						<div class="order-payment__item is-hide" data-id="{order_delivery.ID}">
+						<div class="order-payments__item is-hide" data-id="{order_delivery.ID}">
 							{% FOR available_payment_list %}
-							<div class="order-payment__option">
-								<div class="order-payment__title">
-									<input class="order-payment__radio square"
+							<div class="order-payments__option">
+								<div class="order-payments__title">
+									<input class="order-payments__radio square"
 												 type="radio"
 												 id="paymentId{order_delivery.ID}_{order_delivery.available_payment_list.ID}"
 												 name="form[payment][id]"
 												 value="{order_delivery.available_payment_list.ID}"
 												 {% IFNOT ORDER_FORM_PAYMENT_ID %}{% IF order_delivery.available_payment_list.first %}checked="checked" {% ENDIF %}
 												 {% ELSEIF order_delivery.available_payment_list.ID=ORDER_FORM_PAYMENT_ID %}checked="checked" {% ENDIF %}>
-									<label class="order-payment__name" for="paymentId{order_delivery.ID}_{order_delivery.available_payment_list.ID}">{order_delivery.available_payment_list.NAME}</label>
+									<label class="order-payments__name" for="paymentId{order_delivery.ID}_{order_delivery.available_payment_list.ID}">{order_delivery.available_payment_list.NAME}</label>
 								</div>
 								{% IF order_delivery.available_payment_list.MESSAGE %}
-								<div class="order-payment__desc">{order_delivery.available_payment_list.MESSAGE}</div>
+								<div class="order-payments__desc">{order_delivery.available_payment_list.MESSAGE}</div>
 								{% ENDIF %}
 							</div>
 							{% ENDFOR %}
@@ -487,7 +488,7 @@
 				<h5 class="orderfast__title">Применить промокод</h5>
 				<div class="orderfast__content">
 					<!-- Если скидки по купонам активированы в панели управления магазином -->
-					<div class="coupon">
+					<div class="coupon coupon__order">
 						<input type="hidden" name="form[coupon]" value="{CART_SUM_NOW}">
 						<input class="coupon__input" type="text" name="form[coupon_code]" value="{ORDER_FORM_COUPON_CODE}" placeholder="Промокод" />
 						<button class="coupon__button button-icon" type="button" title="Применить" aria-label="Применить купон">
@@ -517,7 +518,7 @@
 					<!-- Корзина: Товары -->
 					<div class="cartTotal__item cartTotal__goods">
 						<span class="cartTotal__label">Стоимость товаров:</span>
-						<data class="cartTotal__price {CURRENCY_CHAR_CODE} cart-sum" value="{CART_SUM_NOW}">{CART_SUM_NOW | money_format}</data>
+						<data class="cartTotal__price {CURRENCY_CHAR_CODE}" value="{CART_SUM_NOW}">{CART_SUM_NOW | money_format}</data>
 					</div>
 
 					<!-- Скидки, действующие на заказ -->
@@ -552,8 +553,7 @@
 					<div class="cartTotal__item cartTotal__total">
 						<span class="cartTotal__label">Итого:</span>
 						<data class="cartTotal__price cart-total {CURRENCY_CHAR_CODE}" value="{CART_SUM_NOW_WITH_DELIVERY_AND_DISCOUNT}">{CART_SUM_NOW_WITH_DELIVERY_AND_DISCOUNT | money_format}</data>
-						<data style="display: none;" class="cartTotal__price cart-sum" value="{CART_SUM_NOW}">{CART_SUM_NOW | money_format}</data>
-						<data style="display: none;" class="cartTotal__price cart-sum-discount" value="{CART_SUM_NOW_WITH_DISCOUNT}">{CART_SUM_NOW_WITH_DISCOUNT | money_format}</data>
+						<data hidden class="cartTotal__price cart-sum-discount" value="{CART_SUM_NOW_WITH_DISCOUNT}">{CART_SUM_NOW_WITH_DISCOUNT | money_format}</data>
 					</div>
 				</div>
 
@@ -584,8 +584,7 @@
 <div style="display:none;" id="newCartWord">товар{CART_COUNT_TOTAL | gen_word_end("","а","ов")}</div>
 <div style="display:none;" id="newCartSum">{CART_SUM_NOW}</div>
 <div style="display:none;" id="newCartSumFormated">{CART_SUM_NOW | money_format}</div>
-<div style="display:none;" id="newCartSumDiscount">{CART_SUM_NOW_WITH_DISCOUNT}</div>
-<div style="display:none;" id="newCartSumDiscountFormated">{CART_SUM_NOW_WITH_DISCOUNT | money_format}</div>
+<data style="display:none;" id="newCartSumDiscount" value="{CART_SUM_NOW_WITH_DISCOUNT}">{CART_SUM_NOW_WITH_DISCOUNT | money_format}</data>
 <div style="display:none;" id="newCartSumTotal">{CART_SUM_NOW_WITH_DELIVERY_AND_DISCOUNT}</div>
 <div style="display:none;" id="newCartSumTotalFormated">{CART_SUM_NOW_WITH_DELIVERY_AND_DISCOUNT | money_format}</div>
 <div style="display:none;" id="newCartData">
@@ -610,7 +609,7 @@
 				<small class="addto__mods">
 					{% FOR distinctive_properties %}
 					<span>{cart_items.distinctive_properties.NAME}:</span>
-					<b>{cart_items.distinctive_properties.VALUE};</b>
+					<span>{cart_items.distinctive_properties.VALUE}{% IFNOT cart_items.distinctive_properties.last %};{% ENDIF %}</span>
 					{% ENDFOR %}
 				</small>
 			</div>

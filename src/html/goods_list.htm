@@ -110,8 +110,10 @@
 						{% FOR filter_attr_list %}
 						<fieldset class="filter__list{% FOR values %}{% IF filter_attr_list.values.CHECKED %} has-filters{% ENDIF %}{% ENDFOR %}">
 							<div class="filter__title">
-								<span>{filter_attr_list.NAME}</span>
-								<b></b>
+								<span>
+									<span>{filter_attr_list.NAME}</span>
+									<b></b>
+								</span>
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="12" height="12" aria-hidden="true">
 									<path d="M129.1 183.3 237.3 75c4.7-4.8 4.7-12.5 0-17.2-4.8-4.8-12.5-4.8-17.2 0l-99.7 99.7-99.7-99.7C16 53 8.3 53 3.5 57.8c-4.7 4.8-4.7 12.5 0 17.2l108.4 108.3c4.7 4.7 12.5 4.7 17.2 0z"></path>
 								</svg>
@@ -142,8 +144,10 @@
 						{% FOR filter_prop_list %}
 						<fieldset class="filter__list{% FOR values %}{% IF filter_prop_list.values.CHECKED %} has-filters {% ENDIF %}{% ENDFOR %}">
 							<div class="filter__title">
-								<span>{filter_prop_list.NAME}</span>
-								<b></b>
+								<span>
+									<span>{filter_prop_list.NAME}</span>
+									<b></b>
+								</span>
 								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="12" height="12" aria-hidden="true">
 									<path d="M129.1 183.3 237.3 75c4.7-4.8 4.7-12.5 0-17.2-4.8-4.8-12.5-4.8-17.2 0l-99.7 99.7-99.7-99.7C16 53 8.3 53 3.5 57.8c-4.7 4.8-4.7 12.5 0 17.2l108.4 108.3c4.7 4.7 12.5 4.7 17.2 0z"></path>
 								</svg>

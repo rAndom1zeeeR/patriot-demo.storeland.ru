@@ -416,10 +416,10 @@
     <!-- Cпособ оплаты -->
     <div class="stages__block">
       <h3 class="stages__title"><span>Cпособ оплаты</span></h3>
-      <div class="order-payment-column">
+      <div class="order-payments-column">
         {% FOR order_payment %}
-        <div class="order-payment__item">
-          <input class="order-payment__radio square"
+        <div class="order-payments__item">
+          <input class="order-payments__radio square"
                  type="radio"
                  id="paymentId{order_payment.ID}"
                  name="form[payment][id]"
@@ -427,10 +427,10 @@
                  order-id="{ORDER_FORM_PAYMENT_ID}"
                  {% IF order_payment.first %}checked="checked"
                  {% ELSEIF order_payment.ID=ORDER_FORM_PAYMENT_ID %}checked="checked" {% ENDIF %}>
-          <label class="order-payment__name" for="paymentId{order_payment.ID}">{order_payment.NAME}</label>
+          <label class="order-payments__name" for="paymentId{order_payment.ID}">{order_payment.NAME}</label>
           <!-- Сообщение для пользователя -->
           {% IF order_payment.MESSAGE %}
-          <div class="order-payment__desc is-hide">{order_payment.MESSAGE}</div>
+          <div class="order-payments__desc is-hide">{order_payment.MESSAGE}</div>
           {% ENDIF %}
         </div>
         {% ENDFOR %}

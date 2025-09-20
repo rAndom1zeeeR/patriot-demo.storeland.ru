@@ -2211,7 +2211,7 @@ function Orderfast(doc = document) {
   const deliveryDescs = container.querySelectorAll(".order-delivery__description");
   const deliveryZoneRules = container.querySelectorAll(".order-delivery__rules");
   const paymentSelects = container.querySelectorAll(".order-payments__selects");
-  const paymentSelected = container.querySelector(".order-payments__selects:not(.is-hide) select");
+  let paymentSelected = container.querySelector(".order-payments__selects:not(.is-hide) select");
   const paymentDescs = container.querySelectorAll(".order-payments__desc");
 
   // Запуск функций при загрузке страницы
@@ -2225,11 +2225,16 @@ function Orderfast(doc = document) {
   // Способы доставки
   deliverySelect.addEventListener("change", (event) => {
     const select = event.target;
+    console.log("[DEBUG]: select1", select);
+    console.log("[DEBUG]: paymentSelects1", paymentSelects);
     handleVisibility(deliveryZones, select.value);
     handleVisibility(deliveryDescs, select.value);
     handleDeliveryPrice(deliveryPrices, select[select.selectedIndex].getAttribute("data-price"));
     deliveryZoneSelects.forEach((selects) => handleDeliveryZone(selects));
     handleVisibility(paymentSelects, deliverySelect.value);
+    // handleVisibility(paymentSelected, deliverySelect.value);
+    paymentSelected = container.querySelector(".order-payments__selects:not(.is-hide) select");
+    handleVisibility(paymentDescs, paymentSelected.value);
     const deliveryZoneSelected = document.querySelector(".order-delivery-zone__selects:not(.is-hide) .order-delivery-zone__select");
     handleFormDeliveryZoneId(deliveryZoneSelected);
   });
@@ -2239,7 +2244,7 @@ function Orderfast(doc = document) {
     handleDeliveryZone(selects);
     selects.addEventListener("change", (event) => {
       const select = event.target;
-      // console.log("[DEBUG]: select", select);
+      console.log("[DEBUG]: select2", select);
       handleDeliveryPrice(deliveryPrices, select[select.selectedIndex].getAttribute("data-price"));
       handleVisibility(deliveryZoneRules, select.value);
       handleFormDeliveryZoneId(select);
@@ -2294,6 +2299,9 @@ function Orderfast(doc = document) {
   }
 
   function handleVisibility(elements, value) {
+    console.log("[DEBUG]: elements0", elements);
+    console.log("[DEBUG]: value0", value);
+    if (elements.length === 0) return;
     elements.forEach((element) => {
       if (element.getAttribute("data-id") === value) {
         element.classList.remove("is-hide");

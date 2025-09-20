@@ -201,6 +201,12 @@ button:active, .button:active, .paymentFormSubmitLink:active, .paymentFormTbodyS
 	.button-underline:hover {color: var(--color-secondary);background: none;}
 }
 
+/* Кнопка с реверс */
+.button-reverse {color: var(--color-white);background-color: var(--color-black);}
+@media (hover: hover) and (pointer: fine) {
+	.button-reverse:hover {color: var(--color-black);background: var(--color-white);}
+}
+
 /* Кнопка отключена */
 .button-disabled, .add-notify {color: white;background-color: var(--color-disabled);border-color: var(--color-disabled);}
 .button-disabled:active {background-color: var(--color-disabled);border-color: var(--color-disabled);}
@@ -293,6 +299,8 @@ input[type="file"] {
 /*
 ** Инпут с ошибкой
 */
+input:required:invalid {border-color: var(--color-error);}
+input:required:valid {border-color: var(--color-primary);}
 input.is-error {border-color: var(--color-error);}
 input.is-success {border-color: var(--color-primary-hover);}
 textarea.is-error {border-color: var(--color-error);}

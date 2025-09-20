@@ -64,9 +64,7 @@
 								<small>(обязательно)</small>
 							</label>
 						</div>
-					</fieldset>
-
-					<fieldset class="form__fields">
+						
 						<div class="form__field form__field--custom">
 							<input id="order_contact_email"
 										 class="form__email"
@@ -83,6 +81,9 @@
 								<small>(обязательно)</small>
 							</label>
 						</div>
+					</fieldset>
+
+					<fieldset class="form__fields">
 					</fieldset>
 
 					<!-- Если в тарифном плане подключен раздел личного кабинета -->
@@ -559,10 +560,10 @@
 
 				<!-- Корзина: Оформление -->
 				<div class="cartTotal__buttons form__buttons">
-					<button class="cartTotal__button button-disabled" data-action="startOrder" type="submit" title="Перейти к быстрому оформлению заказа" disabled>
+					<button class="cartTotal__button button-reverse button-disabled" data-action="startOrder" type="submit" title="Перейти к быстрому оформлению заказа" disabled>
 						Оформить заказ
 					</button>
-					<button class="cartTotal__button button-secondary" data-action="completeOrder" type="submit" title="Перейти к быстрому оформлению заказа" form="orderform">
+					<button class="cartTotal__button button-reverse" data-action="completeOrder" type="submit" title="Перейти к быстрому оформлению заказа" form="orderform">
 						Оформить заказ
 					</button>
 

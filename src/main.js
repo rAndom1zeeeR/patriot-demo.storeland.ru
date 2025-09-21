@@ -1447,7 +1447,7 @@ function Goods(doc) {
     }
 
     // Если включено в настройках 'Отключить возможность класть в корзину больше товара, чем есть в наличии'
-    if (goodsQty.classList.contains("has-max")) {
+    if (goodsQty.querySelector(".qty").classList.contains("has-max")) {
       goodsQtyInput.max = modificationRestValue;
     } else {
       goodsQtyInput.max = 99999;
@@ -1458,7 +1458,7 @@ function Goods(doc) {
       goodsArtNumberBlock.removeAttribute("hidden");
       goodsArtNumberBlock.parentElement.removeAttribute("hidden");
       goodsArtNumberBlock.parentElement.classList.remove("is-hide");
-      goodsArtNumberBlock.querySelector("b").innerHTML = modificationArtNumber;
+      goodsArtNumberBlock.querySelector("[itemprop=sku]").innerHTML = modificationArtNumber;
     } else {
       if (goodsArtNumberBlock) {
         goodsArtNumberBlock.setAttribute("hidden", "");
@@ -1751,17 +1751,19 @@ function Quantity(doc = document) {
   }
 
   function handleValueMax(val, input) {
-    if (val > input.max) {
-      input.value = input.max;
-      input.setAttribute("value", input.max);
+    const max = input.max || 99999;
+    if (val > max) {
+      input.value = max;
+      input.setAttribute("value", max);
       // Сообщение пользователю
       СreateNoty("error", "Вы пытаетесь положить в корзину товар которого недостаточно в наличии");
     }
   }
 
   function handleQuantityProductView(val, input) {
+    const max = input.max || 99999;
     if (val < 1) val = 1;
-    if (val > input.max) val = input.max;
+    if (val > max) val = max;
     const productView = input.closest(".productView");
     const priceNow = productView.querySelector(".price__now");
     const priceNowValue = priceNow.getAttribute("data-price") * val;
@@ -2068,10 +2070,11 @@ function CartClear() {
   button.addEventListener("click", (event) => {
     event.preventDefault();
     const url = getUrlBody(button.getAttribute("href"));
-    if (confirm("Вы точно хотите очистить корзину2?")) {
+    if (confirm("Вы точно хотите очистить корзину?")) {
       getHtmlFromUrl(url).then((data) => {
         document.querySelectorAll(".cart").forEach((element) => element.classList.add("is-empty"));
         document.querySelectorAll(".cart .addto__item").forEach((element) => element.remove());
+        document.querySelectorAll(".cart-count").forEach((element) => element.innerHTML = "0");
         const productViewCart = document.querySelector(".productView__cart");
         if (productViewCart) {
           productViewCart.classList.remove("has-in-cart");
@@ -2299,8 +2302,8 @@ function Orderfast(doc = document) {
   }
 
   function handleVisibility(elements, value) {
-    console.log("[DEBUG]: elements0", elements);
-    console.log("[DEBUG]: value0", value);
+    // console.log("[DEBUG]: elements0", elements);
+    // console.log("[DEBUG]: value0", value);
     if (elements.length === 0) return;
     elements.forEach((element) => {
       if (element.getAttribute("data-id") === value) {

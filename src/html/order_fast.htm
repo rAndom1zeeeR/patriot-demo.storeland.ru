@@ -83,12 +83,9 @@
 						</div>
 					</fieldset>
 
-					<fieldset class="form__fields">
-					</fieldset>
-
 					<!-- Если в тарифном плане подключен раздел личного кабинета -->
 					{% IFNOT CLIENT_IS_LOGIN %}
-					<div class="form__registration form__field--checkbox">
+					<div class="form__field form__field--registration form__field--checkbox">
 						<label for="want_register">Я хочу зарегистрироваться</label>
 						<input id="want_register" class="form__checkbox square" type="checkbox" name="form[contact][want_register]" value="1" {% IF ORDER_FORM_CONTACT_WANT_REGISTER %}checked{% ENDIF %}>
 					</div>
@@ -117,15 +114,6 @@
 								<path class="svg-unlock" d="M512 572.002c-40.872 0-74 33.126-74 73.998 0 26.098 13.52 49.022 33.924 62.194v87.808c0 22.09 17.911 39.997 40.001 39.997s40.001-17.906 40.001-39.997v-87.71c20.489-13.163 34.071-36.133 34.071-62.292 0-40.872-33.126-73.998-73.998-73.998z" />
 							</svg>
 						</button>
-					</div>
-
-					<div class="form__field form__field--checkbox">
-						<input class="form__checkbox square" type="checkbox" name="form[обработки_данных]" id="form_policy_orderfast" required>
-						<label for="form_policy_orderfast">Я согласен с <a href="#dialogPolicy" data-dialog="#dialogPolicy">правилами обработки данных</a></label>
-					</div>
-					<div class="form__field form__field--checkbox">
-						<input class="form__checkbox square" type="checkbox" name="form[получение_рассылок]" id="form_ads_orderfast">
-						<label for="form_ads_orderfast">Я согласен с получением рассылок</label>
 					</div>
 
 					<!-- Капслок предупреждение -->
@@ -483,7 +471,7 @@
 			</div>
 			{% ENDIF %}
 
-			<!-- Корзина: Итоговый блок -->
+			<!-- Корзина: Купон -->
 			{% IF ORDER_DISCOUNT_COUPON_IS_ENABLED %}
 			<div class="orderfast__block orderfast__block--coupon">
 				<h5 class="orderfast__title">Применить промокод</h5>
@@ -566,11 +554,14 @@
 					<button class="cartTotal__button button-reverse" data-action="completeOrder" type="submit" title="Перейти к быстрому оформлению заказа" form="orderform">
 						Оформить заказ
 					</button>
-
-					<small class="form__pp">
-						Я принимаю условия
-						<a href="#dialogPolicy" data-dialog="#dialogPolicy">политики конфиденциальности</a>
-					</small>
+					<div class="form__field form__field--checkbox">
+						<input class="form__checkbox square" type="checkbox" name="form[обработки_данных]" id="form_policy_orderfast" required>
+						<label for="form_policy_orderfast">Я согласен с <a href="#dialogPolicy" data-dialog="#dialogPolicy">правилами обработки данных</a></label>
+					</div>
+					<div class="form__field form__field--checkbox">
+						<input class="form__checkbox square" type="checkbox" name="form[получение_рассылок]" id="form_ads_orderfast">
+						<label for="form_ads_orderfast">Я согласен с получением рассылок</label>
+					</div>
 				</div>
 			</div>
 

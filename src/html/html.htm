@@ -1767,13 +1767,13 @@
 					</div>
 					<div class="footer-contacts">
 						<!-- Подвал. Адрес -->
+						{% IF SETTINGS_STORE_REGION %}
 						<div class="footer-contacts__block">
-							{% IF SETTINGS_STORE_REGION %}
 							<a class="footer-contacts__link" href="https://yandex.ru/maps/?text={SETTINGS_STORE_REGION | urlencode}&z=17" target="_blank">
 								{SETTINGS_STORE_REGION}
 							</a>
-							{% ENDIF %}
 						</div>
+						{% ENDIF %}
 						<!-- Подвал. Телефон 1 -->
 						<div class="footer-contacts__block">
 							{% IF SETTINGS_STORE_PHONE_NUMBER1 %}

@@ -198,58 +198,60 @@
 					<p class="modifications__description" itemprop="description">{GOODS_MOD_DESCRIPTION}</p>
 				</div>
 
-				<!-- Цена товара -->
-				<div class="productView__price {CURRENCY_CHAR_CODE}" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
-					<meta itemprop="price" content="{GOODS_MOD_PRICE_NOW}">
-					<meta itemprop="priceCurrency" content="{CURRENCY_CHAR_CODE}">
-					<meta itemprop="availability" content="{% IF GOODS_MOD_REST_VALUE>0 %}http://schema.org/InStock{% ELSE %}http://schema.org/OutOfStock{% ENDIF %}">
-					{% IF GOODS_MOD_PRICE_NOW_WITHOUT_DISCOUNT > GOODS_MOD_PRICE_NOW %}
-					<s class="productView__price-old price__old" data-price="{GOODS_MOD_PRICE_NOW_WITHOUT_DISCOUNT}">{GOODS_MOD_PRICE_NOW_WITHOUT_DISCOUNT | money_format}</s>
-					{% ELSEIF GOODS_MOD_PRICE_OLD > GOODS_MOD_PRICE_NOW %}
-					<s class="productView__price-old price__old" data-price="{GOODS_MOD_PRICE_OLD}">{GOODS_MOD_PRICE_OLD | money_format}</s>
-					{% ELSE %}
-					<s class="productView__price-old price__old" data-price="0"></s>
-					{% ENDIF %}
-					<b class="productView__price-now price__now" data-price="{GOODS_MOD_PRICE_NOW}">{GOODS_MOD_PRICE_NOW | money_format}</b>
-				</div>
+				<div class="productView__actions">
+					<!-- Цена товара -->
+					<div class="productView__price {CURRENCY_CHAR_CODE}" itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+						<meta itemprop="price" content="{GOODS_MOD_PRICE_NOW}">
+						<meta itemprop="priceCurrency" content="{CURRENCY_CHAR_CODE}">
+						<meta itemprop="availability" content="{% IF GOODS_MOD_REST_VALUE>0 %}http://schema.org/InStock{% ELSE %}http://schema.org/OutOfStock{% ENDIF %}">
+						{% IF GOODS_MOD_PRICE_NOW_WITHOUT_DISCOUNT > GOODS_MOD_PRICE_NOW %}
+						<s class="productView__price-old price__old" data-price="{GOODS_MOD_PRICE_NOW_WITHOUT_DISCOUNT}">{GOODS_MOD_PRICE_NOW_WITHOUT_DISCOUNT | money_format}</s>
+						{% ELSEIF GOODS_MOD_PRICE_OLD > GOODS_MOD_PRICE_NOW %}
+						<s class="productView__price-old price__old" data-price="{GOODS_MOD_PRICE_OLD}">{GOODS_MOD_PRICE_OLD | money_format}</s>
+						{% ELSE %}
+						<s class="productView__price-old price__old" data-price="0"></s>
+						{% ENDIF %}
+						<b class="productView__price-now price__now" data-price="{GOODS_MOD_PRICE_NOW}">{GOODS_MOD_PRICE_NOW | money_format}</b>
+					</div>
 
-				<!-- Количество -->
-				<div class="productView__qty">
-					<div class="qty {% IF SETTINGS_GOODS_DONT_PUT_TO_CART_MORE_THAN_AVAILABLE %}has-max{% ENDIF %}">
-						<button class="qty__select qty__select--minus" type="button" title="Уменьшить количество">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="14" height="14" aria-hidden="true">
-								<path d="M960 578H64c-38.4 0-64-21.6-64-54.001s25.6-54 64-54h896c38.4 0 64 21.6 64 54S998.4 578 960 578z" />
-							</svg>
+					<!-- Количество -->
+					<div class="productView__qty">
+						<div class="qty {% IF SETTINGS_GOODS_DONT_PUT_TO_CART_MORE_THAN_AVAILABLE %}has-max{% ENDIF %}">
+							<button class="qty__select qty__select--minus" type="button" title="Уменьшить количество">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="14" height="14" aria-hidden="true">
+									<path d="M960 578H64c-38.4 0-64-21.6-64-54.001s25.6-54 64-54h896c38.4 0 64 21.6 64 54S998.4 578 960 578z" />
+								</svg>
+							</button>
+							<input class="qty__input"
+										type="number"
+										name="form[goods_mod_id][{GOODS_MOD_ID}]"
+										{% IF SETTINGS_GOODS_DONT_PUT_TO_CART_MORE_THAN_AVAILABLE %}max="{GOODS_MOD_REST_VALUE}" {% ENDIF %}
+										min="1"
+										value="1"
+										title="Количество, {GOODS_MOD_MEASURE_NAME}">
+							<button class="qty__select qty__select--plus" type="button" title="Увеличить количество">
+								<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="14" height="14" aria-hidden="true">
+									<path d="M960 448H576V64c0-35.346-28.654-64-64-64s-64 28.654-64 64v384H64c-35.346 0-64 28.654-64 64s28.654 64 64 64h384v384c0 35.345 28.654 64 64 64s64-28.655 64-64V576h384c35.345 0 64-28.654 64-64s-28.655-64-64-64z" />
+								</svg>
+							</button>
+						</div>
+					</div>
+
+					<!-- Добавление товара в корзину -->
+					<div class="productView__cart {% IF GOODS_MOD_NB_GOODS_IN_CART %}has-in-cart{% ENDIF %}">
+						<!-- В корзину -->
+						<button class="productView__add add-cart" type="submit" title="Положить &laquo;{GOODS_NAME}&raquo; в корзину">
+							<span>В корзину</span>
 						</button>
-						<input class="qty__input"
-									 type="number"
-									 name="form[goods_mod_id][{GOODS_MOD_ID}]"
-									 {% IF SETTINGS_GOODS_DONT_PUT_TO_CART_MORE_THAN_AVAILABLE %}max="{GOODS_MOD_REST_VALUE}" {% ENDIF %}
-									 min="1"
-									 value="1"
-									 title="Количество, {GOODS_MOD_MEASURE_NAME}">
-						<button class="qty__select qty__select--plus" type="button" title="Увеличить количество">
-							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="14" height="14" aria-hidden="true">
-								<path d="M960 448H576V64c0-35.346-28.654-64-64-64s-64 28.654-64 64v384H64c-35.346 0-64 28.654-64 64s28.654 64 64 64h384v384c0 35.345 28.654 64 64 64s64-28.655 64-64V576h384c35.345 0 64-28.654 64-64s-28.655-64-64-64z" />
-							</svg>
+						<!-- Уведомить -->
+						<button class="productView__add add-notify" type="button" title="Уведомить о поступлении" data-dialog="#dialogNotify">
+							<span>Уведомить</span>
+						</button>
+						<!-- Быстрая покупка -->
+						<button class="productView__add add-order" type="submit" title="Купить &laquo;{GOODS_NAME}&raquo; в один клик">
+							<span>В&nbsp;1&nbsp;клик</span>
 						</button>
 					</div>
-				</div>
-
-				<!-- Добавление товара в корзину -->
-				<div class="productView__cart {% IF GOODS_MOD_NB_GOODS_IN_CART %}has-in-cart{% ENDIF %}">
-					<!-- В корзину -->
-					<button class="productView__add add-cart" type="submit" title="Положить &laquo;{GOODS_NAME}&raquo; в корзину">
-						<span>В корзину</span>
-					</button>
-					<!-- Уведомить -->
-					<button class="productView__add add-notify" type="button" title="Уведомить о поступлении" data-dialog="#dialogNotify">
-						<span>Уведомить</span>
-					</button>
-					<!-- Быстрая покупка -->
-					<button class="productView__add add-order" type="submit" title="Купить &laquo;{GOODS_NAME}&raquo; в один клик">
-						<span>В&nbsp;1&nbsp;клик</span>
-					</button>
 				</div>
 
 				<!-- Ссылки на табы -->
@@ -298,7 +300,7 @@
 			 data-tabs-link="description"><span>Описание</span></a>
 		{% ENDIF %}
 		{% IFNOT goods_features_empty %}
-		<a class="tabs__link {% IF GOODS_DESCRIPTION_LARGE=1 && GOODS_SEO_DESCRIPTION_SHORT=1 && GOODS_SEO_DESCRIPTION_LARGE=1 %}is-active{% ENDIF %}"
+		<a class="tabs__link {% IFNOT GOODS_DESCRIPTION_LARGE %}is-active{% ENDIF %}"
 			 data-tabs-link="features"><span>Характеристики</span></a>
 		{% ENDIF %}
 		{% IFNOT goods_delivery_empty %}
@@ -313,10 +315,13 @@
 
 	<div class="tabs__contents">
 		<!-- Описание -->
-		{% IF GOODS_DESCRIPTION_LARGE || GOODS_SEO_DESCRIPTION_SHORT || GOODS_SEO_DESCRIPTION_LARGE %}
-		<div class="productView__description is-active tabs__content" data-tabs-content="description">
+		{% IF GOODS_DESCRIPTION_LARGE %}
+		<div class="productView__description tabs__content is-active" data-tabs-content="description">
 			<!-- Блок описания товара. Показываем его если есть описание товара -->
 			<div class="html-description">
+				{% IF GOODS_DESCRIPTION_SHORT %}
+				<p>{GOODS_DESCRIPTION_SHORT}</p>
+				{% ENDIF %}
 				{% IF GOODS_DESCRIPTION_LARGE %}
 				<p>{GOODS_DESCRIPTION_LARGE}</p>
 				{% ENDIF %}
@@ -334,7 +339,7 @@
 
 		<!-- Характеристики -->
 		{% IFNOT goods_features_empty %}
-		<div class="productView__features tabs__content {% IF GOODS_DESCRIPTION_LARGE=1 && GOODS_SEO_DESCRIPTION_SHORT=1 && GOODS_SEO_DESCRIPTION_LARGE=1 %}is-active{% ENDIF %}" data-tabs-content="features">
+		<div class="productView__features tabs__content {% IFNOT GOODS_DESCRIPTION_LARGE %}is-active{% ENDIF %}" data-tabs-content="features">
 			<table class="features__items">
 				<tbody>
 					{% FOR goods_features %}
@@ -715,11 +720,15 @@
 
 						<!-- Кнопка отправки формы -->
 						<div class="opinion__block opinion__block--buttons">
+							<div class="form__field--checkbox">
+								<input class="form__checkbox square" type="checkbox" name="form[обработки_данных]" id="form_policy_callback" required>
+								<label for="form_policy_callback">Я согласен с <a href="#dialogPolicy" data-dialog="#dialogPolicy">правилами обработки данных</a></label>
+							</div>
+							<div class="form__field--checkbox">
+								<input class="form__checkbox square" type="checkbox" name="form[получение_рассылок]" id="form_ads_callback">
+								<label for="form_ads_callback">Я согласен с получением рассылок</label>
+							</div>
 							<button class="opinion__block-button button-secondary button-large" type="submit" title="Добавить отзыв о &laquo;{GOODS_NAME}&raquo;">Оставить отзыв</button>
-							<small class="form__pp">
-								<span>Нажимая на кнопку “Отправить”, Вы соглашаетесь с</span>
-								<a data-fancybox data-src="#fancybox__pp">политикой конфиденциальности</a>
-							</small>
 						</div>
 
 					</form>

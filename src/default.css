@@ -299,8 +299,8 @@ input[type="file"] {
 /*
 ** Инпут с ошибкой
 */
-input:required:invalid {border-color: var(--color-error);}
 input:required:valid {border-color: var(--color-primary);}
+input:required:invalid {border-color: var(--color-error);}
 input.is-error {border-color: var(--color-error);}
 input.is-success {border-color: var(--color-primary-hover);}
 textarea.is-error {border-color: var(--color-error);}
@@ -388,8 +388,8 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 /*
 ** Поле формы с регистрацией
 */
-.form__registration {display: flex;align-items: center;margin-top: 12px;}
-.form__registration label {order: 2;cursor: pointer;}
+.form__field--registration {display: flex;align-items: center;margin-top: 12px;}
+.form__field--registration label {order: 2;cursor: pointer;}
 
 /*
 ** Политика конфиденциальности

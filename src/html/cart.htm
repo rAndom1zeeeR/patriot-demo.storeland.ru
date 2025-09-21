@@ -95,20 +95,26 @@
     <!-- Корзина: Итоговый блок -->
     <div class="cartTotal">
       <div class="cartTotal__inner">
+        <!-- Корзина: Минимальная сумма заказа -->
+        {% IF SETTINGS_STORE_ORDER_MIN_ORDER_PRICE %}
+        <div class="cartTotal__min is-hide">
+          <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+            <path d="M21.1276 6.15751C20.4116 4.32556 19.1547 2.75509 17.5242 1.65511C15.8937 0.555134 13.9668 -0.0221791 12.0001 5.86704e-06C10.0333 -0.0221791 8.10644 0.555134 6.4759 1.65511C4.84536 2.75509 3.58849 4.32556 2.87256 6.15751C2.11376 7.97238 1.92621 9.97544 2.3349 11.8996C2.74359 13.8238 3.7291 15.5777 5.16006 16.9275L12.0001 23.5425L18.8476 16.9275C20.2763 15.5763 21.2598 13.822 21.6671 11.8981C22.0744 9.97415 21.8862 7.97183 21.1276 6.15751Z" fill="#B51F24"/>
+            <path d="M10.485 3.9375H13.485V11.4375H10.485V3.9375ZM10.5 14.0625H13.5V17.0625H10.5V14.0625Z" fill="white"/>
+          </svg>
+          <div class="content">
+            <span>До минимальной суммы заказа осталось:</span>
+            <data class="{CURRENCY_CHAR_CODE}" value="{SETTINGS_STORE_ORDER_MIN_ORDER_PRICE}" data-total="{CART_SUM_NOW_WITH_DISCOUNT}">{SETTINGS_STORE_ORDER_MIN_ORDER_PRICE | money_format}</data>
+          </div>
+        </div>
+        {% ENDIF %}
+
         <div class="cartTotal__items">
           <div class="cartTotal__title">
             <span>Ваш заказ</span>
             <data class="cart-count" value="{CART_COUNT_TOTAL}">{CART_COUNT_TOTAL}</data>
             <data class="cart-countend" value="{CART_COUNT_TOTAL}">товар{CART_COUNT_TOTAL | gen_word_end("","а","ов")}</data>
           </div>
-
-          <!-- Корзина: Минимальная сумма заказа -->
-          {% IF SETTINGS_STORE_ORDER_MIN_ORDER_PRICE %}
-          <div class="cartTotal__item cartTotal__min is-hide">
-            <span class="cartTotal__label">До мин. суммы заказа осталось:</span>
-            <data class="cartTotal__price cartTotal__min-price {CURRENCY_CHAR_CODE}" value="{SETTINGS_STORE_ORDER_MIN_ORDER_PRICE}" data-total="{CART_SUM_NOW_WITH_DISCOUNT}">{SETTINGS_STORE_ORDER_MIN_ORDER_PRICE | money_format}</data>
-          </div>
-          {% ENDIF %}
           <!-- Корзина: Товары -->
           <div class="cartTotal__item cartTotal__goods">
             <span class="cartTotal__label">Стоимость товаров:</span>
@@ -147,24 +153,27 @@
             <data hidden class="cartTotal__price cart-sum-discount" value="{CART_SUM_NOW_WITH_DISCOUNT}">{CART_SUM_NOW_WITH_DISCOUNT | money_format}</data>
           </div>
           <div class="cartTotal__item cartTotal__buttons">
-            <button class="cartTotal__button button-reverse button-disabled" data-action="startOrder" type="submit" title="Перейти к быстрому оформлению заказа" disabled>Оформить заказ</button>
+            <button class="cartTotal__button button-reverse" data-action="startOrder" type="submit" title="Перейти к быстрому оформлению заказа" disabled>Оформить заказ</button>
+            <button class="cartTotal__button button-reverse" data-action="completeOrder" type="submit" title="Перейти к быстрому оформлению заказа" form="orderform">Оформить заказ</button>
           </div>
+					<div class="cartTotal__item form__field--checkbox">
+						<input class="form__checkbox square" type="checkbox" name="form[обработки_данных]" id="form_policy_orderfast" required>
+						<label for="form_policy_orderfast">Я согласен с <a href="#dialogPolicy" data-dialog="#dialogPolicy">правилами обработки данных</a></label>
+					</div>
+					<div class="cartTotal__item form__field--checkbox">
+						<input class="form__checkbox square" type="checkbox" name="form[получение_рассылок]" id="form_ads_orderfast">
+						<label for="form_ads_orderfast">Я согласен с получением рассылок</label>
+					</div>
         </div>
 
         <!-- Корзина: Оформление -->
         <div class="cartTotal__buttons form__buttons">
           <button class="cartTotal__button button-underline" data-action="closeOrder" type="submit" title="Перейти к быстрому оформлению заказа">Изменить заказ</button>
-          <button class="cartTotal__button button-secondary" data-action="completeOrder" type="submit" title="Перейти к быстрому оформлению заказа" form="orderform">Оформить заказ</button>
           <a class="cartTotal__button button button-underline" data-action="clearCart" href="{CART_TRUNCATE_URL}" title="Очистить корзину">
             <span>Очистить корзину</span>
           </a>
         </div>
       </div>
-
-      <small class="cartTotal__pp form__pp">
-        Нажимая на кнопку, я соглашаюсь с условиями
-        <a href="#dialogPolicy" data-dialog="#dialogPolicy">пользовательского соглашения</a>
-      </small>
     </div>
   </div>
   {% ENDIF %}

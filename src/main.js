@@ -1987,6 +1987,8 @@ function Cart() {
         $(".form__phone").mask("+7 (999) 999-9999");
         container.classList.remove("is-loading");
         contrainerAjax.removeAttribute("hidden");
+        const checkbox = document.querySelector("#form_policy_orderfast");
+        checkbox?.removeAttribute("required");
         // Заполняем все поля промокода для синхронизации
         const couponInputs = document.querySelectorAll(".coupon__input");
         if (couponInputs.length > 0) {

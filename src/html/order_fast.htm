@@ -500,7 +500,7 @@
 			<div class="orderfast__block orderfast__block--total">
 				<div class="cartTotal__items">
 					<div class="cartTotal__title">
-						<h5 class="cartTotal__title-label">Ваш заказ</h5>
+						<span>Ваш заказ</span>
 						<data class="cart-count" value="{CART_COUNT_TOTAL}">{CART_COUNT_TOTAL}</data>
 						<data class="cart-countend" value="{CART_COUNT_TOTAL}">товар{CART_COUNT_TOTAL | gen_word_end("","а","ов")}</data>
 					</div>
@@ -548,17 +548,14 @@
 
 				<!-- Корзина: Оформление -->
 				<div class="cartTotal__buttons form__buttons">
-					<button class="cartTotal__button button-reverse button-disabled" data-action="startOrder" type="submit" title="Перейти к быстрому оформлению заказа" disabled>
-						Оформить заказ
-					</button>
-					<button class="cartTotal__button button-reverse" data-action="completeOrder" type="submit" title="Перейти к быстрому оформлению заказа" form="orderform">
-						Оформить заказ
-					</button>
-					<div class="form__field form__field--checkbox">
+					<button class="cartTotal__button button-reverse button-disabled" data-action="startOrder" type="submit" title="Перейти к быстрому оформлению заказа" disabled>Оформить заказ</button>
+					<button class="cartTotal__button button-reverse" data-action="completeOrder" type="submit" title="Перейти к быстрому оформлению заказа" form="orderform">Оформить заказ</button>
+
+					<div class="form__field--checkbox">
 						<input class="form__checkbox square" type="checkbox" name="form[обработки_данных]" id="form_policy_orderfast" required>
 						<label for="form_policy_orderfast">Я согласен с <a href="#dialogPolicy" data-dialog="#dialogPolicy">правилами обработки данных</a></label>
 					</div>
-					<div class="form__field form__field--checkbox">
+					<div class="form__field--checkbox">
 						<input class="form__checkbox square" type="checkbox" name="form[получение_рассылок]" id="form_ads_orderfast">
 						<label for="form_ads_orderfast">Я согласен с получением рассылок</label>
 					</div>

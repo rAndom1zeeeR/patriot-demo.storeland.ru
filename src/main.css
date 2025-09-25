@@ -1072,6 +1072,7 @@
 /*
 ** Свайперы
 */
+.swiper {width: 100%;}
 .swiper-navigation {
 	--swiper-navigation-color: var(--color-text-primary);
 	--swiper-navigation-size: 30px;
@@ -1152,7 +1153,7 @@
 .form__field--custom input:not(:placeholder-shown) ~ label {top: 12px;}
 .form__field--custom input::placeholder {color: transparent;}
 
-.form__field--checkbox {display: flex;gap: 8px;align-items: center;}
+.form__field--checkbox {display: flex;gap: 8px;align-items: center;justify-content: flex-start !important;}
 .form__field--checkbox label {margin: 0;font-size: var(--text-size-regular);line-height: 1.25;}
 .form__field--checkbox label a {text-decoration: underline;}
 
@@ -1926,7 +1927,7 @@
 .cartTotal__min.is-hide {display: none;}
 .cartTotal__min svg {flex-shrink: 0;}
 .cartTotal__min data {white-space: nowrap;}
-.cartTotal__buttons {gap: 16px;margin: 0;padding: 20px;}
+.cartTotal__buttons {flex-direction: column;gap: 16px;align-items: flex-start;margin: 0;padding: 20px;}
 .cartTotal__button {justify-content: center;width: 100%;font-size: var(--text-size-large);font-family: var(--font-primary);}
 .cartTotal__button::before, .cartTotal__button::after {background-color: var(--color-background);}
 .cartTotal__button[data-action="closeOrder"] {display: none;}
@@ -1935,6 +1936,7 @@
 .is-started .cartTotal__button[data-action="clearCart"] {display: none;}
 .is-started .cartTotal__button[data-action="completeOrder"] {display: flex;}
 .is-started .cartTotal__button[data-action="startOrder"] {display: none;}
+.page-orderfast .cartTotal__buttons {padding-inline: 0;}
 .cartTotal__pp {display: none;margin-top: 16px;text-align: center;}
 .cartTotal__discount data {color: var(--color-error);}
 .cartTotal__discount-info {

@@ -10,7 +10,7 @@
     <!-- Корзина: Элементы -->
     <div class="cartTable">
       <!-- Форма корзины -->
-      <form class="cartTable__form" action="{CART_URL}" method="post">
+      <form class="cartTable__form" id="cartTable__form" action="{CART_URL}" method="post">
         <input type="hidden" name="fast_order" value="1" />
         <input type="hidden" name="hash" value="{HASH}" />
 
@@ -155,15 +155,16 @@
           <div class="cartTotal__item cartTotal__buttons">
             <button class="cartTotal__button button-reverse" data-action="startOrder" type="submit" title="Перейти к быстрому оформлению заказа" disabled>Оформить заказ</button>
             <button class="cartTotal__button button-reverse" data-action="completeOrder" type="submit" title="Перейти к быстрому оформлению заказа" form="orderform">Оформить заказ</button>
+            
+            <div class="form__field--checkbox">
+              <input class="form__checkbox square" type="checkbox" name="form[обработки_данных]" id="form_policy_orderfast" form="cartTable__form">
+              <label for="form_policy_orderfast">Я согласен с <a href="#dialogPolicy" data-dialog="#dialogPolicy">правилами обработки данных</a></label>
+            </div>
+            <div class="form__field--checkbox">
+              <input class="form__checkbox square" type="checkbox" name="form[получение_рассылок]" id="form_ads_orderfast" form="cartTable__form">
+              <label for="form_ads_orderfast">Я согласен с получением рассылок</label>
+            </div>
           </div>
-					<div class="cartTotal__item form__field--checkbox">
-						<input class="form__checkbox square" type="checkbox" name="form[обработки_данных]" id="form_policy_orderfast" required>
-						<label for="form_policy_orderfast">Я согласен с <a href="#dialogPolicy" data-dialog="#dialogPolicy">правилами обработки данных</a></label>
-					</div>
-					<div class="cartTotal__item form__field--checkbox">
-						<input class="form__checkbox square" type="checkbox" name="form[получение_рассылок]" id="form_ads_orderfast">
-						<label for="form_ads_orderfast">Я согласен с получением рассылок</label>
-					</div>
         </div>
 
         <!-- Корзина: Оформление -->

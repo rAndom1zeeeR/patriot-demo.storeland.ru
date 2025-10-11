@@ -180,7 +180,7 @@
 		position: absolute;
 		top: 40px;
 		left: 0;
-		z-index: 2;
+		z-index: 3;
 		display: flex;
 		width: 100%;
 	}
@@ -238,7 +238,7 @@
 	left: 0;
 	z-index: 6;
 	width: 100%;
-	margin-top: 16px;
+	margin-top: 48px;
 	padding: 16px;
 	text-align: left;
 	background-color: white;
@@ -259,7 +259,7 @@
 .search-results__items--goods {width: 100%;}
 .search-results__price {display: block;margin-top: 4px;font-size: var(--text-size-medium) !important;}
 .search-results__name {display: flex;gap: 16px;align-items: center;}
-.search-results__image {width: 60px;height: 60px;background-color: var(--color-background);}
+.search-results__image {width: 60px;height: 60px;}
 .search-results__items--category {display: flex;flex-wrap: wrap;gap: 8px;width: 100%;}
 .search-results__items--category .search-results__image {display: none;}
 .search-results__items--category .search-results__item {
@@ -1342,14 +1342,13 @@
 /*
 ** Мобильное меню
 */
-.mobile-menu__nav {max-height: 30dvh;padding-bottom: 20px;overflow: hidden auto;}
+.mobile-menu__nav {max-height: 30dvh;padding: 20px;overflow: hidden auto;background-color: var(--color-background);}
 .mobile-menu__nav::-webkit-scrollbar {width: var(--scrollbar-width-thin);}
-.mobile-menu__list {margin: 0;padding: 0 20px;list-style: none;}
-.mobile-menu__link {display: flex;font-weight: 600;text-transform: uppercase;padding-block: 6px;}
+.mobile-menu__list {margin: 0;padding: 0;list-style: none;}
+.mobile-menu__link {display: flex;font-weight: 600;padding-block: 6px;}
 .mobile-menu__catalog {
 	flex-grow: 1;
 	height: calc(70dvh - 96px - 20px - 74px);
-	margin-bottom: 20px;
 	padding: 0 20px 20px;
 	overflow: hidden auto;
 	border-bottom: 1px solid var(--color-border);
@@ -1369,9 +1368,9 @@
 	display: flex;
 	justify-content: space-between;
 	padding: 6px 28px 6px 0;
-	font-weight: 600;
-	text-transform: uppercase;
+	font-weight: 400;
 }
+.mobile-menu__catalog .catalog__link[data-level="0"] {font-weight: 600;}
 .mobile-menu__contacts {display: flex;flex-direction: column;gap: 12px;padding: 16px 24px;background-color: var(--color-background);}
 .mobile-menu__contacts .contacts__block {display: flex;flex-direction: column;gap: 8px 24px;}
 .mobile-menu-contacts {display: flex;flex-shrink: 0;gap: 16px;align-items: center;}

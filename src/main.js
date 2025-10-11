@@ -3059,16 +3059,16 @@ function swiperShow() {
  */
 function swiperViewed(selector) {
   const related = document.querySelector(selector);
-  // console.log("[DEBUG]: related", related);
+  // console.log("[DEBUG]: swiperViewed", related);
 
   if (!related) return;
-  const swiper = new Swiper(selector + " .swiper--products", {
+  const swiper = new Swiper(selector + " .swiper", {
     loop: false,
     autoplay: false,
     watchSlidesProgress: true,
     simulateTouch: true,
     grabCursor: true,
-    slidesPerView: 6,
+    slidesPerView: 4,
     spaceBetween: 16,
     preloadImages: false,
     navigation: {
@@ -3089,23 +3089,23 @@ function swiperViewed(selector) {
       320: {
         slidesPerView: 2,
       },
+      375: {
+        slidesPerView: 2,
+      },
       480: {
-        slidesPerView: 3,
+        slidesPerView: 2,
       },
       640: {
         slidesPerView: 3,
       },
       768: {
-        slidesPerView: 4,
+        slidesPerView: 3,
       },
       1024: {
+        slidesPerView: 3,
+      },
+      1200: {
         slidesPerView: 4,
-      },
-      1440: {
-        slidesPerView: 5,
-      },
-      1920: {
-        slidesPerView: 6,
       },
     },
   });
@@ -3661,7 +3661,6 @@ document.addEventListener("DOMContentLoaded", function () {
   Products();
   Opener();
   Autorization();
-  swiperViewed("#viewed");
   toTop();
   Form("dialogCallback", "Запрос обратного звонка успешно отправлен администрации магазина", "Вы уже отправляли запрос. Пожалуйста ожидайте звонка.");
   Form("dialogNotify", "Вы будете уведомлены о поступлении товара", "Вы уже отправляли запрос. Пожалуйста ожидайте.");

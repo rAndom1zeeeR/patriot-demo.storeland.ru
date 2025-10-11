@@ -7,12 +7,12 @@ console.time("start time");
  */
 function SlideUp(element, duration = 600) {
   if (!element) return;
-  element.style.transitionProperty = 'height, margin, padding';
-  element.style.transitionDuration = duration + 'ms';
-  element.style.boxSizing = 'border-box';
-  element.style.height = element.offsetHeight + 'px';
+  element.style.transitionProperty = "height, margin, padding";
+  element.style.transitionDuration = duration + "ms";
+  element.style.boxSizing = "border-box";
+  element.style.height = element.offsetHeight + "px";
   element.offsetHeight; // reflow
-  element.style.overflow = 'hidden';
+  element.style.overflow = "hidden";
   element.style.height = 0;
   element.style.paddingTop = 0;
   element.style.paddingBottom = 0;
@@ -20,16 +20,16 @@ function SlideUp(element, duration = 600) {
   element.style.marginBottom = 0;
 
   window.setTimeout(function () {
-    element.style.display = 'none';
-    element.style.removeProperty('height');
-    element.style.removeProperty('padding-top');
-    element.style.removeProperty('padding-bottom');
-    element.style.removeProperty('margin-top');
-    element.style.removeProperty('margin-bottom');
-    element.style.removeProperty('overflow');
-    element.style.removeProperty('transition-duration');
-    element.style.removeProperty('transition-property');
-    element.style.removeProperty('box-sizing');
+    element.style.display = "none";
+    element.style.removeProperty("height");
+    element.style.removeProperty("padding-top");
+    element.style.removeProperty("padding-bottom");
+    element.style.removeProperty("margin-top");
+    element.style.removeProperty("margin-bottom");
+    element.style.removeProperty("overflow");
+    element.style.removeProperty("transition-duration");
+    element.style.removeProperty("transition-property");
+    element.style.removeProperty("box-sizing");
   }, duration);
 }
 
@@ -40,32 +40,32 @@ function SlideUp(element, duration = 600) {
  */
 function SlideDown(element, duration = 600) {
   if (!element) return;
-  element.style.removeProperty('display');
+  element.style.removeProperty("display");
   let display = window.getComputedStyle(element).display;
-  if (display === 'none') display = 'block';
+  if (display === "none") display = "block";
   element.style.display = display;
   let height = element.scrollHeight;
-  element.style.overflow = 'hidden';
+  element.style.overflow = "hidden";
   element.style.height = 0;
   element.style.paddingTop = 0;
   element.style.paddingBottom = 0;
   element.style.marginTop = 0;
   element.style.marginBottom = 0;
   element.offsetHeight; // reflow
-  element.style.transitionProperty = 'height, margin, padding';
-  element.style.transitionDuration = duration + 'ms';
-  element.style.boxSizing = 'border-box';
-  element.style.height = height + 'px';
-  element.style.removeProperty('padding-top');
-  element.style.removeProperty('padding-bottom');
-  element.style.removeProperty('margin-top');
-  element.style.removeProperty('margin-bottom');
+  element.style.transitionProperty = "height, margin, padding";
+  element.style.transitionDuration = duration + "ms";
+  element.style.boxSizing = "border-box";
+  element.style.height = height + "px";
+  element.style.removeProperty("padding-top");
+  element.style.removeProperty("padding-bottom");
+  element.style.removeProperty("margin-top");
+  element.style.removeProperty("margin-bottom");
   window.setTimeout(function () {
-    element.style.removeProperty('height');
-    element.style.removeProperty('overflow');
-    element.style.removeProperty('transition-duration');
-    element.style.removeProperty('transition-property');
-    element.style.removeProperty('box-sizing');
+    element.style.removeProperty("height");
+    element.style.removeProperty("overflow");
+    element.style.removeProperty("transition-duration");
+    element.style.removeProperty("transition-property");
+    element.style.removeProperty("box-sizing");
   }, duration);
 }
 
@@ -95,10 +95,7 @@ function getClientWidth() {
  * @returns {string} Отформатированная дата в формате "DD месяц"
  */
 function getDateMonthsName(dateString) {
-  const months = [
-    'января', 'февраля', 'марта', 'апреля', 'мая', 'июня',
-    'июля', 'августа', 'сентября', 'октября', 'ноября', 'декабря'
-  ];
+  const months = ["января", "февраля", "марта", "апреля", "мая", "июня", "июля", "августа", "сентября", "октября", "ноября", "декабря"];
 
   const date = new Date(dateString);
   const day = date.getDate();
@@ -265,7 +262,7 @@ function СreateNotyCookies() {
     content.remove();
   });
 }
-СreateNotyCookies()
+СreateNotyCookies();
 
 function parseNotyMessage(str) {
   // Регулярное выражение для поиска названия товара в кавычках «...»
@@ -276,16 +273,16 @@ function parseNotyMessage(str) {
   if (match) {
     const goods = match[1]; // Название товара (первая группа захвата)
     const message = str
-      .replace(regex, '') // Удаляем часть с кавычками из сообщения
-      .replace(/^Товар\s*/i, '') // Удаляем слово "Товар" в начале, если есть
-      .replace(/\s+/g, ' ') // Заменяем множественные пробелы на один
+      .replace(regex, "") // Удаляем часть с кавычками из сообщения
+      .replace(/^Товар\s*/i, "") // Удаляем слово "Товар" в начале, если есть
+      .replace(/\s+/g, " ") // Заменяем множественные пробелы на один
       .trim(); // Удаляем пробелы в начале и конце
 
-    return { goods, message };
+    return {goods, message};
   }
 
   // Если кавычек нет, вернем исходную строку как message
-  return { goods: '', message: str };
+  return {goods: "", message: str};
 }
 
 /**
@@ -465,11 +462,10 @@ function Passwords() {
   });
 }
 
-
 /**
  * Функция для создания SVG иконки
  * Используется в функциях: на всех страницах.
- * Использует функции: 
+ * Использует функции:
  */
 function createSvgIcon(pathData, width = 12, height = 12) {
   const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
@@ -548,7 +544,6 @@ function Addto(doc = document) {
     button.addEventListener("click", handleAddtoClick);
   });
 
-
   handleAddtoDelete(".compare");
   handleAddtoDelete(".favorites");
   handleAddtoClear(".compare");
@@ -596,7 +591,7 @@ function Addto(doc = document) {
             const addtoItem = document.querySelectorAll(".compare .addto__item");
             let isRemoved = RemoveElementById(addtoItem, goods_id);
             if (!isRemoved) {
-              addtoItems.insertAdjacentHTML('afterbegin', createAddtoItem(goods_id, goods_mod_id, goods_image, goods_name, goods_price_old, goods_price_now, goods_url, `/compare/delete`));
+              addtoItems.insertAdjacentHTML("afterbegin", createAddtoItem(goods_id, goods_mod_id, goods_image, goods_name, goods_price_old, goods_price_now, goods_url, `/compare/delete`));
               // Получаем только что добавленный элемент
               const newItem = addtoItems.firstElementChild;
               handleAddtoDelete(".compare", newItem);
@@ -608,7 +603,7 @@ function Addto(doc = document) {
             const addtoItem = document.querySelectorAll(".favorites .addto__item");
             let isRemoved = RemoveElementById(addtoItem, goods_id);
             if (!isRemoved) {
-              addtoItems.insertAdjacentHTML('afterbegin', createAddtoItem(goods_id, goods_mod_id, goods_image, goods_name, goods_price_old, goods_price_now, goods_url, `/favorites/delete`));
+              addtoItems.insertAdjacentHTML("afterbegin", createAddtoItem(goods_id, goods_mod_id, goods_image, goods_name, goods_price_old, goods_price_now, goods_url, `/favorites/delete`));
               // Получаем только что добавленный элемент
               const newItem = addtoItems.firstElementChild;
               handleAddtoDelete(".favorites", newItem);
@@ -680,8 +675,8 @@ function Addto(doc = document) {
 
   // Обновление ссылки удаления
   function handleAddtoDelete(selector, context = document) {
-    const removeButtons = context.querySelectorAll(selector + ' .addto__remove');
-    removeButtons.forEach(button => {
+    const removeButtons = context.querySelectorAll(selector + " .addto__remove");
+    removeButtons.forEach((button) => {
       // Чтобы не навешивать повторно, проверим наличие обработчика через свойство
       if (!button._hasDeleteHandler) {
         addDeleteHandler(button, selector);
@@ -692,7 +687,7 @@ function Addto(doc = document) {
 
   // Добавление обработчика удаления для одной кнопки
   function addDeleteHandler(button, selector) {
-    button.addEventListener('click', handleButtonAddtoDelete);
+    button.addEventListener("click", handleButtonAddtoDelete);
 
     async function handleButtonAddtoDelete(event) {
       event.preventDefault();
@@ -717,7 +712,7 @@ function Addto(doc = document) {
           CountUppdate(counts, data.favorites_goods_count);
         }
         if (newCount === 0) {
-          document.querySelectorAll(selector).forEach(container => {
+          document.querySelectorAll(selector).forEach((container) => {
             container.classList.add("is-empty");
           });
         }
@@ -740,8 +735,8 @@ function Addto(doc = document) {
           document.querySelectorAll(selector).forEach((element) => element.classList.add("is-empty"));
           document.querySelectorAll(selector + " .addto__item").forEach((element) => {
             const title = element.querySelector(".addto__remove").getAttribute("title");
-            handleAddtoLink(selector, title, element.getAttribute('data-mod-id'));
-            element.remove()
+            handleAddtoLink(selector, title, element.getAttribute("data-mod-id"));
+            element.remove();
           });
         });
       }
@@ -753,26 +748,26 @@ function Addto(doc = document) {
     const type = selector.slice(1);
     const elements = document.querySelectorAll(".add-" + type);
     const urlAdd = `/${type}/add?id=${modId}`;
-    elements.forEach(element => {
+    elements.forEach((element) => {
       const item = element.closest("[data-id]");
       const itemMod = item.querySelector("[name='form[goods_mod_id]']");
       const itemModId = itemMod.value;
 
       if (itemModId == modId) {
-        handleAddtoCartLinkAdd(element, urlAdd, title)
+        handleAddtoCartLinkAdd(element, urlAdd, title);
       }
     });
-  };
+  }
 
   // Создание старой цены
   function createPriceOld(priceOld) {
-    if (priceOld === '0' || !priceOld) return '';
+    if (priceOld === "0" || !priceOld) return "";
     return `<s class="price__old" data-price="${priceOld}">
       <span title="${priceOld} российских рублей">
         <span class="num">${getMoneyFormat(priceOld)}</span>
         <span>р.</span>
       </span>
-    </s>`
+    </s>`;
   }
 
   // Создание новой цены
@@ -782,12 +777,12 @@ function Addto(doc = document) {
         <span class="num">${getMoneyFormat(priceNow)}</span>
         <span>р.</span>
       </span>
-    </b>`
+    </b>`;
   }
 
   // Создание элемента списка
   function createAddtoItem(goodsID, goodsModID, goodsImage, goodsName, goodsPriceOld, goodsPriceNow, goodsURL, delUrl) {
-    const CURRENCY_CHAR_CODE = 'RUB';
+    const CURRENCY_CHAR_CODE = "RUB";
     return `
       <div class="addto__item" data-id="${goodsID}" data-mod-id="${goodsModID}">
         <div class="addto__image">
@@ -808,7 +803,7 @@ function Addto(doc = document) {
           </svg>
         </a>
       </div>
-    `
+    `;
   }
 }
 
@@ -879,8 +874,8 @@ function AddtoCart(doc = document) {
     CartDiscountUppdate(cartSumDiscounts, cartSumDiscountData);
     if (cartDiscountData && addtoDiscounts.length > 0) {
       CartDiscountUppdate(addtoDiscounts, cartDiscountData);
-      addtoDiscounts.forEach(item => {
-        cartDiscountData ? item.classList.remove('is-hide') : item.classList.add('is-hide');
+      addtoDiscounts.forEach((item) => {
+        cartDiscountData ? item.classList.remove("is-hide") : item.classList.add("is-hide");
       });
     }
     // Сообщение с уведомлением действия
@@ -988,7 +983,7 @@ function AddtoOrder(doc = document) {
     ValidateRequired(form);
     new AirDatepicker("#order_delivery_convenient_date", {
       autoClose: true,
-      onSelect: function ({ datepicker }) {
+      onSelect: function ({datepicker}) {
         ValidateInput(datepicker.$el);
       },
     });
@@ -1010,8 +1005,8 @@ function AddtoOrder(doc = document) {
     CartDiscountUppdate(cartSumDiscounts, cartSumDiscountData);
     if (cartDiscountData && addtoDiscounts.length > 0) {
       CartDiscountUppdate(addtoDiscounts, cartDiscountData);
-      addtoDiscounts.forEach(item => {
-        cartDiscountData ? item.classList.remove('is-hide') : item.classList.add('is-hide');
+      addtoDiscounts.forEach((item) => {
+        cartDiscountData ? item.classList.remove("is-hide") : item.classList.add("is-hide");
       });
     }
   }
@@ -1092,10 +1087,10 @@ function Filters() {
         }
       });
 
-      const filterListCount = list.querySelector(".filter__title b");
-      if (filterListCount) {
-        filterListCount.innerHTML = filterChecked > 0 ? filterChecked : "";
-      }
+      // const filterListCount = list.querySelector(".filter__title b");
+      // if (filterListCount) {
+      //   filterListCount.innerHTML = filterChecked > 0 ? filterChecked : "";
+      // }
     });
   }
 
@@ -1112,7 +1107,7 @@ function Filters() {
       priceSubmitButtonBlock = $(".filters-price__buttons"); // Блок с кнопкой, которую есть смысл нажимать только тогда, когда изменялся диапазон цен.
 
     // Слайдер, который используется для удобства выбора цены
-    console.log('priceSliderBlock', priceSliderBlock)
+    console.log("priceSliderBlock", priceSliderBlock);
     if (priceSliderBlock) {
       priceSliderBlock.slider({
         range: true,
@@ -1264,14 +1259,12 @@ function Products() {
   }
 
   // Форматирование даты
-  function formatDate(product) {
-    const dateTime = product.querySelector(".product__date time");
-    if (dateTime) {
-      dateTime.innerHTML = getDateMonthsName(dateTime.getAttribute("datetime"));
-    }
-  }
-
-  
+  // function formatDate(product) {
+  //   const dateTime = product.querySelector(".product__date time");
+  //   if (dateTime) {
+  //     dateTime.innerHTML = getDateMonthsName(dateTime.getAttribute("datetime"));
+  //   }
+  // }
 }
 
 /**
@@ -1524,7 +1517,7 @@ function Goods(doc) {
 
     // Слайдер дополнительных изображений
     const swiper = new Swiper(".thumblist .swiper", {
-      direction: 'vertical',
+      direction: "vertical",
       loop: true,
       slidesPerView: 4,
       spaceBetween: 8,
@@ -1570,7 +1563,6 @@ function Goods(doc) {
     campaignDate.innerHTML = getDateMonthsName(campaignDate.getAttribute("datetime"));
   }
 }
-
 
 /**
  * Товар. Отзывы.
@@ -2000,7 +1992,7 @@ function Cart() {
         }
         new AirDatepicker("#order_delivery_convenient_date", {
           autoClose: true,
-          onSelect: function ({ datepicker }) {
+          onSelect: function ({datepicker}) {
             ValidateInput(datepicker.$el);
           },
         });
@@ -2077,7 +2069,7 @@ function CartClear() {
       getHtmlFromUrl(url).then((data) => {
         document.querySelectorAll(".cart").forEach((element) => element.classList.add("is-empty"));
         document.querySelectorAll(".cart .addto__item").forEach((element) => element.remove());
-        document.querySelectorAll(".cart-count").forEach((element) => element.innerHTML = "0");
+        document.querySelectorAll(".cart-count").forEach((element) => (element.innerHTML = "0"));
         const productViewCart = document.querySelector(".productView__cart");
         if (productViewCart) {
           productViewCart.classList.remove("has-in-cart");
@@ -2379,7 +2371,7 @@ function OrderCoupons() {
       });
     }
   });
-    
+
   function handleCouponUpdate(data, coupon) {
     const cartDiscounts = document.querySelectorAll(".cartTotal__discount");
     const cartCoupons = document.querySelectorAll(".cartTotal__coupons");
@@ -2387,14 +2379,13 @@ function OrderCoupons() {
     const discountPrice = data.querySelector(".order-total__price");
     const cartTotalPriceSum = Math.floor(discountPrice.getAttribute("data-price"));
     const cartTotalPriceSumDelivery = Math.floor(discountPrice.getAttribute("data-price-delivery"));
-    console.log('cartTotalPriceSumDelivery', cartTotalPriceSumDelivery);
+    console.log("cartTotalPriceSumDelivery", cartTotalPriceSumDelivery);
     cartTotals.forEach((total) => {
-      console.log('total', total);
+      console.log("total", total);
       total.querySelector(".cart-total .num").innerHTML = getMoneyFormat(cartTotalPriceSumDelivery);
       total.querySelector(".cart-total").value = cartTotalPriceSumDelivery;
       total.querySelector(".cart-sum-discount").value = cartTotalPriceSumDelivery;
       total.querySelector(".cart-sum-discount .num").innerHTML = getMoneyFormat(cartTotalPriceSumDelivery);
-      
     });
 
     const discount = data.querySelector(".order-discount");
@@ -2500,12 +2491,12 @@ function Opener() {
   if (catalogButton) {
     catalogButton.addEventListener("click", (event) => {
       event.preventDefault();
-      const parentTarget = event.currentTarget.closest('[data-mobile-catalog]');
-      if(getClientWidth() > 1024) {
+      const parentTarget = event.currentTarget.closest("[data-mobile-catalog]");
+      if (getClientWidth() > 1024) {
         OverlayOpener(parentTarget, handleCatalogOpened);
       } else {
-        document.querySelector('#addtoMenu').removeAttribute('hidden');
-        document.body.classList.add('is-bodylock');
+        document.querySelector("#addtoMenu").removeAttribute("hidden");
+        document.body.classList.add("is-bodylock");
       }
     });
     // Закрытие мобильного каталога
@@ -2566,9 +2557,9 @@ function Opener() {
     link.addEventListener("click", (event) => {
       event.preventDefault();
       const element = event.currentTarget.getAttribute("data-mobile-open");
-      console.log('element', element);
+      console.log("element", element);
       const sidebar = document.querySelectorAll(".sidebar");
-      sidebar.forEach(item => {
+      sidebar.forEach((item) => {
         item.setAttribute("hidden", "hidden");
       });
       if (element === "compare") {
@@ -2620,7 +2611,7 @@ function SidebarOpener(selector, opener) {
 
   function handleOpen(event) {
     event.preventDefault();
-    console.log('button', button)
+    console.log("button", button);
     if (button.classList.contains("is-active")) {
       handleClosed();
     } else {
@@ -2648,19 +2639,17 @@ function VisibleItems(selector) {
   // Находим основной блок
   const block = document.querySelector(selector);
   if (!block) return;
-  
+
   // Находим кнопку переключения видимости
   const button = block.querySelector("[data-visible-button]");
   if (!button) return;
-  
+
   // Получаем все элементы, которые могут быть скрыты/показаны
   const items = block.querySelectorAll("[data-visible-item]");
-  
+
   // Фильтруем только видимые элементы (имеющие размеры)
-  const visibleItems = Array.from(items).filter(
-    item => !!(item.offsetWidth || item.offsetHeight || item.getClientRects().length)
-  );
-  
+  const visibleItems = Array.from(items).filter((item) => !!(item.offsetWidth || item.offsetHeight || item.getClientRects().length));
+
   // Управляем отображением кнопки - показываем только если есть скрытые элементы
   const hasHiddenItems = items.length > visibleItems.length;
   button.parentElement.style.display = hasHiddenItems ? "block" : "none";
@@ -2668,14 +2657,14 @@ function VisibleItems(selector) {
   // Обработчик клика по кнопке
   button.addEventListener("click", (event) => {
     event.preventDefault();
-    
+
     // Меняем текст кнопки используя слоты
     SlotText(event.currentTarget);
-    
+
     // Переключаем активное состояние для кнопки и блока
     event.currentTarget.classList.toggle("is-active");
     block.classList.toggle("is-active");
-    
+
     // Прокручиваем к нужной позиции с задержкой
     setTimeout(() => {
       // Если кнопка активна - остаемся на месте, иначе прокручиваем к блоку
@@ -2689,21 +2678,21 @@ function VisibleItems(selector) {
  * @param {number|boolean} offsetTop - Расстояние от верха страницы в пикселях
  * @returns {boolean} - Возвращает false если offsetTop === true, иначе undefined
  * @throws {Error} - Если offsetTop не является числом или boolean
- * 
+ *
  * @example
  * // Прокрутка к началу страницы
  * scrollTop(0);
- * 
+ *
  * // Прокрутка к элементу с отступом 100px от верха
  * scrollTop(100);
- * 
+ *
  * // Отмена прокрутки
  * scrollTop(true);
  */
 function scrollTop(offsetTop) {
   // Проверяем тип входного параметра
-  if (typeof offsetTop !== 'number' && typeof offsetTop !== 'boolean') {
-    throw new Error('offsetTop должен быть числом или boolean');
+  if (typeof offsetTop !== "number" && typeof offsetTop !== "boolean") {
+    throw new Error("offsetTop должен быть числом или boolean");
   }
 
   // Если offsetTop === true, отменяем прокрутку
@@ -2720,7 +2709,7 @@ function scrollTop(offsetTop) {
   window.scrollTo({
     top: offsetTop,
     left: 0,
-    behavior: "smooth"
+    behavior: "smooth",
   });
 }
 
@@ -2782,7 +2771,7 @@ function swiperBanners(selector) {
       },
       1200: {
         slidesPerView: 3,
-      }
+      },
     },
   });
 }
@@ -2841,11 +2830,10 @@ function swiperNews(selector) {
       },
       1200: {
         slidesPerView: 3,
-      }
+      },
     },
   });
 }
-
 
 /**
  * Слайдер товаров на главной.
@@ -2901,7 +2889,7 @@ function swiperPdt(selector) {
       },
       1200: {
         slidesPerView: 4,
-      }
+      },
     },
   });
   // console.log("[DEBUG]: swiper", swiper);
@@ -2961,7 +2949,7 @@ function swiperSmall(selector) {
       },
       1200: {
         slidesPerView: 5,
-      }
+      },
     },
   });
 }
@@ -3018,7 +3006,7 @@ function swiperMedium(selector) {
       },
       1200: {
         slidesPerView: 4,
-      }
+      },
     },
   });
 }
@@ -3063,7 +3051,6 @@ function swiperShow() {
     },
   });
 }
-
 
 /**
  * Слайдер Вы смотрели.
@@ -3125,7 +3112,6 @@ function swiperViewed(selector) {
   // console.log("[DEBUG]: swiper", swiper);
 }
 
-
 /**
  * Слайдер товаров на главной.
  * Используется в функциях: на главной
@@ -3180,7 +3166,7 @@ function swiperOpinions(selector) {
       },
       1200: {
         slidesPerView: 4,
-      }
+      },
     },
   });
   // console.log("[DEBUG]: swiper", swiper);
@@ -3189,37 +3175,37 @@ function swiperOpinions(selector) {
 /**
  * Табы.
  * Используется в функциях: на странице Товар
- * Использует функции: 
+ * Использует функции:
  */
 function Tabs(selector) {
   const block = document.querySelector(selector);
   if (!block) return;
   const tabsContainer = block;
-  const tabsContent = block.querySelectorAll('[data-tabs-content]');
-  const tabsLinks = block.querySelectorAll('[data-tabs-link]');
+  const tabsContent = block.querySelectorAll("[data-tabs-content]");
+  const tabsLinks = block.querySelectorAll("[data-tabs-link]");
 
   if (!tabsContainer || !tabsContent.length || !tabsLinks.length) return;
 
-  tabsContainer.addEventListener('click', handleTabClick);
+  tabsContainer.addEventListener("click", handleTabClick);
 
   function handleTabClick(event) {
-    const target = event.target.closest('[data-tabs-link]');
+    const target = event.target.closest("[data-tabs-link]");
     if (!target) return;
 
     event.preventDefault();
 
     // Убираем активный класс у всех табов
-    tabsLinks.forEach(link => link.classList.remove('is-active'));
+    tabsLinks.forEach((link) => link.classList.remove("is-active"));
     // Добавляем активный класс текущему табу
-    target.classList.add('is-active');
+    target.classList.add("is-active");
 
     const tabId = target.dataset.tabsLink;
 
     // Скрываем все контенты
-    tabsContent.forEach(content => {
-      content.classList.remove('is-active');
+    tabsContent.forEach((content) => {
+      content.classList.remove("is-active");
       if (content.dataset.tabsContent === tabId) {
-        content.classList.add('is-active');
+        content.classList.add("is-active");
       }
     });
   }
@@ -3239,7 +3225,7 @@ function swiperProductImages(id) {
     simulateTouch: true,
     grabCursor: true,
     slideToClickedSlide: true,
-    slidesPerView: '1',
+    slidesPerView: "1",
     spaceBetween: 0,
     preventClicks: true,
     watchOverflow: true,
@@ -3252,37 +3238,37 @@ function swiperProductImages(id) {
     },
     pagination: {
       enabled: false,
-      el: id + ' .swiper-pagination',
-      type: 'bullets',
+      el: id + " .swiper-pagination",
+      type: "bullets",
       dynamicBullets: true,
       clickable: true,
     },
     scrollbar: {
       enabled: true,
-      el: id + ' .swiper-scrollbar',
+      el: id + " .swiper-scrollbar",
       snapOnRelease: true,
       draggable: true,
     },
     navigation: {
       enabled: false,
-      nextEl: id + ' .swiper-button-next',
-      prevEl: id + ' .swiper-button-prev',
+      nextEl: id + " .swiper-button-next",
+      prevEl: id + " .swiper-button-prev",
     },
   });
 }
 
 /**
  * Обрабатывает авторизацию пользователя без перезагрузки страницы
- * 
+ *
  * Функция инициализирует обработку формы авторизации и обновляет UI после успешной авторизации:
  * - Отправляет данные формы асинхронно
  * - Обновляет содержимое диалога авторизации
  * - Обновляет ссылку авторизации в шапке сайта
  * - Обрабатывает ошибки и показывает уведомления
- * 
+ *
  * @requires getHtmlFromPost - Функция для отправки POST-запроса
  * @requires СreateNoty - Функция для создания уведомлений
- * 
+ *
  * @example
  * // HTML
  * <div id="dialogLogin">
@@ -3292,7 +3278,7 @@ function swiperProductImages(id) {
  *     <button type="submit">Войти</button>
  *   </form>
  * </div>
- * 
+ *
  * // JavaScript
  * Autorization();
  */
@@ -3310,13 +3296,13 @@ function Autorization() {
   // Константы для селекторов
   const SELECTORS = {
     loginLink: ".addto__link.login",
-    dialogContent: "#dialogLogin .dialog__container"
+    dialogContent: "#dialogLogin .dialog__container",
   };
 
   // Сообщения об ошибках
   const MESSAGES = {
     error: "Ошибка авторизации. Попробуйте позже.",
-    success: "Авторизация успешно выполнена"
+    success: "Авторизация успешно выполнена",
   };
 
   /**
@@ -3338,8 +3324,8 @@ function Autorization() {
     const loginLink = document.querySelector(SELECTORS.loginLink);
     const newLoginLink = responseData.querySelector(SELECTORS.loginLink);
 
-    console.log('loginLink', loginLink);
-    console.log('newLoginLink', newLoginLink);
+    console.log("loginLink", loginLink);
+    console.log("newLoginLink", newLoginLink);
 
     if (loginLink && newLoginLink) {
       loginLink.innerHTML = newLoginLink.innerHTML;
@@ -3365,8 +3351,8 @@ function Autorization() {
       const responseData = await getHtmlFromPost(authForm.action, formData);
 
       // Показываем уведомление об успехе/ошибке
-      const noticeError = responseData.querySelector('.notice--error')
-      const noticeSuccess = responseData.querySelector('.notice--success')
+      const noticeError = responseData.querySelector(".notice--error");
+      const noticeSuccess = responseData.querySelector(".notice--success");
 
       if (noticeError) {
         СreateNoty("error", noticeError.textContent);
@@ -3394,20 +3380,20 @@ function Autorization() {
 
 /**
  * Обрабатывает отправку формы без перезагрузки страницы
- * 
+ *
  * Функция инициализирует обработку формы и отправляет данные асинхронно:
  * - Отправляет данные формы через POST-запрос
  * - Обрабатывает ответ сервера
  * - Показывает уведомления об успехе/ошибке
  * - Автоматически закрывает модальное окно после успешной отправки
- * 
+ *
  * @param {string} id - ID блока с формой
  * @param {string} successMessage - Сообщение об успешной отправке
  * @param {string} errorMessage - Сообщение об ошибке
- * 
+ *
  * @requires getJsonFromPost - Функция для отправки POST-запроса
  * @requires СreateNoty - Функция для создания уведомлений
- * 
+ *
  * @example
  * // HTML
  * <div id="contactForm">
@@ -3418,7 +3404,7 @@ function Autorization() {
  *     <button type="submit">Отправить</button>
  *   </form>
  * </div>
- * 
+ *
  * // JavaScript
  * Form(
  *   "contactForm",
@@ -3442,7 +3428,7 @@ function Form(id, successMessage, errorMessage) {
   const CONFIG = {
     closeDelay: 3000, // Задержка закрытия модального окна в мс
     ajaxFlag: "ajax_q",
-    bodyOnlyFlag: "only_body"
+    bodyOnlyFlag: "only_body",
   };
 
   /**
@@ -3495,7 +3481,6 @@ function Form(id, successMessage, errorMessage) {
       if (response.status === "ok") {
         closeModal();
       }
-
     } catch (error) {
       console.error("[ERROR]: Form submission failed", error);
       СreateNoty("error", errorMessage);
@@ -3512,23 +3497,23 @@ function Form(id, successMessage, errorMessage) {
 
 /**
  * Инициализирует кнопку прокрутки страницы вверх
- * 
+ *
  * Функция добавляет обработчики событий для кнопок с классом 'toTop':
  * - Отслеживает скролл страницы и показывает/скрывает кнопку
  * - При клике плавно прокручивает страницу вверх
- * 
+ *
  * @example
  * // HTML
  * <button class="toTop is-hidden">Наверх</button>
- * 
+ *
  * // JavaScript
  * toTop();
- * 
+ *
  * @requires scrollTop - Функция для плавной прокрутки страницы
  */
 function toTop() {
   // Получаем все кнопки "наверх"
-  const topButtons = document.querySelectorAll('.toTop');
+  const topButtons = document.querySelectorAll(".toTop");
 
   // Если кнопок нет, завершаем выполнение
   if (!topButtons.length) return;
@@ -3540,8 +3525,8 @@ function toTop() {
   const handleScroll = () => {
     const isScrolled = window.scrollY > SCROLL_THRESHOLD;
 
-    topButtons.forEach(button => {
-      button.classList.toggle('is-hidden', !isScrolled);
+    topButtons.forEach((button) => {
+      button.classList.toggle("is-hidden", !isScrolled);
     });
   };
 
@@ -3551,16 +3536,16 @@ function toTop() {
   };
 
   // Добавляем обработчики для каждой кнопки
-  topButtons.forEach(button => {
+  topButtons.forEach((button) => {
     // Добавляем обработчик скролла
-    window.addEventListener('scroll', handleScroll, { passive: true });
+    window.addEventListener("scroll", handleScroll, {passive: true});
 
     // Добавляем обработчик клика
-    button.addEventListener('click', handleClick);
+    button.addEventListener("click", handleClick);
 
     // Добавляем поддержку клавиатуры
-    button.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter' || event.key === ' ') {
+    button.addEventListener("keydown", (event) => {
+      if (event.key === "Enter" || event.key === " ") {
         event.preventDefault();
         handleClick();
       }
@@ -3572,15 +3557,15 @@ function toTop() {
 }
 
 function ScrollToTop() {
-  const button = document.querySelector('.mobile-nav__link--go');
-  const buttonText = button.querySelector('.mobile-nav__label');
+  const button = document.querySelector(".mobile-nav__link--go");
+  const buttonText = button.querySelector(".mobile-nav__label");
   const SCROLL_THRESHOLD = 200;
 
   // Функция для плавного скролла
   function smoothScrollTop() {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth'
+      behavior: "smooth",
     });
   }
 
@@ -3591,13 +3576,13 @@ function ScrollToTop() {
     if (window.scrollY > 0) {
       smoothScrollTop();
     } else {
-      window.location.href = '/';
+      window.location.href = "/";
     }
   }
 
   // Обработчик нажатия клавиши
   function handleKeyDown(event) {
-    if (event.key === 'Enter' || event.key === ' ') {
+    if (event.key === "Enter" || event.key === " ") {
       event.preventDefault();
       handleClick(event);
     }
@@ -3607,11 +3592,9 @@ function ScrollToTop() {
   function updateButtonState() {
     const isScrolled = window.scrollY > SCROLL_THRESHOLD;
 
-    button.classList.toggle('is-visible', isScrolled);
-    buttonText.textContent = isScrolled ? 'Наверх' : 'Главная';
-    button.setAttribute('aria-label',
-      isScrolled ? 'Прокрутить наверх' : 'Перейти на главную страницу'
-    );
+    button.classList.toggle("is-visible", isScrolled);
+    buttonText.textContent = isScrolled ? "Наверх" : "Главная";
+    button.setAttribute("aria-label", isScrolled ? "Прокрутить наверх" : "Перейти на главную страницу");
   }
 
   // Оптимизированный обработчик скролла
@@ -3634,9 +3617,9 @@ function ScrollToTop() {
   function init() {
     if (!button) return;
 
-    window.addEventListener('scroll', throttledScroll());
-    button.addEventListener('click', handleClick);
-    button.addEventListener('keydown', handleKeyDown);
+    window.addEventListener("scroll", throttledScroll());
+    button.addEventListener("click", handleClick);
+    button.addEventListener("keydown", handleKeyDown);
 
     // Начальное состояние
     updateButtonState();
@@ -3646,21 +3629,20 @@ function ScrollToTop() {
   function destroy() {
     if (!button) return;
 
-    window.removeEventListener('scroll', throttledScroll());
-    button.removeEventListener('click', handleClick);
-    button.removeEventListener('keydown', handleKeyDown);
+    window.removeEventListener("scroll", throttledScroll());
+    button.removeEventListener("click", handleClick);
+    button.removeEventListener("keydown", handleKeyDown);
   }
 
   return {
     init,
-    destroy
+    destroy,
   };
 }
 
 // Инициализация
 const scrollToTop = ScrollToTop();
 scrollToTop.init();
-
 
 /**
  * Загрузка основных функций шаблона на всех страницах.
@@ -3679,7 +3661,7 @@ document.addEventListener("DOMContentLoaded", function () {
   Products();
   Opener();
   Autorization();
-  swiperViewed('#viewed');
+  swiperViewed("#viewed");
   toTop();
   Form("dialogCallback", "Запрос обратного звонка успешно отправлен администрации магазина", "Вы уже отправляли запрос. Пожалуйста ожидайте звонка.");
   Form("dialogNotify", "Вы будете уведомлены о поступлении товара", "Вы уже отправляли запрос. Пожалуйста ожидайте.");

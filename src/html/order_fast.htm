@@ -14,17 +14,15 @@
 			<!-- Корзина: Минимальная сумма заказа -->
 			{% IF SETTINGS_STORE_ORDER_MIN_ORDER_PRICE %}
 			<div class="orderfast__block cartTotal__min is-hide">
-				<div class="cartTotal__min-icon">
-					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="32" height="32" aria-hidden="true">
-						<path
-									d="M1012.081 831.996 589.505 102.667C573.377 74.437 544.347 58 512.087 58c-32.256 0-61.29 16.795-77.418 44.667L12.096 831.996c-16.129 27.875-16.129 61.107 0 89.337s45.161 44.668 77.418 44.668h844.79c32.256 0 61.29-16.797 77.418-44.668 16.128-27.875 16.486-61.462.358-89.337zM89.873 876.665l422.215-728.972 422.576 728.614-844.79.358zM557.25 374.96c11.469 13.221 16.486 30.376 14.336 47.528l-41.933 268.003a17.694 17.694 0 0 1-5.943 10.858 17.778 17.778 0 0 1-11.622 4.323 17.79 17.79 0 0 1-11.622-4.323 17.688 17.688 0 0 1-5.939-10.858l-41.574-267.648c-2.512-17.507 2.867-34.662 13.978-47.883 22.938-26.085 67.741-26.085 90.32 0zm7.885 423.091c0 26.8-23.654 48.955-53.047 48.955-29.389 0-53.043-21.797-53.043-48.955s23.654-48.955 53.043-48.955c29.392 0 53.047 21.797 53.047 48.955z" />
-					</svg>
+				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+				  <path d="M21.1276 6.15751C20.4116 4.32556 19.1547 2.75509 17.5242 1.65511C15.8937 0.555134 13.9668 -0.0221791 12.0001 5.86704e-06C10.0333 -0.0221791 8.10644 0.555134 6.4759 1.65511C4.84536 2.75509 3.58849 4.32556 2.87256 6.15751C2.11376 7.97238 1.92621 9.97544 2.3349 11.8996C2.74359 13.8238 3.7291 15.5777 5.16006 16.9275L12.0001 23.5425L18.8476 16.9275C20.2763 15.5763 21.2598 13.822 21.6671 11.8981C22.0744 9.97415 21.8862 7.97183 21.1276 6.15751Z" fill="#B51F24"/>
+				  <path d="M10.485 3.9375H13.485V11.4375H10.485V3.9375ZM10.5 14.0625H13.5V17.0625H10.5V14.0625Z" fill="white"/>
+				</svg>
+				<div class="content">
+				  <span>До минимальной суммы заказа осталось:</span>
+				  <data class="cartTotal__price {CURRENCY_CHAR_CODE}" value="{SETTINGS_STORE_ORDER_MIN_ORDER_PRICE}" data-total="{CART_SUM_NOW_WITH_DISCOUNT}">{SETTINGS_STORE_ORDER_MIN_ORDER_PRICE | money_format}</data>
 				</div>
-				<div class="cartTotal__min-title">
-					<span class="cartTotal__label">До минимальной суммы заказа осталось:</span>
-					<data class="cartTotal__price {CURRENCY_CHAR_CODE}" value="{SETTINGS_STORE_ORDER_MIN_ORDER_PRICE}" data-total="{CART_SUM_NOW_WITH_DISCOUNT}">{SETTINGS_STORE_ORDER_MIN_ORDER_PRICE | money_format}</data>
-				</div>
-			</div>
+			  </div>
 			{% ENDIF %}
 
 			<!-- Данные покупателя -->
@@ -550,7 +548,8 @@
 				<div class="cartTotal__buttons form__buttons">
 					<button class="cartTotal__button button-reverse button-disabled" data-action="startOrder" type="submit" title="Перейти к быстрому оформлению заказа" disabled>Оформить заказ</button>
 					<button class="cartTotal__button button-reverse" data-action="completeOrder" type="submit" title="Перейти к быстрому оформлению заказа" form="orderform">Оформить заказ</button>
-
+				</div>
+				<div class="cartTotal__checkbox">
 					<div class="form__field--checkbox">
 						<input class="form__checkbox square" type="checkbox" name="form[обработки_данных]" id="form_policy_orderfast" required>
 						<label for="form_policy_orderfast">Я согласен с <a href="#dialogPolicy" data-dialog="#dialogPolicy">правилами обработки данных</a></label>

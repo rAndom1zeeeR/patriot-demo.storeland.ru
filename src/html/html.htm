@@ -1433,7 +1433,15 @@
 					<div class="main__headline headline">
 						<h1 class="headline__title">{PAGE_TITLE}</h1>
 					</div>
-					<div class="main__body">{BODY}</div>
+					<div class="main__body">
+						<div class="main__content" data-main-content>{BODY}</div>
+						<button class="main__button button button-small button-tertiary" data-main-action="showAll">
+							<span>Подробнее</span>
+							<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 240 240" width="12" height="12" aria-hidden="true">
+								<path d="M129.1 183.3 237.3 75c4.7-4.8 4.7-12.5 0-17.2-4.8-4.8-12.5-4.8-17.2 0l-99.7 99.7-99.7-99.7C16 53 8.3 53 3.5 57.8c-4.7 4.8-4.7 12.5 0 17.2l108.4 108.3c4.7 4.7 12.5 4.7 17.2 0z"></path>
+							</svg>
+						</button>
+					</div>
 				</div>
 				{% ELSE %}
 				<!-- Основные блоки заголовков -->
@@ -2900,9 +2908,10 @@
 					swiperPdt('#pdtBest');
 					swiperPdt('#pdtNew');
 					swiperOpinions('#opinions');
-					VisibleItems('#pdtSale');
-					VisibleItems('footer [data-visible-list]');
 				}, 300);
+				showAllContent();
+				VisibleItems('#pdtSale');
+				VisibleItems('footer [data-visible-list]');
 			});
 		</script>
 		{% ENDIF %}

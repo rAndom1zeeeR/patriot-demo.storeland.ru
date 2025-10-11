@@ -1139,6 +1139,9 @@
 /*
 ** Основная часть
 */
+.main__content {max-height: 100px;overflow: hidden;}
+.main__content.is-active {max-height: 100%;}
+.main__button.is-active svg {transform: skew(15deg) rotate(180deg);}
 @media all and (min-width: 1024px) {
 	.main__inner {display: flex;gap: 32px;align-items: flex-start;}
 	.main__headline {flex-shrink: 0;flex-wrap: wrap;width: 220px;}

@@ -3644,6 +3644,23 @@ function ScrollToTop() {
 const scrollToTop = ScrollToTop();
 scrollToTop.init();
 
+// Показать все
+function showAllContent() {
+  const content = document.querySelector("[data-main-content]");
+  const button = document.querySelector("[data-main-action]");
+
+  button.addEventListener("click", (event) => {
+    event.preventDefault();
+    if (content.classList.contains("is-active")) {
+      content.classList.remove("is-active");
+      button.classList.remove("is-active");
+    } else {
+      content.classList.add("is-active");
+      button.classList.add("is-active");
+    }
+  });
+}
+
 /**
  * Загрузка основных функций шаблона на всех страницах.
  */

@@ -1112,6 +1112,7 @@ function Filters() {
       priceSubmitButtonBlock = $(".filters-price__buttons"); // Блок с кнопкой, которую есть смысл нажимать только тогда, когда изменялся диапазон цен.
 
     // Слайдер, который используется для удобства выбора цены
+    console.log('priceSliderBlock', priceSliderBlock)
     if (priceSliderBlock) {
       priceSliderBlock.slider({
         range: true,

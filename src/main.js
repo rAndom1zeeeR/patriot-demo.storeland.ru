@@ -1240,7 +1240,7 @@ function Products() {
     StickerSales(product);
     Attrs(product);
     Quantity(product);
-    formatDate(product);
+    // formatDate(product);
   });
 
   // Показать/скрыть характеристики товара

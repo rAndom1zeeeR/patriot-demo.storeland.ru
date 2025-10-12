@@ -16,7 +16,7 @@ body {
 	font-family: var(--font-primary);
 	font-style: normal;
 	line-height: 1;
-	background: white;
+	background: var(--color-white);
 	scrollbar-gutter: stable;
 }
 *, *::before, *::after {box-sizing: border-box;}
@@ -85,7 +85,7 @@ main {margin-block: 20px;}
 	top: 0;
 	display: flow-root;
 	width: 100%;
-	color: white;
+	color: var(--color-white);
 	background: var(--color-primary);
 }
 
@@ -104,7 +104,7 @@ button, .button, .paymentFormSubmitLink, .paymentFormTbodySubmitButton {
 	font-size: var(--text-size-medium);
 	font-family: inherit;
 	line-height: var(--text-height-medium);
-	background-color: white;
+	background-color: var(--color-white);
 	border: 1px solid var(--color-black);
 	border-radius: 0;
 	outline: none;
@@ -113,9 +113,9 @@ button, .button, .paymentFormSubmitLink, .paymentFormTbodySubmitButton {
 	fill: currentcolor;
 	padding-inline: 32px;
 }
-button:active, .button:active, .paymentFormSubmitLink:active, .paymentFormTbodySubmitButton:active {color: white;background-color: var(--color-black);border-color: var(--color-black);}
+button:active, .button:active, .paymentFormSubmitLink:active, .paymentFormTbodySubmitButton:active {color: var(--color-white);background-color: var(--color-black);border-color: var(--color-black);}
 @media (hover: hover) and (pointer: fine) {
-	button:hover, .button:hover, .paymentFormSubmitLink:hover, .paymentFormTbodySubmitButton:hover {color: white;background-color: var(--color-black);border-color: var(--color-black);}
+	button:hover, .button:hover, .paymentFormSubmitLink:hover, .paymentFormTbodySubmitButton:hover {color: var(--color-white);background-color: var(--color-black);border-color: var(--color-black);}
 }
 .button::before, .button::after, button::before, button::after {
 	position: absolute;
@@ -124,7 +124,7 @@ button:active, .button:active, .paymentFormSubmitLink:active, .paymentFormTbodyS
 	display: block;
 	width: 10px;
 	height: 10px;
-	background-color: white;
+	background-color: var(--color-white);
 	border-bottom: 1px solid var(--color-black);
 	transform: rotate(-45deg);
 	transition: border-color var(--duration);
@@ -133,11 +133,11 @@ button:active, .button:active, .paymentFormSubmitLink:active, .paymentFormTbodyS
 .button::after, button::after {inset: auto -5px -5px auto;transform: rotate(135deg);}
 
 /* Кнопка Вторичная */
-.button-secondary {color: var(--color-secondary);background-color: white;border-color: var(--color-secondary);}
-.button-secondary:active {color: white;background-color: var(--color-secondary);border-color: var(--color-secondary);}
+.button-secondary {color: var(--color-secondary);background-color: var(--color-white);border-color: var(--color-secondary);}
+.button-secondary:active {color: var(--color-white);background-color: var(--color-secondary);border-color: var(--color-secondary);}
 .button-secondary::before, .button-secondary::after {border-color: var(--color-secondary);}
 @media (hover: hover) and (pointer: fine) {
-	.button-secondary:hover {color: white;background-color: var(--color-secondary);border-color: var(--color-secondary);}
+	.button-secondary:hover {color: var(--color-white);background-color: var(--color-secondary);border-color: var(--color-secondary);}
 	.button-secondary:hover::before, .button-secondary:hover::after {border-color: var(--color-secondary);}
 }
 
@@ -215,7 +215,7 @@ button:active, .button:active, .paymentFormSubmitLink:active, .paymentFormTbodyS
 }
 
 /* Кнопка отключена */
-.button-disabled {color: white;background-color: var(--color-disabled);border-color: var(--color-disabled);}
+.button-disabled {color: var(--color-white);background-color: var(--color-disabled);border-color: var(--color-disabled);}
 .button-disabled:active {background-color: var(--color-disabled);border-color: var(--color-disabled);}
 .button-disabled::before, .button-disabled::after, button:disabled::before, button:disabled::after {border-color: var(--color-disabled);}
 @media (hover: hover) and (pointer: fine) {
@@ -241,7 +241,7 @@ input, select, textarea {
 	color: inherit;
 	font-size: var(--text-size-medium);
 	font-family: inherit;
-	background-color: white;
+	background-color: var(--color-white);
 	border-color: var(--color-border);
 	border-style: solid;
 	border-width: 1px;
@@ -280,7 +280,7 @@ input[type="file"] {
 	color: inherit;
 	line-height: 20px;
 	text-align: center;
-	background-color: white;
+	background-color: var(--color-white);
 	border: 1px solid;
 	border-color: var(--color-border);
 	border-radius: 0;
@@ -424,7 +424,7 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 	position: relative;
 	display: inline-flex;
 	padding: 3px 8px;
-	color: white;
+	color: var(--color-white);
 	font-size: var(--text-size-small);
 	line-height: var(--text-height-small);
 	text-transform: uppercase;
@@ -447,7 +447,7 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 	flex-shrink: 0;
 	align-items: center;
 	width: 128px;
-	background-color: white;
+	background-color: var(--color-white);
 	border: 1px solid var(--color-background);
 	--qty-size: 42px;
 }
@@ -458,7 +458,7 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 	display: block;
 	width: 10px;
 	height: 10px;
-	background-color: white;
+	background-color: var(--color-white);
 	border-bottom: 1px solid var(--color-background);
 	transform: rotate(-45deg);
 	transition: border-color var(--duration);
@@ -533,7 +533,7 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 	background-color: var(--color-background);
 }
 .views__icon {display: flex;align-items: center;justify-content: center;width: 24px;height: 24px;}
-.views__icon.is-active {background-color: white;cursor: default;}
+.views__icon.is-active {background-color: var(--color-white);cursor: default;}
 
 /*
 ** Пагинация
@@ -577,7 +577,7 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 .client__title {margin-bottom: 20px;font-size: clamp(var(--heading-04), 0.75rem + 1.667vw, var(--heading-02));}
 .client__blocks:not(:first-child) {margin-top: 40px;}
 .client__buttons {display: flex;flex-wrap: wrap;gap: 16px 32px;align-items: center;margin-top: 20px;}
-.client input, .client textarea {background-color: white;}
+.client input, .client textarea {background-color: var(--color-white);}
 .client ul {line-height: 1.375;}
 @media all and (min-width: 768px) {
 	.client {grid-template-columns: repeat(2, 1fr);}
@@ -598,7 +598,7 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 .capslock {
 	margin: 12px 0 0;
 	padding: 16px 20px;
-	background-color: white;
+	background-color: var(--color-white);
 	border: 1px solid var(--color-border);
 	border-radius: var(--border-radius);
 }
@@ -618,7 +618,7 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 	width: 100%;
 	line-height: 1.25;
 	text-align: center;
-	background-color: white;
+	background-color: var(--color-white);
 	border-radius: var(--border-radius);
 	border-collapse: collapse;
 }
@@ -672,7 +672,7 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 	width: 16px;
 	height: 16px;
 	margin-right: 8px;
-	background-color: white;
+	background-color: var(--color-white);
 	background-image: url('{ASSEST_IMAGES_PATH}icons-files-extensions.gif?design=THEMENAME');
 	background-repeat: no-repeat;
 	background-position: left top;
@@ -734,7 +734,7 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 .promotion__container {
 	margin-bottom: 32px;
 	padding-inline: 20px;
-	background-color: white;
+	background-color: var(--color-white);
 	border: 1px solid var(--color-border);
 	border-radius: var(--border-radius);
 }
@@ -759,7 +759,7 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 	align-items: center;
 	justify-content: center;
 	overflow: hidden;
-	background-color: white;
+	background-color: var(--color-white);
 	border-radius: var(--border-radius);
 	aspect-ratio: 1 / 1;
 }
@@ -810,7 +810,7 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 	content: '';
 }
 .compare__switcher input::after {display: none;}
-.compare__switcher input:checked {background: white;border-color: var(--color-border);}
+.compare__switcher input:checked {background: var(--color-white);border-color: var(--color-border);}
 .compare__switcher input:checked::before {left: 34px;background-color: var(--color-primary);}
 .compare__switcher span::before {content: attr(data-text-show);}
 .compare__switcher input:checked + span::before {content: attr(data-text-hide);}
@@ -858,7 +858,7 @@ dialog .form__pp {text-align: center;}
 	width: 340px;
 	margin-top: 12px;
 	padding: 20px;
-	background-color: white;
+	background-color: var(--color-white);
 	border: 2px solid var(--color-border);
 	border-radius: var(--border-radius);
 	transform: scale(1, 0);
@@ -967,7 +967,7 @@ dialog .form__pp {text-align: center;}
 	z-index: 1001;
 	width: 100%;
 	padding-block: 20px;
-	background: white;
+	background: var(--color-white);
 	border: 1px solid var(--color-border);
 }
 

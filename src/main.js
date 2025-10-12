@@ -233,12 +233,15 @@ function СreateNoty(type, content) {
   Toast.fire({
     icon: type,
     html: `<div class="noty__block">
-      <p class="noty__goods">${parseNotyMessage(content).goods}</p>
-      <p class="noty__message">${parseNotyMessage(content).message}</p>
+      <p class="noty__title">${type === "success" ? "Успешно" : "Ошибка"}</p>
+      <p class="noty__message">${content}</p>
     </div>`,
   });
 }
 
+/**
+ * Функция создания уведомления о куках.
+ */
 function СreateNotyCookies() {
   let isCookies = localStorage.getItem("cookiesAccept");
   if (isCookies) return;
@@ -264,6 +267,9 @@ function СreateNotyCookies() {
 }
 СreateNotyCookies();
 
+/**
+ * Функция парсинга уведомления.
+ */
 function parseNotyMessage(str) {
   // Регулярное выражение для поиска названия товара в кавычках «...»
   const regex = /&laquo;([^&]+)&raquo;/;
@@ -560,7 +566,7 @@ function Addto(doc = document) {
     const goods_url = goods_form.querySelector("[name='form[goods_url]']").value;
     const goods_image = goods_form.querySelector("[name='form[goods_image]']").value;
     const goods_name = goods_form.querySelector("[itemprop='name']").textContent;
-    const goods_price_old = goods_form.querySelector(".price__old").getAttribute("data-price");
+    const goods_price_old = goods_form.querySelector(".price__old")?.getAttribute("data-price");
     const goods_price_now = goods_form.querySelector(".price__now").getAttribute("data-price");
     const goods_compare_url = goods_form.querySelector(".add-compare").getAttribute("href");
     const goods_favorites_url = goods_form.querySelector(".add-favorites").getAttribute("href");

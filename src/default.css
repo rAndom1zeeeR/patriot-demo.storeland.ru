@@ -306,8 +306,9 @@ input[type="file"] {
 /*
 ** Инпут с ошибкой
 */
+
 input:required:valid {border-color: var(--color-primary);}
-input:required:invalid {border-color: var(--color-error);}
+input:invalid:not(:placeholder-shown) {border-color: var(--color-error);}
 input.is-error {border-color: var(--color-error);}
 input.is-success {border-color: var(--color-primary-hover);}
 textarea.is-error {border-color: var(--color-error);}

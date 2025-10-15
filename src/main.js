@@ -2852,7 +2852,7 @@ function swiperPdt(selector) {
 
   if (!related) return;
   const swiper = new Swiper(selector + " .swiper", {
-    loop: false,
+    loop: true,
     autoplay: false,
     watchSlidesProgress: true,
     simulateTouch: true,
@@ -2969,7 +2969,7 @@ function swiperMedium(selector) {
   const related = document.querySelector(selector);
   if (!related) return;
   const swiper = new Swiper(selector + " .swiper", {
-    loop: false,
+    loop: true,
     autoplay: false,
     watchSlidesProgress: true,
     simulateTouch: true,

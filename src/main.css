@@ -399,7 +399,7 @@
 	.slideshow__image {width: 100%;height: 100%;}
 	.slideshow__image img {object-fit: cover;}
 	.slideshow__navigation :is(.swiper-button-prev, .swiper-button-next) {display: none;}
-	#slideshow .swiper-navigation {display: none;}
+	#slideshow :is(.swiper-button-prev, .swiper-button-next) {display: none;}
 }
 @media all and (max-width: 479px) {
 	.slideshow__content {grid-template-columns: 56px auto;}
@@ -489,7 +489,7 @@
 	background-color: var(--color-background);
 	border-radius: var(--border-radius);
 }
-.news__image img {transition: transform var(--duration) ease-in-out;}
+.news__image img {object-fit: cover;transition: transform var(--duration) ease-in-out;}
 @media (hover: hover) and (pointer: fine) {
 	.news__item:hover img {transform: scale(1.15);}
 }
@@ -653,9 +653,9 @@
 /* Подвал. Блоки */
 .footer__blocks {
 	display: flex;
-	flex-wrap: wrap;
+	flex-flow: column wrap;
 	grid-column: 1 / 4;
-	gap: 24px;
+	gap: 12px 24px;
 	justify-content: space-between;
 	width: 100%;
 	color: var(--color-gray);
@@ -671,7 +671,6 @@
 @media all and (min-width: 640px) {
 	.footer-blocks {display: grid;grid-template-columns: repeat(3, 1fr);gap: 24px;justify-content: space-between;}
 	.footer__title svg {display: none;}
-	.footer__blocks .footer__block:last-child {text-align: right;}
 }
 @media all and (max-width: 639px) {
 	.footer-blocks > .footer__block {margin-bottom: 16px;padding-bottom: 16px;border-bottom: 1px solid var(--color-border);}
@@ -983,7 +982,7 @@
 	background-color: var(--color-background);
 	outline: 5px solid var(--color-background);
 	outline-offset: 10px;
-	transform: skew(-15deg);
+	transform: skew(-15deg) scale(1.01);
 	margin-inline: auto;
 }
 .pdtSales__inner .headline__title {transform: skew(10deg);}
@@ -1178,7 +1177,7 @@
 .form__field--custom input::placeholder {color: transparent;}
 
 .form__field--checkbox {display: flex;gap: 8px;align-items: center;justify-content: flex-start !important;}
-.form__field--checkbox label {margin: 0;font-size: var(--text-size-regular);line-height: 1.25;}
+.form__field--checkbox label {margin: 0;font-size: var(--text-size-regular);line-height: 1.25;text-align: left;}
 .form__field--checkbox label a {text-decoration: underline;}
 
 
@@ -1194,6 +1193,7 @@
 /*
 ** Сайдбар
 */
+#addtoMenu.sidebar {right: auto;left: 0;}
 .sidebar {
 	position: fixed;
 	top: 0;
@@ -1396,6 +1396,7 @@
 .products + .html-description {margin-top: 40px;}
 .products__container {display: flex;flex-wrap: wrap;gap: 30px;}
 .products__container .sidebar__content {padding: 0 20px 20px;}
+.products__content {width: 100%;}
 @media all and (min-width: 1024px) {
 	.products__container .products__grid {grid-template-columns: repeat(3, 1fr);}
 	.products__container .sidebar::after {display: none;}
@@ -1563,7 +1564,8 @@
 
 /* Товар. Изображения */
 .productView__images {display: flex;gap: 16px;margin-inline: auto;}
-.productView__image {width: 100%;background-color: var(--color-background);}
+.productView__image {position: relative;width: 100%;}
+.productView__image::after {position: absolute;z-index: 2;background-color: rgb(0 0 0 / 2%);content: '';inset: 0;}
 @media all and (min-width: 1024px) {
 	.productView__content {width: calc(100% - 552px - 40px);}
 	.productView__images {width: 552px;}
@@ -1627,9 +1629,9 @@
 	fill: var(--color-gray);
 }
 .productView__link span {display: none;}
-.productView__link.is-added, .productView__link:active {fill: var(--color-primary);}
+.productView__link.is-added, .productView__link:active {border-color: var(--color-primary);fill: var(--color-primary);}
 @media (hover: hover) and (pointer: fine) {
-	.productView__link:hover {fill: var(--color-primary);}
+	.productView__link:hover {border-color: var(--color-primary);fill: var(--color-primary);}
 }
 .productView__cart {display: flex;flex-grow: 1;gap: 12px;align-items: center;}
 .productView__cart .add-notify {display: none;}
@@ -1820,6 +1822,7 @@
 	padding: 20px;
 	background-color: var(--color-background);
 }
+.opinion__item + .opinion__item {margin-top: 16px;}
 .opinion__name {font-weight: 600;text-transform: capitalize;}
 .opinion__title {font-weight: 600;}
 .opinion__date {color: var(--color-gray);font-weight: 600;font-size: var(--text-size-regular);}

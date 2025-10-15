@@ -61,10 +61,12 @@
                 <s class="price__old" data-price="{cart_items.ORDER_LINE_PRICE_OLD}">{cart_items.ORDER_LINE_PRICE_OLD | money_format}</s>
                 {% ENDIF %}
                 <b class="price__now" data-price="{cart_items.ORDER_LINE_PRICE_NOW}">{cart_items.ORDER_LINE_PRICE_NOW | money_format}</b>
+                {% IF cart_items.ORDER_LINE_QUANTITY > 1 %}
                 <b class="price__one" data-price="{cart_items.GOODS_MOD_PRICE_NOW}">
                   {cart_items.GOODS_MOD_PRICE_NOW | money_format}
                   <span>/{cart_items.GOODS_MOD_MEASURE_NAME}</span>
                 </b>
+                {% ENDIF %}
               </div>
 
               <!-- Удалить -->

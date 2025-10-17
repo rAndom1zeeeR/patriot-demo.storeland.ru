@@ -239,7 +239,7 @@
 	left: 0;
 	z-index: 6;
 	width: 100%;
-	margin-top: 48px;
+	margin-top: 12px;
 	padding: 16px;
 	text-align: left;
 	background-color: var(--color-white);
@@ -260,7 +260,7 @@
 .search-results__items--goods {width: 100%;}
 .search-results__price {display: block;margin-top: 4px;font-size: var(--text-size-medium) !important;}
 .search-results__name {display: flex;gap: 16px;align-items: center;}
-.search-results__image {width: 60px;height: 60px;}
+.search-results__image {flex-shrink: 0;width: 60px;height: 60px;}
 .search-results__items--category {display: flex;flex-wrap: wrap;gap: 8px;width: 100%;}
 .search-results__items--category .search-results__image {display: none;}
 .search-results__items--category .search-results__item {
@@ -270,7 +270,7 @@
 	background-color: var(--color-background);
 }
 @media all and (min-width: 640px) {
-	.search__results {margin-top: 40px;}
+	.search__results {margin-top: 0;}
 }
 @media all and (min-width: 1024px) {
 	.search__results {margin-top: 8px;}

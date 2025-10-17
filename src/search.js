@@ -271,6 +271,8 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       }
       // Скрываем результаты поиска если ничего не найдено
+      console.log('data.category && data.category.length', data.category, data.category.length)
+      console.log('data.goods && data.goods.length', data.goods, data.goods.length)
       if ((data.category && data.category.length || 0) + (data.goods && data.goods.length || 0) > 0) {
         showSearchResults();
       } else {

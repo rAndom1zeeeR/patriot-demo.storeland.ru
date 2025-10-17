@@ -145,7 +145,7 @@
 .search__form {position: relative;display: none;align-items: center;width: 100%;text-align: left;}
 .search__form button {position: absolute;height: 100%;padding: 0;}
 .search__form button svg {flex-shrink: 0;}
-.search__input {color: var(--color-text-primary);font-size: var(--text-size-regular);padding-inline: 16px 96px;}
+.search__input {height: var(--button-medium);color: var(--color-text-primary);font-size: var(--text-size-regular);padding-inline: 16px 96px;}
 .search__submit {right: 16px;pointer-events: none;padding-inline: 16px;}
 .search--success .search__submit {pointer-events: all;}
 .search__reset {right: 52px;width: 14px;opacity: 0;pointer-events: none;}
@@ -172,13 +172,14 @@
 }
 @media all and (min-width: 1024px) {
 	.header-search {position: relative;flex-grow: 1;}
+	.search__input {height: var(--button-large);}
 	.search__icon {display: none;}
 	.search__form {display: flex;}
 }
 @media all and (max-width: 1023px) {
 	.header-search.is-opened .search__form {
 		position: absolute;
-		top: 40px;
+		top: 8px;
 		left: 0;
 		z-index: 3;
 		display: flex;
@@ -653,15 +654,15 @@
 /* Подвал. Блоки */
 .footer__blocks {
 	display: flex;
-	flex-flow: column wrap;
+	flex-wrap: wrap;
 	grid-column: 1 / 4;
 	gap: 12px 24px;
+	align-items: center;
 	justify-content: space-between;
 	width: 100%;
-	color: var(--color-gray);
-	font-size: var(--text-size-regular);
-	line-height: var(--text-height-regular);
 }
+.footer__block--social {color: var(--color-gray);font-size: var(--text-size-regular);line-height: var(--text-height-regular);}
+.footer__block--contacts {line-height: var(--text-height-large);}
 .footer__title {position: relative;font-weight: 600;font-size: var(--heading-06);text-transform: uppercase;}
 .footer__links {margin: 16px 0 0;padding: 0;list-style: none;}
 .footer__link {display: block;padding-block: 6px;}
@@ -671,6 +672,7 @@
 @media all and (min-width: 640px) {
 	.footer-blocks {display: grid;grid-template-columns: repeat(3, 1fr);gap: 24px;justify-content: space-between;}
 	.footer__title svg {display: none;}
+	.footer__blocks {padding-top: 24px;border-top: 1px solid var(--color-border);}
 }
 @media all and (max-width: 639px) {
 	.footer-blocks > .footer__block {margin-bottom: 16px;padding-bottom: 16px;border-bottom: 1px solid var(--color-border);}
@@ -1488,7 +1490,14 @@
 .filter__title:empty {display: none;}
 .filter__title svg {flex-shrink: 0;margin-left: auto;}
 .filter__list.has-filters .filter__title svg {transform: rotate(180deg);}
-.filter__items {max-height: 140px;margin-top: 16px;overflow: hidden auto;-webkit-overflow-scrolling: auto;}
+.filter__items {
+	max-height: 140px;
+	margin-top: 16px;
+	overflow: hidden auto;
+	-webkit-overflow-scrolling: auto;
+	scrollbar-width: thin;
+	scrollbar-color: var(--color-gray) var(--color-border);
+}
 .filter__items::-webkit-scrollbar {width: var(--scrollbar-width-thin);}
 .filter__item {display: flex;align-items: center;margin-bottom: 16px;}
 .filter__item.is-disabled {color: var(--color-gray);pointer-events: none;}
@@ -1506,7 +1515,7 @@
 .filters-price .filter__content {display: block;margin-top: 12px;}
 .filters-price__blocks {display: flex;gap: 16px;justify-content: space-between;}
 .filters-price__block {display: flex;flex-grow: 1;gap: 8px;align-items: center;}
-.filters-price__block input[type="number"] {padding-inline: 12px;}
+.filters-price__block input[type="number"] {padding-inline: 12px;-webkit-appearance: textfield;appearance: textfield;}
 .filters-price__block input[type="number"]::-webkit-inner-spin-button, 
 .filters-price__block input[type="number"]::-webkit-outer-spin-button {-webkit-appearance: none;appearance: none;}
 .filters-price__block label {display: none;}
@@ -1822,7 +1831,7 @@
 	padding: 20px;
 	background-color: var(--color-background);
 }
-.opinion__item + .opinion__item {margin-top: 16px;}
+.opinion__item + .opinion__item:not(.swiper-slide) {margin-top: 16px;}
 .opinion__name {font-weight: 600;text-transform: capitalize;}
 .opinion__title {font-weight: 600;}
 .opinion__date {color: var(--color-gray);font-weight: 600;font-size: var(--text-size-regular);}

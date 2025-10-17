@@ -13,16 +13,14 @@
 			<input type="hidden" name="form[delivery][zone_id]" value="{ORDER_FORM_DELIVERY_ZONE_ID}">
 			<!-- Корзина: Минимальная сумма заказа -->
 			{% IF SETTINGS_STORE_ORDER_MIN_ORDER_PRICE %}
-			<div class="orderfast__block cartTotal__min is-hide">
+			<p class="notice notice--error cartTotal__min is-hide">
 				<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
-				  <path d="M21.1276 6.15751C20.4116 4.32556 19.1547 2.75509 17.5242 1.65511C15.8937 0.555134 13.9668 -0.0221791 12.0001 5.86704e-06C10.0333 -0.0221791 8.10644 0.555134 6.4759 1.65511C4.84536 2.75509 3.58849 4.32556 2.87256 6.15751C2.11376 7.97238 1.92621 9.97544 2.3349 11.8996C2.74359 13.8238 3.7291 15.5777 5.16006 16.9275L12.0001 23.5425L18.8476 16.9275C20.2763 15.5763 21.2598 13.822 21.6671 11.8981C22.0744 9.97415 21.8862 7.97183 21.1276 6.15751Z" fill="#B51F24"/>
-				  <path d="M10.485 3.9375H13.485V11.4375H10.485V3.9375ZM10.5 14.0625H13.5V17.0625H10.5V14.0625Z" fill="white"/>
+					<path d="M21.1276 6.15751C20.4116 4.32556 19.1547 2.75509 17.5242 1.65511C15.8937 0.555134 13.9668 -0.0221791 12.0001 5.86704e-06C10.0333 -0.0221791 8.10644 0.555134 6.4759 1.65511C4.84536 2.75509 3.58849 4.32556 2.87256 6.15751C2.11376 7.97238 1.92621 9.97544 2.3349 11.8996C2.74359 13.8238 3.7291 15.5777 5.16006 16.9275L12.0001 23.5425L18.8476 16.9275C20.2763 15.5763 21.2598 13.822 21.6671 11.8981C22.0744 9.97415 21.8862 7.97183 21.1276 6.15751Z" fill="#B51F24"/>
+					<path d="M10.485 3.9375H13.485V11.4375H10.485V3.9375ZM10.5 14.0625H13.5V17.0625H10.5V14.0625Z" fill="white"/>
 				</svg>
-				<div class="content">
-				  <span>До минимальной суммы заказа осталось:</span>
-				  <data class="cartTotal__price {CURRENCY_CHAR_CODE}" value="{SETTINGS_STORE_ORDER_MIN_ORDER_PRICE}" data-total="{CART_SUM_NOW_WITH_DISCOUNT}">{SETTINGS_STORE_ORDER_MIN_ORDER_PRICE | money_format}</data>
-				</div>
-			  </div>
+				<span>До минимальной суммы заказа осталось:</span>
+				<data class="cartTotal__price {CURRENCY_CHAR_CODE}" value="{SETTINGS_STORE_ORDER_MIN_ORDER_PRICE}" data-total="{CART_SUM_NOW_WITH_DISCOUNT}">{SETTINGS_STORE_ORDER_MIN_ORDER_PRICE | money_format}</data>
+			</p>
 			{% ENDIF %}
 
 			<!-- Данные покупателя -->

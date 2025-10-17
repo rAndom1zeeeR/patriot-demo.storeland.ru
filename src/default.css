@@ -6,6 +6,8 @@ html {
 	-webkit-font-smoothing: antialiased;
 	scroll-behavior: smooth;
 	scrollbar-gutter: stable;
+	scrollbar-width: thin;
+	scrollbar-color: var(--color-gray) var(--color-border);
 }
 body {
 	margin: 0;
@@ -211,7 +213,7 @@ button:active, .button:active, .paymentFormSubmitLink:active, .paymentFormTbodyS
 .add-notify {color: var(--color-gray);border-color: var(--color-gray);}
 .add-notify::before, .add-notify::after {border-color: var(--color-gray);}
 @media (hover: hover) and (pointer: fine) {
-	.add-notify:hover::before, .add-notify:hover::after, {border-color: var(--color-black);}
+	.add-notify:hover::before, .add-notify:hover::after {border-color: var(--color-black);}
 }
 
 /* Кнопка отключена */
@@ -220,7 +222,7 @@ button:active, .button:active, .paymentFormSubmitLink:active, .paymentFormTbodyS
 .button-disabled::before, .button-disabled::after, button:disabled::before, button:disabled::after {border-color: var(--color-disabled);}
 @media (hover: hover) and (pointer: fine) {
 	.button-disabled:hover {background-color: var(--color-disabled);border-color: var(--color-disabled);}
-	.button-disabled:hover::before, .button-disabled:hover::after, {border-color: var(--color-black);}
+	.button-disabled:hover::before, .button-disabled:hover::after {border-color: var(--color-black);}
 }
 
 /* Кнопка маленькая и большая */
@@ -483,6 +485,8 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 	background-color: var(--color-background);
 	border: 0;
 	border-radius: 0;
+	-webkit-appearance: textfield;
+	appearance: textfield;
 }
 .qty__input::-webkit-inner-spin-button, 
 .qty__input::-webkit-outer-spin-button {-webkit-appearance: none;appearance: none;}
@@ -591,6 +595,7 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 .password__button[aria-pressed="true"] .svg-lock {display: none;}
 .password__button[aria-pressed="false"] .svg-unlock {display: none;}
 .password__input {padding-right: 50px;}
+.password__input::-ms-reveal {display: none;}
 
 /*
 ** Капслок
@@ -821,7 +826,13 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 /*
 ** Модальные окна
 */
-dialog {padding: 0;border: 0;border-radius: var(--border-radius);}
+dialog {
+	padding: 0;
+	border: 0;
+	border-radius: var(--border-radius);
+	scrollbar-width: thin;
+	scrollbar-color: var(--color-gray) var(--color-border);
+}
 dialog::backdrop {z-index: 3;}
 .dialog__container {max-width: 680px;padding: 40px;}
 .dialog__title {margin-bottom: 20px;font-weight: 600;font-size: var(--heading-06);text-transform: uppercase;}

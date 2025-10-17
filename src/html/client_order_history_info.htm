@@ -23,8 +23,10 @@
           <td class="table__cell2 {CURRENCY_CHAR_CODE}">
             <b>{CLIENT_ORDER_SUM | money_format}</b>
             {% IF ORDER_SUM_WITHOUT_DISCONT != ORDER_SUM %}
-            <s>{CLIENT_ORDER_SUM_WITHOUT_DISCONT | money_format}</s>
-            <i>без учета скидки</i>
+            <p>
+              <s>{CLIENT_ORDER_SUM_WITHOUT_DISCONT | money_format}</s>
+              <i>без учета скидки</i>
+            </p>
             {% ENDIF %}
           </td>
         </tr>

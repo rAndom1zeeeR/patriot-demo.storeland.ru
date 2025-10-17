@@ -3129,7 +3129,7 @@ function swiperOpinions(selector) {
 
   if (!related) return;
   const swiper = new Swiper(selector + " .swiper", {
-    loop: false,
+    loop: true,
     autoplay: false,
     watchSlidesProgress: true,
     simulateTouch: true,
@@ -3162,7 +3162,7 @@ function swiperOpinions(selector) {
         slidesPerView: 2,
       },
       640: {
-        slidesPerView: 3,
+        slidesPerView: 2,
       },
       768: {
         slidesPerView: 3,

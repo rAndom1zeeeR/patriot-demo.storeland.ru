@@ -224,7 +224,6 @@ document.addEventListener('DOMContentLoaded', function () {
       if (catItems) {
         catItems.querySelectorAll('.search-results__item').forEach(function (el) { el.remove(); });
       }
-      hideSearchResults();
       if (data.category && data.category.length > 0) {
         for (var c = 0; c < data.category.length; c++) {
           if (data.category[c].image_icon == null) {
@@ -244,7 +243,6 @@ document.addEventListener('DOMContentLoaded', function () {
       if (goodsItems) {
         goodsItems.querySelectorAll('.search-results__item').forEach(function (el) { el.remove(); });
       }
-      hideSearchResults();
       const buttons = document.querySelector('.search-results__buttons');
       if (data.goods && data.goods.length > 0) {
         for (var i = 0; i < data.goods.length; i++) {
@@ -271,8 +269,6 @@ document.addEventListener('DOMContentLoaded', function () {
         }
       }
       // Скрываем результаты поиска если ничего не найдено
-      console.log('data.category && data.category.length', data.category, data.category.length)
-      console.log('data.goods && data.goods.length', data.goods, data.goods.length)
       if ((data.category && data.category.length || 0) + (data.goods && data.goods.length || 0) > 0) {
         showSearchResults();
       } else {
@@ -282,20 +278,16 @@ document.addEventListener('DOMContentLoaded', function () {
       if (catItems) {
         if (data.category && data.category.length > 0) {
           catItems.style.display = '';
-          if (catItems.previousElementSibling) catItems.previousElementSibling.style.display = '';
         } else {
           catItems.style.display = 'none';
-          if (catItems.previousElementSibling) catItems.previousElementSibling.style.display = 'none';
         }
       }
       // Товары видимость
       if (goodsItems) {
         if (data.goods && data.goods.length > 0) {
           goodsItems.style.display = '';
-          if (goodsItems.previousElementSibling) goodsItems.previousElementSibling.style.display = '';
         } else {
           goodsItems.style.display = 'none';
-          if (goodsItems.previousElementSibling) goodsItems.previousElementSibling.style.display = 'none';
         }
       }
       searchBlock.classList.remove('search--loading');

@@ -221,8 +221,8 @@ button:active, .button:active, .paymentFormSubmitLink:active, .paymentFormTbodyS
 .button-disabled:active {background-color: var(--color-disabled);border-color: var(--color-disabled);}
 .button-disabled::before, .button-disabled::after, button:disabled::before, button:disabled::after {border-color: var(--color-disabled);}
 @media (hover: hover) and (pointer: fine) {
-	.button-disabled:hover {background-color: var(--color-disabled);border-color: var(--color-disabled);}
-	.button-disabled:hover::before, .button-disabled:hover::after {border-color: var(--color-black);}
+	.button-disabled:hover {color: var(--color-white);background-color: var(--color-disabled);border-color: var(--color-disabled);}
+	.button-disabled:hover::before, .button-disabled:hover::after {border-color: var(--color-disabled);}
 }
 
 /* Кнопка маленькая и большая */

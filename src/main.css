@@ -1918,6 +1918,8 @@
 .cartInner {display: flex;flex-wrap: wrap;gap: 32px;align-items: flex-start;}
 .cartTable {width: 100%;}
 .is-started .cartTable__item::before {position: absolute;z-index: 2;content: '';inset: 0;}
+.cartTotal__buttons .form__field--checkbox {display: none;}
+.is-started .cartTotal__buttons .form__field--checkbox {display: flex;}
 .cartTable__item {
 	position: relative;
 	display: flex;

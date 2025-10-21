@@ -1984,6 +1984,7 @@ function Cart() {
         Passwords();
         OrderCoupons();
         CartPolicyValidator('form_policy_cart');
+        document.querySelector('.orderfast__block--total').remove();
         $(".form__phone").mask("+7 (999) 999-9999");
         container.classList.remove("is-loading");
         contrainerAjax.removeAttribute("hidden");
@@ -2011,9 +2012,11 @@ function Cart() {
       getHtmlFromUrl(url).then((data) => {
         const cartTotalItems = document.querySelector(".cartTotal__items");
         const dataCartTotalItems = data.querySelector(".cartTotal__items");
+        const orderfastContainer = document.querySelector(".orderfast__container");
         cartTotalItems.innerHTML = dataCartTotalItems.innerHTML;
-        document.querySelector(".orderfast__container").remove();
+        orderfastContainer?.remove();
         CartMinSum();
+        handleCartOrder();
       });
     }
 
@@ -3676,8 +3679,16 @@ function showAllContent() {
 function CartPolicyValidator(checkboxId) {
   const checkbox = document.getElementById(checkboxId);
   const form = document.getElementById('orderform');
+  const formPolicyCheckbox = document.getElementById('form_policy_orderfast');
+  console.log('[LOG]: checkboxId', checkboxId);
   console.log('[LOG]: checkbox', checkbox);
   console.log('[LOG]: form', form);
+
+  // if (formPolicyCheckbox && checkboxId === 'form_policy_cart') {
+  //   formPolicyCheckbox.required = false;
+  //   formPolicyCheckbox.removeAttribute('required');
+  //   return;
+  // }
   
   // Проверяем наличие элементов
   if (!checkbox || !form) {

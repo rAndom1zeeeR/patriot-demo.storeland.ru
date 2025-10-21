@@ -549,7 +549,7 @@
 				</div>
 				<div class="cartTotal__checkbox">
 					<div class="form__field--checkbox">
-						<input class="form__checkbox square" type="checkbox" name="form[обработки_данных]" id="form_policy_orderfast" required>
+						<input class="form__checkbox square" type="checkbox" name="form[обработки_данных]" id="form_policy_orderfast">
 						<label for="form_policy_orderfast">Я согласен с <a href="#dialogPolicy" data-dialog="#dialogPolicy">правилами обработки данных</a></label>
 					</div>
 					<div class="form__field--checkbox">
@@ -588,9 +588,9 @@
 				<div class="addto__price {CURRENCY_CHAR_CODE}">
 					<span class="addto__price-count">{cart_items.ORDER_LINE_QUANTITY} x</span>
 					{% IF cart_items.GOODS_MOD_PRICE_OLD > cart_items.GOODS_MOD_PRICE_NOW %}
-					<s class="price__old" data-price="{cart_items.ORDER_LINE_PRICE_OLD}">{cart_items.ORDER_LINE_PRICE_OLD | money_format}</s>
+					<s class="price__old" data-price="{cart_items.GOODS_MOD_PRICE_OLD}">{cart_items.GOODS_MOD_PRICE_OLD | money_format}</s>
 					{% ENDIF %}
-					<b class="price__now" data-price="{cart_items.ORDER_LINE_PRICE_NOW}">{cart_items.ORDER_LINE_PRICE_NOW | money_format}</b>
+					<b class="price__now" data-price="{cart_items.GOODS_MOD_PRICE_NOW}">{cart_items.GOODS_MOD_PRICE_NOW | money_format}</b>
 				</div>
 				<small class="addto__mods">
 					{% FOR distinctive_properties %}

@@ -289,7 +289,11 @@
 	overflow-x: auto;
 	list-style: none;
 	scroll-snap-type: x mandatory;
+	scrollbar-width: none;
+	-ms-overflow-style: none;
+	scrollbar-color: var(--color-gray) var(--color-border);
 }
+.header-promo__list::-webkit-scrollbar {display: none;height: var(--scrollbar-width);}
 .header-promo__item {display: flex;gap: 12px;align-items: center;white-space: nowrap;scroll-snap-align: start;}
 .header-promo__item svg {flex-shrink: 0;}
 @media all and (max-width: 1023px) {
@@ -1404,7 +1408,7 @@
 	.products__container .sidebar::after {display: none;}
 	.products__container .sidebar__content {height: auto;padding-inline: 0;}
 	.products__container .sidebar__header-close {display: none;}
-	.products__container .filters__header {padding-inline: 0;z-index: 0;}
+	.products__container .filters__header {position: relative;z-index: 0;padding-inline: 0;}
 	.products__filters {position: relative;display: block;flex-shrink: 0;width: 208px;height: auto;}
 	.products__content {flex-grow: 1;flex-shrink: 0;width: calc(100% - 208px - 30px);}
 }
@@ -1749,7 +1753,7 @@
 .tabs__link:last-child {padding-right: 0;}
 .tabs__link::after {
 	position: absolute;
-	bottom: 0;
+	bottom: 1px;
 	left: 0;
 	z-index: 1;
 	width: 100%;
@@ -2001,6 +2005,7 @@
 .cartTotal__buttons {flex-direction: column;gap: 16px;align-items: flex-start;margin: 0;padding: 20px;}
 .cartTotal__button {justify-content: center;width: 100%;font-size: var(--text-size-large);font-family: var(--font-primary);}
 .cartTotal__button::before, .cartTotal__button::after {background-color: var(--color-background);}
+.productViewMod .cartTotal__button::before, .productViewMod .cartTotal__button::after {background-color: var(--color-white);}
 .cartTotal__button[data-action="closeOrder"] {display: none;}
 .cartTotal__button[data-action="completeOrder"] {display: none;}
 .is-started .cartTotal__button[data-action="closeOrder"] {display: flex;}
@@ -2115,7 +2120,14 @@
 .coupon {position: relative;}
 .coupon__input {padding-right: 80px;}
 .coupon__order {position: relative;width: 100%;}
-.coupon__reset {position: absolute;right: 60px;height: 100%;opacity: 0;pointer-events: none;}
+.coupon__reset {
+	position: absolute;
+	top: 0;
+	right: 60px;
+	height: 100%;
+	opacity: 0;
+	pointer-events: none;
+}
 .coupon__button {
 	position: absolute;
 	top: 6px;

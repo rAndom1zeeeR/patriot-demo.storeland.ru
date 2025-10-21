@@ -1983,11 +1983,10 @@ function Cart() {
         Orderfast();
         Passwords();
         OrderCoupons();
+        CartPolicyValidator('form_policy_cart');
         $(".form__phone").mask("+7 (999) 999-9999");
         container.classList.remove("is-loading");
         contrainerAjax.removeAttribute("hidden");
-        const checkbox = document.querySelector("#form_policy_orderfast");
-        checkbox?.removeAttribute("required");
         // Заполняем все поля промокода для синхронизации
         const couponInputs = document.querySelectorAll(".coupon__input");
         if (couponInputs.length > 0) {
@@ -2020,7 +2019,9 @@ function Cart() {
 
     function handleCartOrderComplete() {
       const form = container.querySelector(".orderfast__form");
+      const checkbox = container.querySelector(".form__field--checkbox");
       ValidateRequired(form);
+      ValidateRequired(checkbox);
     }
   }
 }
@@ -2225,6 +2226,7 @@ function Orderfast(doc = document) {
   handleVisibility(paymentSelects, deliverySelect.value);
   handleVisibility(paymentDescs, paymentSelected.value);
   handleFormPaymentId(paymentSelected);
+  CartPolicyValidator('form_policy_orderfast');
 
   // Способы доставки
   deliverySelect.addEventListener("change", (event) => {
@@ -3663,6 +3665,53 @@ function showAllContent() {
     } else {
       content.classList.add("is-active");
       button.classList.add("is-active");
+    }
+  });
+}
+
+/**
+ * Инициализирует валидацию чекбокса согласия с обработкой данных
+ * Работает с элементами вне формы через setCustomValidity()
+ */
+function CartPolicyValidator(checkboxId) {
+  const checkbox = document.getElementById(checkboxId);
+  const form = document.getElementById('orderform');
+  console.log('[LOG]: checkbox', checkbox);
+  console.log('[LOG]: form', form);
+  
+  // Проверяем наличие элементов
+  if (!checkbox || !form) {
+    console.warn('[WARNING]: Cart policy elements not found');
+    return;
+  }
+  
+  // УБИРАЕМ required АТРИБУТ СРАЗУ
+  checkbox.removeAttribute('required');
+  
+  // Устанавливаем начальное сообщение валидации
+  checkbox.setCustomValidity('Необходимо согласиться с правилами обработки данных');
+  
+  // Обработчик изменения чекбокса
+  checkbox.addEventListener('change', function() {
+    if (this.checked) {
+      // Если чекбокс отмечен - очищаем ошибку
+      this.setCustomValidity('');
+      console.log('[LOG]: this.checked');
+    } else {
+      // Если не отмечен - устанавливаем ошибку
+      this.setCustomValidity('Необходимо согласиться с правилами обработки данных');
+      console.log('[LOG]: !this.checked');
+    }
+  });
+  
+  // Обработчик отправки формы
+  form.addEventListener('submit', function(e) {
+    if (!checkbox.checked) {
+      e.preventDefault();
+      // Показываем браузерное сообщение валидации
+      checkbox.reportValidity();
+      console.log('[LOG]: checkbox.reportValidity', checkbox.checked);
+      return false;
     }
   });
 }

@@ -2461,9 +2461,9 @@
 							<div class="addto__price {CURRENCY_CHAR_CODE}">
 								<span class="addto__price-count">{cart_items.ORDER_LINE_QUANTITY} x</span>
 								{% IF cart_items.GOODS_MOD_PRICE_OLD > cart_items.GOODS_MOD_PRICE_NOW %}
-								<s class="price__old" data-price="{cart_items.ORDER_LINE_PRICE_OLD}">{cart_items.ORDER_LINE_PRICE_OLD | money_format}</s>
+								<s class="price__old" data-price="{cart_items.GOODS_MOD_PRICE_OLD}">{cart_items.GOODS_MOD_PRICE_OLD | money_format}</s>
 								{% ENDIF %}
-								<b class="price__now" data-price="{cart_items.ORDER_LINE_PRICE_NOW}">{cart_items.ORDER_LINE_PRICE_NOW | money_format}</b>
+								<b class="price__now" data-price="{cart_items.GOODS_MOD_PRICE_NOW}">{cart_items.GOODS_MOD_PRICE_NOW | money_format}</b>
 							</div>
 							<small class="addto__mods">
 								{% FOR distinctive_properties %}

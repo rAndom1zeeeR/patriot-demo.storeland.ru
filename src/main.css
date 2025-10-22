@@ -2001,11 +2001,11 @@
 .cartTotal__min.is-hide {display: none;}
 .cartTotal__min svg {flex-shrink: 0;}
 .cartTotal__min data {white-space: nowrap;}
-.cartTotal__checkbox {display: flex;gap: 12px 24px;align-items: center;}
+.cartTotal__checkbox {display: flex;gap: 12px 24px;align-items: center;justify-content: center;}
 .cartTotal__buttons {flex-direction: column;gap: 16px;align-items: flex-start;margin: 0;padding: 20px;}
 .cartTotal__button {justify-content: center;width: 100%;font-size: var(--text-size-large);font-family: var(--font-primary);}
 .cartTotal__button::before, .cartTotal__button::after {background-color: var(--color-background);}
-.productViewMod .cartTotal__button::before, .productViewMod .cartTotal__button::after {background-color: var(--color-white);}
+#productViewMod .cartTotal__button::before, #productViewMod .cartTotal__button::after {background-color: var(--color-white);}
 .cartTotal__button[data-action="closeOrder"] {display: none;}
 .cartTotal__button[data-action="completeOrder"] {display: none;}
 .is-started .cartTotal__button[data-action="closeOrder"] {display: flex;}

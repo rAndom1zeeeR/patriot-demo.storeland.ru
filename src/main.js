@@ -2221,6 +2221,7 @@ function Orderfast(doc = document) {
   const paymentSelects = container.querySelectorAll(".order-payments__selects");
   let paymentSelected = container.querySelector(".order-payments__selects:not(.is-hide) select");
   const paymentDescs = container.querySelectorAll(".order-payments__desc");
+  const isProductViewMod = document.getElementById("productViewMod");
 
   // Запуск функций при загрузке страницы
   handleVisibility(deliveryZones, deliverySelect.value);
@@ -2229,13 +2230,16 @@ function Orderfast(doc = document) {
   handleVisibility(paymentSelects, deliverySelect.value);
   handleVisibility(paymentDescs, paymentSelected.value);
   handleFormPaymentId(paymentSelected);
-  CartPolicyValidator('form_policy_orderfast');
+
+  if (isProductViewMod) {
+    CartPolicyValidator('form_policy_orderfast');
+  }
 
   // Способы доставки
   deliverySelect.addEventListener("change", (event) => {
     const select = event.target;
-    console.log("[DEBUG]: select1", select);
-    console.log("[DEBUG]: paymentSelects1", paymentSelects);
+    // console.log("[DEBUG]: select1", select);
+    // console.log("[DEBUG]: paymentSelects1", paymentSelects);
     handleVisibility(deliveryZones, select.value);
     handleVisibility(deliveryDescs, select.value);
     handleDeliveryPrice(deliveryPrices, select[select.selectedIndex].getAttribute("data-price"));
@@ -2253,7 +2257,7 @@ function Orderfast(doc = document) {
     handleDeliveryZone(selects);
     selects.addEventListener("change", (event) => {
       const select = event.target;
-      console.log("[DEBUG]: select2", select);
+      // console.log("[DEBUG]: select2", select);
       handleDeliveryPrice(deliveryPrices, select[select.selectedIndex].getAttribute("data-price"));
       handleVisibility(deliveryZoneRules, select.value);
       handleFormDeliveryZoneId(select);
@@ -2913,7 +2917,7 @@ function swiperPdt(selector) {
  */
 function swiperSmall(selector) {
   const related = document.querySelector(selector);
-  console.log("[DEBUG]: swiperSmall", related);
+  // console.log("[DEBUG]: swiperSmall", related);
 
   if (!related) return;
   const swiper = new Swiper(selector + " .swiper", {
@@ -3721,7 +3725,7 @@ function CartPolicyValidator(checkboxId) {
       e.preventDefault();
       // Показываем браузерное сообщение валидации
       checkbox.reportValidity();
-      console.log('[LOG]: checkbox.reportValidity', checkbox.checked);
+      console.log('[LOG]: checkbox.reportValidity', checkbox);
       return false;
     }
   });

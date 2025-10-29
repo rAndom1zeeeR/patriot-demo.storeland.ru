@@ -1254,6 +1254,7 @@
 .addto__items {height: calc(100dvh - 57px - 135px);overflow: hidden auto;}
 .addto__items::-webkit-scrollbar {width: var(--scrollbar-width-thin);}
 .addto__image {
+  position: relative;
 	display: flex;
 	flex-shrink: 0;
 	align-items: center;

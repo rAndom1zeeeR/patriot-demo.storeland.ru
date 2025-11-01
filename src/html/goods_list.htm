@@ -186,8 +186,8 @@
 		{% ENDIF filters %}
 
 		<!-- Верхний блок, изменяющий отображение данных выдачи товаров -->
-		<div class="products__content {% IF SHOW_GOODS_PRICE_FILTERS || SHOW_GOODS_FILTERS %}has-filters{% ENDIF %}">
-			<div class="toolbar {% FOR filter_attr_list %}{% FOR values %}{% IF filter_attr_list.values.CHECKED %}has-filters {% ENDIF %}{% ENDFOR %}{% ENDFOR %}{% FOR filter_prop_list %}{% FOR values %}{% IF filter_prop_list.values.CHECKED %}has-filters {% ENDIF %}{% ENDFOR %}{% ENDFOR %}">
+		<div class="products__content {% FOR filter_attr_list %}{% FOR values %}{% IF filter_attr_list.values.CHECKED %}has-filters {% ENDIF %}{% ENDFOR %}{% ENDFOR %}{% FOR filter_prop_list %}{% FOR values %}{% IF filter_prop_list.values.CHECKED %}has-filters {% ENDIF %}{% ENDFOR %}{% ENDFOR %}">
+			<div class="toolbar">
 				<form class="toolbar__form" action="#">
 					<!-- Список фильтров, которые сейчас действуют на результаты поиска -->
 					{% FOR goods_filters %}

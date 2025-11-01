@@ -51,8 +51,10 @@
             {% IFNOT goods_mod_info.goods_mod_distinctive_properties_empty %}
             <dl class="compare__mod">
               {% FOR goods_mod_distinctive_properties %}
-              <dt>{goods_mod_info.goods_mod_distinctive_properties.NAME}:</dt>
-              <dd>{goods_mod_info.goods_mod_distinctive_properties.VALUE};</dd>
+              <div class="compare__mod-item">
+                <dt>{goods_mod_info.goods_mod_distinctive_properties.NAME}:</dt>
+                <dd>{goods_mod_info.goods_mod_distinctive_properties.VALUE};</dd>
+              </div>
               {% ENDFOR %}
             </dl>
             {% ENDIF %}
@@ -293,7 +295,7 @@
         </svg>
         <span>Отобразить скрытые</span>
       </button>
-      <a class="button button-disabled" href="{COMPARE_RESET_URL}" title="Очистить список сравнения">
+      <a class="button button-outline" href="{COMPARE_RESET_URL}" title="Очистить список сравнения">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 384 384" width="24" height="24" aria-hidden="true">
           <path d="M368 176c-8.832 0-16 7.168-16 16 0 88.224-71.776 160-160 160S32 280.224 32 192 103.776 32 192 32c42.952 0 83.272 16.784 113.536 47.264 6.224 6.264 16.36 6.304 22.624.08 6.272-6.224 6.304-16.36.08-22.632C291.928 20.144 243.536 0 192 0 86.128 0 0 86.128 0 192s86.128 192 192 192c105.864 0 192-86.128 192-192 0-8.832-7.168-16-16-16z" />
           <path

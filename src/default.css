@@ -210,6 +210,13 @@ button:active, .button:active, .paymentFormSubmitLink:active, .paymentFormTbodyS
 }
 
 /* Кнопка отключена */
+.button-outline {color: var(--color-gray);border-color: var(--color-gray);}
+.button-outline::before, .button-outline::after {border-color: var(--color-gray);}
+@media (hover: hover) and (pointer: fine) {
+	.button-outline:hover::before, .button-outline:hover::after {border-color: var(--color-black);}
+}
+
+/* Кнопка отключена */
 .add-notify {color: var(--color-gray);border-color: var(--color-gray);}
 .add-notify::before, .add-notify::after {border-color: var(--color-gray);}
 @media (hover: hover) and (pointer: fine) {
@@ -242,7 +249,7 @@ input, select, textarea {
 	margin: 0;
 	color: inherit;
 	font-size: var(--text-size-medium);
-	font-family: inherit;
+	font-family: var(--font-primary);
 	background-color: var(--color-white);
 	border-color: var(--color-border);
 	border-style: solid;
@@ -254,7 +261,7 @@ input, select, textarea {
 	appearance: none;
 	padding-inline: 20px;
 }
-input::placeholder, select::placeholder, textarea::placeholder {color: var(--color-border);}
+input::placeholder, select::placeholder, textarea::placeholder {color: var(--color-gray);}
 input:focus, select:focus, textarea:focus {border-color: var(--color-primary);}
 @media (hover: hover) and (pointer: fine) {
 	input:hover, select:hover, textarea:hover {border-color: var(--color-primary);}
@@ -785,6 +792,7 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 .compare__mod {font-size: var(--text-size-regular);}
 .compare__mod dt {display: inline;font-weight: bold;}
 .compare__mod dd {display: inline;margin-left: 0;}
+.compare__mod-item {display: inline-block;}
 .compare__price {display: flex;flex-wrap: wrap;gap: 8px;align-items: baseline;}
 .compare__switcher label {
 	position: relative;

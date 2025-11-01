@@ -15,7 +15,7 @@
 				</svg>
 				{% IF promotion_campaign.IS_WORK %}
 				<span>акция до</span>
-				<time datetime="{promotion_campaign.EXPIRED_TIME | date('Y-m-d')}">{promotion_campaign.EXPIRED_TIME | date('m.d.Y')}</time>
+				<time datetime="{promotion_campaign.EXPIRED_TIME | date('Y-m-d')}">{promotion_campaign.EXPIRED_TIME | date('d.m.Y')}</time>
 				{% ELSE %}
 				<span>акция завершена</span>
 				{% ENDIF %}

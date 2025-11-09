@@ -388,7 +388,7 @@ h6 {font-size: var(--heading-06);}
 fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 .form__fields {position: relative;}
 .form__field + .form__field {margin-top: 8px;}
-.form__field label {display: block;margin-bottom: 8px;font-size: var(--text-size-regular);}
+.form__field label {display: block;margin-bottom: 8px;}
 .form__field label small {display: none;}
 .form__field label[required] small {display: inline;}
 .form__text {margin: 0;}
@@ -775,7 +775,7 @@ fieldset.form__fields {margin: 0;padding: 0;border: 0;}
 	aspect-ratio: 1 / 1;
 }
 .compare__title {display: flex;gap: 8px;align-items: center;margin-bottom: 16px;}
-.compare__title label {order: 2;padding-top: 4px;}
+.compare__title label {order: 2;font-weight: bold;}
 .compare__remove {position: absolute;top: 0;right: 0;z-index: 2;}
 .compare__remove-icon {fill: var(--color-gray);}
 .compare__buttons {display: flex;flex-wrap: wrap;gap: 16px;margin-top: 32px;}
@@ -840,7 +840,7 @@ dialog {
 	scrollbar-width: thin;
 	scrollbar-color: var(--color-gray) var(--color-border);
 }
-dialog::backdrop {z-index: 3;}
+dialog::backdrop {z-index: 3;background-color: rgb(24 24 27 / 98%);}
 .dialog__container {max-width: 680px;padding: 40px;}
 .dialog__title {margin-bottom: 20px;font-weight: 600;font-size: var(--heading-06);text-transform: uppercase;}
 .dialog__text {margin-block: -12px 20px;}

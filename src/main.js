@@ -2000,6 +2000,7 @@ function Cart() {
         Passwords();
         OrderCoupons();
         CartPolicyValidator('form_policy_cart');
+        CartPolicyValidator('form_ads_cart');
         document.querySelector('.orderfast__block--total').remove();
         $(".form__phone").mask("+7 (999) 999-9999");
         container.classList.remove("is-loading");
@@ -2249,6 +2250,7 @@ function Orderfast(doc = document) {
 
   if (isProductViewMod) {
     CartPolicyValidator('form_policy_orderfast');
+    CartPolicyValidator('form_ads_orderfast');
   }
 
   // Способы доставки
@@ -3735,10 +3737,10 @@ function showAllContent() {
 function CartPolicyValidator(checkboxId) {
   const checkbox = document.getElementById(checkboxId);
   const form = document.getElementById('orderform');
-  const formPolicyCheckbox = document.getElementById('form_policy_orderfast');
-  console.log('[LOG]: checkboxId', checkboxId);
-  console.log('[LOG]: checkbox', checkbox);
-  console.log('[LOG]: form', form);
+  // const formPolicyCheckbox = document.getElementById('form_policy_orderfast');
+  // console.log('[LOG]: checkboxId', checkboxId);
+  // console.log('[LOG]: checkbox', checkbox);
+  // console.log('[LOG]: form', form);
 
   // if (formPolicyCheckbox && checkboxId === 'form_policy_cart') {
   //   formPolicyCheckbox.required = false;

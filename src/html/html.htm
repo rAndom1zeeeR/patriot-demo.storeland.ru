@@ -2296,16 +2296,26 @@
 	<div id="addtoMenu" class="sidebar" hidden>
 		<div class="sidebar__block">
 			<div class="sidebar__header">
-				<span>Каталог</span>
+				<button class="sidebar__header-button button-icon" data-mobile-header-catalog>
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+						<path d="M21 7H3C2.4 7 2 6.6 2 6C2 5.4 2.4 5 3 5H21C21.6 5 22 5.4 22 6C22 6.6 21.6 7 21 7ZM21 13H3C2.4 13 2 12.6 2 12C2 11.4 2.4 11 3 11H21C21.6 11 22 11.4 22 12C22 12.6 21.6 13 21 13ZM21 19H3C2.4 19 2 18.6 2 18C2 17.4 2.4 17 3 17H21C21.6 17 22 17.4 22 18C22 18.6 21.6 19 21 19Z" />
+					</svg>
+					<span>Каталог</span>
+				</button>
+				<button class="sidebar__header-button button-icon" data-mobile-header-menu hidden>
+					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+						<path d="M21 7H3C2.4 7 2 6.6 2 6C2 5.4 2.4 5 3 5H21C21.6 5 22 5.4 22 6C22 6.6 21.6 7 21 7ZM21 13H3C2.4 13 2 12.6 2 12C2 11.4 2.4 11 3 11H21C21.6 11 22 11.4 22 12C22 12.6 21.6 13 21 13ZM21 19H3C2.4 19 2 18.6 2 18C2 17.4 2.4 17 3 17H21C21.6 17 22 17.4 22 18C22 18.6 21.6 19 21 19Z" />
+					</svg>
+					<span>Меню</span>
+				</button>
 				<button class="sidebar__header-close button-icon" type="button" aria-label="Закрыть фильтры">
 					<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="18" height="18" aria-hidden="true">
-						<path
-									d="m568.571 512.003 443.715-443.715c15.622-15.622 15.622-40.95 0-56.57s-40.954-15.622-56.57 0L511.999 455.433 68.286 11.718c-15.622-15.622-40.95-15.622-56.57 0s-15.622 40.95 0 56.57l443.713 443.713L11.716 955.716c-15.622 15.622-15.622 40.949 0 56.57a39.925 39.925 0 0 0 12.974 8.681 39.939 39.939 0 0 0 15.312 3.032 39.939 39.939 0 0 0 15.312-3.032 39.94 39.94 0 0 0 12.974-8.681l443.711-443.713 443.711 443.713c7.811 7.811 18.051 11.713 28.285 11.713 10.24 0 20.474-3.903 28.291-11.713 15.622-15.622 15.622-40.949 0-56.57L568.571 512.003z" />
+						<path d="m568.571 512.003 443.715-443.715c15.622-15.622 15.622-40.95 0-56.57s-40.954-15.622-56.57 0L511.999 455.433 68.286 11.718c-15.622-15.622-40.95-15.622-56.57 0s-15.622 40.95 0 56.57l443.713 443.713L11.716 955.716c-15.622 15.622-15.622 40.949 0 56.57a39.925 39.925 0 0 0 12.974 8.681 39.939 39.939 0 0 0 15.312 3.032 39.939 39.939 0 0 0 15.312-3.032 39.94 39.94 0 0 0 12.974-8.681l443.711-443.713 443.711 443.713c7.811 7.811 18.051 11.713 28.285 11.713 10.24 0 20.474-3.903 28.291-11.713 15.622-15.622 15.622-40.949 0-56.57L568.571 512.003z" />
 					</svg>
 				</button>
 			</div>
 			<div class="sidebar__content mobile-menu__inner">
-				<div class="mobile-menu__catalog">
+				<div class="mobile-menu__catalog" data-mobile-content-catalog hidden>
 					{% FOR catalog_full %}
 					{% IF catalog_full.FIRST %}<ul class="catalog__sub" data-level="{catalog_full.LEVEL}">{% ENDIF %}
 						<li class="catalog__item {% IF catalog_full.ISSET_VISIBLE_SUB %}is-parent{% ENDIF %} {% IF catalog_full.CURRENT_PARENT %}is-opened{% ENDIF %}" data-level="{catalog_full.LEVEL}" data-id="{catalog_full.ID}" {% IF catalog_full.HIDE %}style="display:none;" {% ENDIF %}>
@@ -2324,13 +2334,10 @@
 					{% ENDFOR %}
 				</div>
 
-				<!-- <div class="mobile-menu__nav">
+				<div class="mobile-menu__nav" data-mobile-content-menu>
 					<ul class="mobile-menu__list">
 						<li class="mobile-menu__item">
-							<a class="mobile-menu__link is-discount"
-								 href="{DISCOUNT_URL}"
-								 title="Перейти в Акции"
-								 itemprop="url">
+							<a class="mobile-menu__link is-discount" href="{DISCOUNT_URL}" title="Перейти в Акции" itemprop="url">
 								<span itemprop="name">Sale</span>
 							</a>
 						</li>
@@ -2349,9 +2356,9 @@
 						{% ENDFOR %}
 						{% ENDFOR %}
 					</ul>
-				</div> -->
+				</div>
 
-				<div class="mobile-menu__nav">
+				<div class="mobile-menu__links">
 					<ul class="mobile-menu__list">
 						<li class="mobile-menu__item">
 							<!-- Личный кабинет -->

@@ -232,6 +232,8 @@ button:active, .button:active, .paymentFormSubmitLink:active, .paymentFormTbodyS
 	.button-disabled:hover::before, .button-disabled:hover::after {border-color: var(--color-disabled);}
 }
 
+.button[hidden], button[hidden] {display: none;}
+
 /* Кнопка маленькая и большая */
 .button-small {height: var(--button-small);font-size: var(--text-size-small);padding-inline: 24px;}
 .button-large {height: var(--button-large);font-size: var(--text-size-large);padding-inline: 40px;}

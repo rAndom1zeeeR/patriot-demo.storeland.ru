@@ -2654,15 +2654,15 @@ function Opener() {
     event.preventDefault();
     mobileHeaderCatalog.setAttribute("hidden", "");
     mobileHeaderMenu.removeAttribute("hidden");
-    mobileContentCatalog.removeAttribute("hidden");
-    mobileContentMenu.setAttribute("hidden", "");
+    mobileContentMenu.removeAttribute("hidden");
+    mobileContentCatalog.setAttribute("hidden", "");
   });
   mobileHeaderMenu.addEventListener("click", (event) => {
     event.preventDefault();
     mobileHeaderCatalog.removeAttribute("hidden");
     mobileHeaderMenu.setAttribute("hidden", "");
-    mobileContentCatalog.setAttribute("hidden", "");
-    mobileContentMenu.removeAttribute("hidden");
+    mobileContentMenu.setAttribute("hidden", "");
+    mobileContentCatalog.removeAttribute("hidden");
   });
 
   SidebarOpener("#addtoCart", ".addto__link.cart");

@@ -1610,7 +1610,7 @@
 /*
 ** Тулбар
 */
-.toolbar__filters b[data-count="0"] {display: none;}
+.toolbar__filters b:empty {display: none;}
 .toolbar__filters b {color: var(--color-primary);}
 .toolbar__filters b::before {content: '(';}
 .toolbar__filters b::after {content: ')';}

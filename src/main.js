@@ -315,93 +315,77 @@ function Dialogs(doc = document) {
 
     dialog.addEventListener("click", (event) => {
       event.preventDefault();
-      dialogContent.showModal();
-      document.body.classList.add("is-bodylock");
+      const dialogContainer = dialogContent.querySelector(".dialog__container") || dialogContent;
+      const clonedContent = dialogContainer.cloneNode(true);
+      const dialogId = dialogContent.getAttribute("id");
+      
+      // Удаляем все ID у клонированных элементов, чтобы избежать дублирования
+      const allElementsWithId = clonedContent.querySelectorAll("[id]");
+      const idToElementMap = new Map();
+      allElementsWithId.forEach((element) => {
+        const elementId = element.getAttribute("id");
+        idToElementMap.set(elementId, element);
+        element.removeAttribute("id");
+      });
+      
+      // Обновляем атрибуты for у label и связываем их с input через клик
+      const allLabels = clonedContent.querySelectorAll("label[for]");
+      allLabels.forEach((label) => {
+        const labelFor = label.getAttribute("for");
+        if (idToElementMap.has(labelFor)) {
+          const inputElement = idToElementMap.get(labelFor);
+          // Удаляем атрибут for
+          label.removeAttribute("for");
+          // Добавляем обработчик клика для связи label с input
+          label.addEventListener("click", (event) => {
+            if (inputElement && inputElement.type === "checkbox") {
+              inputElement.click();
+            } else if (inputElement && inputElement.type === "radio") {
+              inputElement.click();
+            } else if (inputElement) {
+              inputElement.focus();
+            }
+          });
+        }
+      });
+      
+      new Fancybox(
+        [
+          {
+            src: clonedContent,
+            type: "html",
+          },
+        ],
+        {
+          mainClass: "dialogMod",
+          hideScrollbar: false,
+          on: {
+            done: (fancybox, slide) => {
+              const fancyboxContent = slide.contentEl || slide.$content;
+              if (fancyboxContent) {
+                Dialogs(fancyboxContent);
+                $(".form__phone").mask("+7 (999) 999-9999");
+                
+                // Инициализируем формы внутри fancybox
+                // Ищем форму напрямую в контенте, без использования ID контейнера
+                const formInContent = fancyboxContent.querySelector("form");
+                if (formInContent) {
+                  if (dialogId === "dialogCallback") {
+                    Form("dialogCallback", "Запрос обратного звонка успешно отправлен администрации магазина", "Вы уже отправляли запрос. Пожалуйста ожидайте звонка.", fancyboxContent);
+                  } else if (dialogId === "dialogNotify") {
+                    Form("dialogNotify", "Вы будете уведомлены о поступлении товара", "Вы уже отправляли запрос. Пожалуйста ожидайте.", fancyboxContent);
+                  }
+                }
+              }
+            },
+          },
+        },
+      );
       dialog.classList.add("is-active");
     });
-    dialogContent.addEventListener("close", () => {
-      document.body.classList.remove("is-bodylock");
-      dialog.classList.remove("is-active");
-    });
-    dialogContent.addEventListener("click", (event) => {
-      const dialogTarget = event.currentTarget;
-      const isClickedOnBackDrop = event.target === dialogTarget;
-      if (isClickedOnBackDrop) {
-        dialogTarget.close();
-      }
-    });
-
-    const dialogCloser = DialogsCloser(dialogContent);
-    if (dialogCloser) {
-      dialogCloser.addEventListener("click", () => {
-        dialogContent.close();
-      });
-    }
   });
 }
 
-/**
- * Обработать диалоговое окно.
- * Используется в функциях: handleAddtoModOpen, handleAddtoOrderOpen
- */
-function DialogsHandler(dialog, dialogClose, show = false) {
-  if (show) {
-    dialog.show();
-  } else {
-    dialog?.showModal();
-  }
-  document.body.classList.add("is-bodylock");
-
-  dialog.addEventListener("close", () => {
-    document.body.classList.remove("is-bodylock");
-    dialog.remove();
-  });
-
-  dialog.addEventListener("click", (event) => {
-    const dialogTarget = event.currentTarget;
-    const isClickedOnBackDrop = event.target === dialogTarget;
-    if (isClickedOnBackDrop) {
-      dialogTarget.close();
-      dialog.remove();
-    }
-  });
-
-  dialogClose.addEventListener("click", () => {
-    dialog.close();
-    dialog.remove();
-  });
-}
-
-/**
- * Создать диалоговое окно.
- * Используется в функциях: handleAddtoModOpen, handleAddtoOrderOpen
- */
-function DialogsCreate(id, label, content) {
-  const dialog = document.createElement("dialog");
-  dialog.setAttribute("id", id);
-  dialog.setAttribute("aria-label", label);
-  dialog.setAttribute("aria-modal", "true");
-  dialog.setAttribute("role", "dialog");
-  dialog.append(content);
-  document.body.append(dialog);
-  return dialog;
-}
-
-/**
- * Создать кнопку закрыть диалоговое окно.
- * Используется в функциях: Dialogs, handleAddtoModOpen, handleAddtoOrderOpen
- */
-function DialogsCloser(dialog) {
-  if (dialog.querySelector(".dialog__close")) return;
-  const button = document.createElement("button");
-  button.setAttribute("type", "button");
-  button.classList.add("dialog__close", "button-icon");
-  button.setAttribute("aria-label", "Закрыть модальное окно");
-  button.setAttribute("data-dialog-close", "");
-  button.innerHTML = `<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="18" height="18" aria-hidden="true"><path d="m568.571 512.003 443.715-443.715c15.622-15.622 15.622-40.95 0-56.57s-40.954-15.622-56.57 0L511.999 455.433 68.286 11.718c-15.622-15.622-40.95-15.622-56.57 0s-15.622 40.95 0 56.57l443.713 443.713L11.716 955.716c-15.622 15.622-15.622 40.949 0 56.57a39.925 39.925 0 0 0 12.974 8.681 39.939 39.939 0 0 0 15.312 3.032 39.939 39.939 0 0 0 15.312-3.032 39.94 39.94 0 0 0 12.974-8.681l443.711-443.713 443.711 443.713c7.811 7.811 18.051 11.713 28.285 11.713 10.24 0 20.474-3.903 28.291-11.713 15.622-15.622 15.622-40.949 0-56.57L568.571 512.003z"/></svg>`;
-  dialog.append(button);
-  return button;
-}
 
 /**
  * Функция показать пароль.
@@ -930,14 +914,20 @@ function AddtoMod(doc = document) {
         mainClass: "productViewMod",
         hideScrollbar: false,
         on: {
-          done: () => {
-            Addto(content);
-            AddtoCart(content);
-            AddtoNotify(content);
-            AddtoOrder(content);
-            Goods(content);
-            Dialogs(content);
-            content.querySelector(".productView__add").focus();
+          done: (fancybox, slide) => {
+            const fancyboxContent = slide.contentEl || slide.$content;
+            if (fancyboxContent) {
+              Addto(fancyboxContent);
+              AddtoCart(fancyboxContent);
+              AddtoNotify(fancyboxContent);
+              AddtoOrder(fancyboxContent);
+              Goods(fancyboxContent);
+              Dialogs(fancyboxContent);
+              const addButton = fancyboxContent.querySelector(".productView__add");
+              if (addButton) {
+                addButton.focus();
+              }
+            }
           },
         },
       },
@@ -979,24 +969,45 @@ function AddtoOrder(doc = document) {
 
   function handleAddtoOrderOpen(data) {
     const content = data.querySelector(".page-orderfast");
-    const dialog = DialogsCreate("productViewMod", "Карточка товара", content);
-    const dialogClose = DialogsCloser(dialog);
     // Запуск функций
-    DialogsHandler(dialog, dialogClose);
-    Dialogs(content);
-    Orderfast();
-    Passwords();
-    OrderCoupons();
-    CartMinSum();
-    $(".form__phone").mask("+7 (999) 999-9999");
-    const form = document.querySelector(".orderfast__form");
-    ValidateRequired(form);
-    new AirDatepicker("#order_delivery_convenient_date", {
-      autoClose: true,
-      onSelect: function ({datepicker}) {
-        ValidateInput(datepicker.$el);
+    new Fancybox(
+      [
+        {
+          src: content,
+          type: "html",
+        },
+      ],
+      {
+        mainClass: "productViewMod",
+        hideScrollbar: false,
+        on: {
+          done: (fancybox, slide) => {
+            const fancyboxContent = slide.contentEl || slide.$content;
+            if (fancyboxContent) {
+              Dialogs(fancyboxContent);
+              Orderfast();
+              Passwords();
+              OrderCoupons();
+              CartMinSum();
+              $(".form__phone").mask("+7 (999) 999-9999");
+              const form = fancyboxContent.querySelector(".orderfast__form");
+              if (form) {
+                ValidateRequired(form);
+              }
+              const dateInput = fancyboxContent.querySelector("#order_delivery_convenient_date");
+              if (dateInput) {
+                new AirDatepicker("#order_delivery_convenient_date", {
+                  autoClose: true,
+                  onSelect: function ({datepicker}) {
+                    ValidateInput(datepicker.$el);
+                  },
+                });
+              }
+            }
+          },
+        },
       },
-    });
+    );
   }
 
   function handleAddtoOrderUpdate(data) {
@@ -1038,9 +1049,29 @@ function AddtoNotify(doc = document) {
     const currentTarget = event.currentTarget;
     const goodsForm = currentTarget.closest("form");
     const goodsModId = goodsForm.querySelector("[name='form[goods_mod_id]']");
-    const dialog = document.querySelector("#dialogNotify");
-    const dialogModId = dialog.querySelector("[name='form[goods_mod_id]']");
-    dialogModId.value = goodsModId.value;
+    if (!goodsModId) return;
+    
+    // Ищем диалог в DOM или в открытом fancybox
+    let dialog = document.querySelector("#dialogNotify");
+    if (!dialog) {
+      // Если диалог открыт в fancybox, ищем его там
+      if (typeof Fancybox !== "undefined") {
+        const instance = Fancybox.getInstance();
+        if (instance && instance.currentSlide) {
+          const fancyboxContent = instance.currentSlide.contentEl || instance.currentSlide.$content;
+          if (fancyboxContent) {
+            dialog = fancyboxContent.querySelector("#dialogNotify") || fancyboxContent;
+          }
+        }
+      }
+    }
+    
+    if (dialog) {
+      const dialogModId = dialog.querySelector("[name='form[goods_mod_id]']");
+      if (dialogModId) {
+        dialogModId.value = goodsModId.value;
+      }
+    }
   }
 }
 
@@ -3464,15 +3495,46 @@ function Autorization() {
  *   "Произошла ошибка при отправке"
  * );
  */
-function Form(id, successMessage, errorMessage) {
+function Form(id, successMessage, errorMessage, context = document) {
   // Получаем элементы формы
-  const formBlock = document.getElementById(id);
-  const formElement = formBlock?.querySelector("form");
-  const formButton = formElement?.querySelector("button");
+  let formBlock = null;
+  let formElement = null;
+  
+  // Если передан контекст (например, fancyboxContent), ищем форму напрямую в нем
+  if (context && context !== document) {
+    // Ищем форму напрямую в контексте (для fancybox)
+    formElement = context.querySelector ? context.querySelector("form") : null;
+    if (formElement) {
+      // Создаем временный контейнер для совместимости с остальным кодом
+      formBlock = formElement.closest(`#${id}`) || formElement.parentElement;
+    }
+  }
+  
+  // Если не найдено в контексте, ищем в основном документе по ID
+  if (!formElement) {
+    formBlock = document.getElementById(id);
+    formElement = formBlock?.querySelector("form");
+  }
+  
+  // Если все еще не найдено, ищем внутри открытого fancybox
+  if (!formElement && typeof Fancybox !== "undefined") {
+    const instance = Fancybox.getInstance();
+    if (instance && instance.currentSlide) {
+      const fancyboxContent = instance.currentSlide.contentEl || instance.currentSlide.$content;
+      if (fancyboxContent) {
+        formElement = fancyboxContent.querySelector("form");
+        if (formElement) {
+          formBlock = formElement.parentElement;
+        }
+      }
+    }
+  }
+  
+  const formButton = formElement?.querySelector("button[type='submit']");
 
   // Проверяем наличие необходимых элементов
-  if (!formBlock || !formElement) {
-    console.warn(`[WARNING]: Form elements not found for id: ${id}`);
+  if (!formElement) {
+    console.warn(`[WARNING]: Form element not found for id: ${id}`, {formBlock, formElement, context});
     return;
   }
 
@@ -3501,9 +3563,14 @@ function Form(id, successMessage, errorMessage) {
    * Закрывает модальное окно с задержкой
    */
   const closeModal = () => {
-    if (formBlock.hasAttribute("open")) {
-      setTimeout(() => formBlock.close(), CONFIG.closeDelay);
-    }
+    setTimeout(() => {
+      if (typeof Fancybox !== "undefined") {
+        const instance = Fancybox.getInstance();
+        if (instance) {
+          instance.close();
+        }
+      }
+    }, CONFIG.closeDelay);
   };
 
   /**
@@ -3543,8 +3610,14 @@ function Form(id, successMessage, errorMessage) {
     }
   };
 
+  // Проверяем, не добавлен ли уже обработчик
+  if (formElement.hasAttribute("data-form-handler")) {
+    return; // Обработчик уже добавлен
+  }
+  
   // Добавляем обработчик отправки формы
   formElement.addEventListener("submit", handleForm);
+  formElement.setAttribute("data-form-handler", "true");
 }
 
 /**
@@ -3822,7 +3895,7 @@ document.addEventListener("DOMContentLoaded", function () {
   Opener();
   Autorization();
   toTop();
-  Form("dialogCallback", "Запрос обратного звонка успешно отправлен администрации магазина", "Вы уже отправляли запрос. Пожалуйста ожидайте звонка.");
+  // Form("dialogCallback", "Запрос обратного звонка успешно отправлен администрации магазина", "Вы уже отправляли запрос. Пожалуйста ожидайте звонка.");
   Form("dialogNotify", "Вы будете уведомлены о поступлении товара", "Вы уже отправляли запрос. Пожалуйста ожидайте.");
   Form("subscribe", "Спасибо за обращение! Вы подписались на нашу рассылку", "Вы уже отправляли запрос. Пожалуйста ожидайте.");
   // Маска ввода телефона

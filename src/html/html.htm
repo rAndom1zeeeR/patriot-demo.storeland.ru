@@ -2714,7 +2714,7 @@
 
 			<form class="form__callback" method="post" action="{CALLBACK_URL}" enctype="multipart/form-data">
 				<input type="hidden" name="hash" value="{HASH}">
-				<input type="hidden" name="return_to" value="{CALLBACK_URL}">
+				<input class="callbackredirect" type="hidden" name="return_to" value="{CALLBACK_URL}">
 				<input type="hidden" name="form[{ANTISPAM_FORM_FIELD_NAME_CALLBACK_PERSON}]" value="Уведомить - {FORM_CALLBACK_PERSON}">
 				<input type="hidden" name="form[goods_mod_id]">
 				<!-- Набор полей которые не видит пользователь, но видят боты. Когда они их заполняют мы точно знаем, что их прислал нам бот и мы не сохраняем подобный отзыв о товаре, а боту отправившему отзыв сообщаем, что отзыв добавлен успешно, но будет отображён здесь после прохождения модерации -->
@@ -2747,7 +2747,7 @@
 			<p class="dialog__text">Оставьте свой номер телефона и наши менеджеры проконсультируют Вас бесплатно!</p>
 			<form class="form__callback" method="post" action="{CALLBACK_URL}" enctype="multipart/form-data">
 				<input type="hidden" name="hash" value="{HASH}">
-				<input type="hidden" name="return_to" value="{CALLBACK_URL}">
+				<input class="callbackredirect" type="hidden" name="return_to" value="{CALLBACK_URL}">
 				<input type="hidden" name="form[{ANTISPAM_FORM_FIELD_NAME_CALLBACK_COMMENT}]" value="Обратный звонок - {FORM_FEEDBACK_MESSAGE}">
 				<!-- Набор полей которые не видит пользователь, но видят боты. Когда они их заполняют мы точно знаем, что их прислал нам бот и мы не сохраняем подобный отзыв о товаре, а боту отправившему отзыв сообщаем, что отзыв добавлен успешно, но будет отображён здесь после прохождения модерации -->
 				{ANTISPAM_CODE}

@@ -1211,7 +1211,7 @@
 /* 
 ** Модальные окна
 */
-#dialogCallback {max-width: 460px;}
+.dialogMod .dialog__container {max-width: 460px;}
 #dialogLogin {max-width: 460px;}
 #dialogLogin .form__buttons {gap: 16px;justify-content: space-between;}
 #dialogLogin .button-link {font-weight: 700;}

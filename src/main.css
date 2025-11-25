@@ -1246,6 +1246,7 @@
 	top: 0;
 	z-index: 3;
 	display: flex;
+	flex-wrap: wrap;
 	align-items: center;
 	padding: 16px 20px;
 	font-weight: bold;
@@ -1253,6 +1254,7 @@
 }
 .sidebar__header-close {height: auto;margin-left: auto;}
 .sidebar__header-button {color: var(--color-text-primary);font-weight: bold;text-transform: uppercase;}
+.sidebar__header-buttons {display: flex;width: 100%;padding: 16px 20px;border-top: 1px solid var(--color-border);}
 .sidebar__content {display: flex;flex-direction: column;height: calc(100dvh - 54px);overflow: hidden auto;-webkit-overflow-scrolling: auto;}
 .sidebar__content::-webkit-scrollbar {width: var(--scrollbar-width-thin);}
 
